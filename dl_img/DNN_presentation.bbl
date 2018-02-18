@@ -1,0 +1,166 @@
+\begin{thebibliography}{}
+
+\bibitem[Bengio, 2009]{bengio2009learning}
+Bengio, Y. (2009).
+\newblock Learning deep architectures for ai.
+\newblock {\em Foundations and trends{\textregistered} in Machine Learning},
+  2(1):1--127.
+
+\bibitem[Bengio et~al., 1994]{bengio1994learning}
+Bengio, Y., Simard, P., and Frasconi, P. (1994).
+\newblock Learning long-term dependencies with gradient descent is difficult.
+\newblock {\em Neural Networks, IEEE Transactions on}, 5(2):157--166.
+
+\bibitem[Biesecker, 2013]{biesecker2013hypothesis}
+Biesecker, L.~G. (2013).
+\newblock Hypothesis-generating research and predictive medicine.
+\newblock {\em Genome research}, 23(7):1051--1053.
+
+\bibitem[Chiang, 2000]{chiang2000catching}
+Chiang, T. (2000).
+\newblock Catching crumbs from the table.
+\newblock {\em Nature}, 405(6786):517--517.
+
+\bibitem[Coates et~al., 2013]{coates2013deep}
+Coates, A., Huval, B., Wang, T., Wu, D., Catanzaro, B., and Andrew, N. (2013).
+\newblock Deep learning with cots hpc systems.
+\newblock In {\em Proceedings of The 30th International Conference on Machine
+  Learning}, pages 1337--1345.
+
+\bibitem[documentation, ]{convol}
+documentation, D.~.
+\newblock Convolutional neural networks (lenet).
+\newblock \url{http://deeplearning.net/tutorial/lenet.html}.
+
+\bibitem[Fischer and Igel, 2012]{fischer2012introduction}
+Fischer, A. and Igel, C. (2012).
+\newblock An introduction to restricted boltzmann machines.
+\newblock In {\em Progress in Pattern Recognition, Image Analysis, Computer
+  Vision, and Applications}, pages 14--36. Springer.
+
+\bibitem[Glorot et~al., 2011]{glorot2011deep}
+Glorot, X., Bordes, A., and Bengio, Y. (2011).
+\newblock Deep sparse rectifier networks.
+\newblock In {\em Proceedings of the 14th International Conference on
+  Artificial Intelligence and Statistics. JMLR W\&CP Volume}, volume~15, pages
+  315--323.
+
+\bibitem[Han-Hsing, ]{gradient}
+Han-Hsing, T.
+\newblock [ml, python] gradient descent algorithm (revision 2).
+\newblock
+  \url{http://hhtucode.blogspot.kr/2013/04/ml-gradient-descent-algorithm.html}.
+
+\bibitem[Hinton, ]{perceptroncant}
+Hinton, G.
+\newblock Coursera: Neural networks for machine learning.
+\newblock \url{https://class.coursera.org/neuralnets-2012-001}.
+
+\bibitem[Hinton et~al., 2006]{hinton2006fast}
+Hinton, G., Osindero, S., and Teh, Y.-W. (2006).
+\newblock A fast learning algorithm for deep belief nets.
+\newblock {\em Neural computation}, 18(7):1527--1554.
+
+\bibitem[Hinton, 2009]{hinton2009deep}
+Hinton, G.~E. (2009).
+\newblock Deep belief networks.
+\newblock {\em Scholarpedia}, 4(5):5947.
+
+\bibitem[Hinton and Salakhutdinov, 2006]{hinton2006reducing}
+Hinton, G.~E. and Salakhutdinov, R.~R. (2006).
+\newblock Reducing the dimensionality of data with neural networks.
+\newblock {\em Science}, 313(5786):504--507.
+
+\bibitem[Hinton et~al., 2012]{hinton2012improving}
+Hinton, G.~E., Srivastava, N., Krizhevsky, A., Sutskever, I., and
+  Salakhutdinov, R.~R. (2012).
+\newblock Improving neural networks by preventing co-adaptation of feature
+  detectors.
+\newblock {\em arXiv preprint arXiv:1207.0580}.
+
+\bibitem[Honkela, ]{perceptronfig}
+Honkela, A.
+\newblock Multilayer perceptrons.
+\newblock \url{https://www.hiit.fi/u/ahonkela/dippa/node41.html}.
+
+\bibitem[James et~al., 2013]{james2013introduction}
+James, G., Witten, D., Hastie, T., and Tibshirani, R. (2013).
+\newblock {\em An introduction to statistical learning}.
+\newblock Springer.
+
+\bibitem[Kim, ]{kimjunmoppt}
+Kim, J.
+\newblock 2014 패턴인식 및 기계학습 여름학교.
+\newblock \url{http://prml.yonsei.ac.kr/}.
+
+\bibitem[Le, 2013]{le2013building}
+Le, Q.~V. (2013).
+\newblock Building high-level features using large scale unsupervised learning.
+\newblock In {\em Acoustics, Speech and Signal Processing (ICASSP), 2013 IEEE
+  International Conference on}, pages 8595--8598. IEEE.
+
+\bibitem[Maltarollo et~al., 2013]{maltarollo2013applications}
+Maltarollo, V.~G., Hon{\'o}rio, K.~M., and da~Silva, A. B.~F. (2013).
+\newblock Applications of artificial neural networks in chemical problems.
+
+\bibitem[Nair and Hinton, 2010]{nair2010rectified}
+Nair, V. and Hinton, G.~E. (2010).
+\newblock Rectified linear units improve restricted boltzmann machines.
+\newblock In {\em Proceedings of the 27th International Conference on Machine
+  Learning (ICML-10)}, pages 807--814.
+
+\bibitem[Nvidia, 2007]{nvidia2007compute}
+Nvidia, C. (2007).
+\newblock Compute unified device architecture programming guide.
+
+\bibitem[Ranzato, ]{minima}
+Ranzato, M.
+\newblock Deep learning for vision: Tricks of the trade.
+\newblock \url{www.cs.toronto.edu/~ranzato}.
+
+\bibitem[Rosenblatt, 1958]{rosenblatt1958perceptron}
+Rosenblatt, F. (1958).
+\newblock The perceptron: a probabilistic model for information storage and
+  organization in the brain.
+\newblock {\em Psychological review}, 65(6):386.
+
+\bibitem[Rumelhart et~al., 1985]{rumelhart1985learning}
+Rumelhart, D.~E., Hinton, G.~E., and Williams, R.~J. (1985).
+\newblock Learning internal representations by error propagation.
+\newblock Technical report, DTIC Document.
+
+\bibitem[Smolensky, 1986]{smolensky1986information}
+Smolensky, P. (1986).
+\newblock Information processing in dynamical systems: Foundations of harmony
+  theory.
+
+\bibitem[Stone et~al., 2010]{stone2010opencl}
+Stone, J.~E., Gohara, D., and Shi, G. (2010).
+\newblock Opencl: A parallel programming standard for heterogeneous computing
+  systems.
+\newblock {\em Computing in science \& engineering}, 12(3):66.
+
+\bibitem[Wan, ]{dropfig}
+Wan, L.
+\newblock Regularization of neural networks using dropconnect.
+\newblock \url{http://cs.nyu.edu/~wanli/dropc/}.
+
+\bibitem[Wan et~al., 2013]{wan2013regularization}
+Wan, L., Zeiler, M., Zhang, S., Cun, Y.~L., and Fergus, R. (2013).
+\newblock Regularization of neural networks using dropconnect.
+\newblock In {\em Proceedings of the 30th International Conference on Machine
+  Learning (ICML-13)}, pages 1058--1066.
+
+\bibitem[Wikipedia, ]{RBMfigure}
+Wikipedia.
+\newblock Wikepedia.
+\newblock \url{http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine}.
+
+\bibitem[Zeiler et~al., 2013]{zeiler2013rectified}
+Zeiler, M.~D., Ranzato, M., Monga, R., Mao, M., Yang, K., Le, Q.~V., Nguyen,
+  P., Senior, A., Vanhoucke, V., Dean, J., et~al. (2013).
+\newblock On rectified linear units for speech processing.
+\newblock In {\em Acoustics, Speech and Signal Processing (ICASSP), 2013 IEEE
+  International Conference on}, pages 3517--3521. IEEE.
+
+\end{thebibliography}

@@ -1,0 +1,176 @@
+\beamer@endinputifotherversion {3.24pt}
+\headcommand {\slideentry {0}{0}{1}{1/1}{}{0}}
+\headcommand {\beamer@framepages {1}{1}}
+\headcommand {\sectionentry {1}{\textbf {What is Deep Learning?}}{2}{\textbf {What is Deep Learning?}}{0}}
+\headcommand {\beamer@sectionpages {1}{1}}
+\headcommand {\beamer@subsectionpages {1}{1}}
+\headcommand {\slideentry {1}{0}{2}{2/2}{}{0}}
+\headcommand {\beamer@framepages {2}{2}}
+\headcommand {\slideentry {1}{0}{3}{3/3}{}{0}}
+\headcommand {\beamer@framepages {3}{3}}
+\headcommand {\slideentry {1}{0}{4}{4/4}{}{0}}
+\headcommand {\beamer@framepages {4}{4}}
+\headcommand {\slideentry {1}{0}{5}{5/5}{}{0}}
+\headcommand {\beamer@framepages {5}{5}}
+\headcommand {\slideentry {1}{0}{6}{6/6}{}{0}}
+\headcommand {\beamer@framepages {6}{6}}
+\headcommand {\slideentry {1}{0}{7}{7/7}{}{0}}
+\headcommand {\beamer@framepages {7}{7}}
+\headcommand {\slideentry {1}{0}{8}{8/8}{}{0}}
+\headcommand {\beamer@framepages {8}{8}}
+\headcommand {\sectionentry {2}{\textbf {History}}{9}{\textbf {History}}{0}}
+\headcommand {\beamer@sectionpages {2}{8}}
+\headcommand {\beamer@subsectionpages {2}{8}}
+\headcommand {\slideentry {2}{0}{9}{9/9}{}{0}}
+\headcommand {\beamer@framepages {9}{9}}
+\headcommand {\beamer@subsectionentry {0}{2}{1}{10}{Perceptron}}\headcommand {\beamer@subsectionpages {9}{9}}
+\headcommand {\slideentry {2}{1}{1}{10/10}{Perceptron}{0}}
+\headcommand {\beamer@framepages {10}{10}}
+\headcommand {\slideentry {2}{1}{2}{11/11}{Perceptron}{0}}
+\headcommand {\beamer@framepages {11}{11}}
+\headcommand {\beamer@subsectionentry {0}{2}{2}{12}{Multilayer Perceptron}}\headcommand {\beamer@subsectionpages {10}{11}}
+\headcommand {\slideentry {2}{2}{1}{12/12}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {12}{12}}
+\headcommand {\slideentry {2}{2}{2}{13/13}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {13}{13}}
+\headcommand {\slideentry {2}{2}{3}{14/14}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {14}{14}}
+\headcommand {\slideentry {2}{2}{4}{15/15}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {15}{15}}
+\headcommand {\slideentry {2}{2}{5}{16/16}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {16}{16}}
+\headcommand {\slideentry {2}{2}{6}{17/17}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {17}{17}}
+\headcommand {\slideentry {2}{2}{7}{18/18}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {18}{18}}
+\headcommand {\slideentry {2}{2}{8}{19/19}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {19}{19}}
+\headcommand {\slideentry {2}{2}{9}{20/20}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {20}{20}}
+\headcommand {\slideentry {2}{2}{10}{21/21}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {21}{21}}
+\headcommand {\slideentry {2}{2}{11}{22/22}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {22}{22}}
+\headcommand {\slideentry {2}{2}{12}{23/23}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {23}{23}}
+\headcommand {\slideentry {2}{2}{13}{24/24}{Multilayer Perceptron}{0}}
+\headcommand {\beamer@framepages {24}{24}}
+\headcommand {\beamer@subsectionentry {0}{2}{3}{25}{1st Breakthrough: Unsupervised Learning}}\headcommand {\beamer@subsectionpages {12}{24}}
+\headcommand {\slideentry {2}{3}{1}{25/25}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {25}{25}}
+\headcommand {\slideentry {2}{3}{2}{26/26}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {26}{26}}
+\headcommand {\slideentry {2}{3}{3}{27/27}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {27}{27}}
+\headcommand {\slideentry {2}{3}{4}{28/28}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {28}{28}}
+\headcommand {\slideentry {2}{3}{5}{29/29}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {29}{29}}
+\headcommand {\slideentry {2}{3}{6}{30/30}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {30}{30}}
+\headcommand {\slideentry {2}{3}{7}{31/31}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {31}{31}}
+\headcommand {\slideentry {2}{3}{8}{32/32}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {32}{32}}
+\headcommand {\slideentry {2}{3}{9}{33/33}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {33}{33}}
+\headcommand {\slideentry {2}{3}{10}{34/34}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {34}{34}}
+\headcommand {\slideentry {2}{3}{11}{35/35}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {35}{35}}
+\headcommand {\slideentry {2}{3}{12}{36/36}{1st Breakthrough: Unsupervised Learning}{0}}
+\headcommand {\beamer@framepages {36}{36}}
+\headcommand {\beamer@subsectionentry {0}{2}{4}{37}{2nd Breakthrough: Supervised Learning}}\headcommand {\beamer@subsectionpages {25}{36}}
+\headcommand {\slideentry {2}{4}{1}{37/37}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {37}{37}}
+\headcommand {\slideentry {2}{4}{2}{38/38}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {38}{38}}
+\headcommand {\slideentry {2}{4}{3}{39/39}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {39}{39}}
+\headcommand {\slideentry {2}{4}{4}{40/40}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {40}{40}}
+\headcommand {\slideentry {2}{4}{5}{41/41}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {41}{41}}
+\headcommand {\slideentry {2}{4}{6}{42/42}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {42}{42}}
+\headcommand {\slideentry {2}{4}{7}{43/43}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {43}{43}}
+\headcommand {\slideentry {2}{4}{8}{44/44}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {44}{44}}
+\headcommand {\slideentry {2}{4}{9}{45/45}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {45}{45}}
+\headcommand {\slideentry {2}{4}{10}{46/46}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {46}{46}}
+\headcommand {\slideentry {2}{4}{11}{47/47}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {47}{47}}
+\headcommand {\slideentry {2}{4}{12}{48/48}{2nd Breakthrough: Supervised Learning}{0}}
+\headcommand {\beamer@framepages {48}{48}}
+\headcommand {\sectionentry {3}{\textbf {Apply to Public Health}}{49}{\textbf {Apply to Public Health}}{0}}
+\headcommand {\beamer@sectionpages {9}{48}}
+\headcommand {\beamer@subsectionpages {37}{48}}
+\headcommand {\slideentry {3}{0}{13}{49/49}{}{0}}
+\headcommand {\beamer@framepages {49}{49}}
+\headcommand {\beamer@subsectionentry {0}{3}{1}{50}{Epidemiology vs Machine Learning}}\headcommand {\beamer@subsectionpages {49}{49}}
+\headcommand {\slideentry {3}{1}{1}{50/50}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {50}{50}}
+\headcommand {\slideentry {3}{1}{2}{51/51}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {51}{51}}
+\headcommand {\slideentry {3}{1}{3}{52/52}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {52}{52}}
+\headcommand {\slideentry {3}{1}{4}{53/53}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {53}{53}}
+\headcommand {\slideentry {3}{1}{5}{54/54}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {54}{54}}
+\headcommand {\slideentry {3}{1}{6}{55/55}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {55}{55}}
+\headcommand {\slideentry {3}{1}{7}{56/56}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {56}{56}}
+\headcommand {\slideentry {3}{1}{8}{57/57}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {57}{57}}
+\headcommand {\slideentry {3}{1}{9}{58/58}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {58}{58}}
+\headcommand {\slideentry {3}{1}{10}{59/59}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {59}{59}}
+\headcommand {\slideentry {3}{1}{11}{60/60}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {60}{60}}
+\headcommand {\slideentry {3}{1}{12}{61/61}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {61}{61}}
+\headcommand {\slideentry {3}{1}{13}{62/62}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {62}{62}}
+\headcommand {\slideentry {3}{1}{14}{63/63}{Epidemiology vs Machine Learning}{0}}
+\headcommand {\beamer@framepages {63}{63}}
+\headcommand {\beamer@subsectionentry {0}{3}{2}{64}{Deep Learning vs Other ML}}\headcommand {\beamer@subsectionpages {50}{63}}
+\headcommand {\slideentry {3}{2}{1}{64/64}{Deep Learning vs Other ML}{0}}
+\headcommand {\beamer@framepages {64}{64}}
+\headcommand {\slideentry {3}{2}{2}{65/65}{Deep Learning vs Other ML}{0}}
+\headcommand {\beamer@framepages {65}{65}}
+\headcommand {\slideentry {3}{2}{3}{66/66}{Deep Learning vs Other ML}{0}}
+\headcommand {\beamer@framepages {66}{66}}
+\headcommand {\beamer@subsectionentry {0}{3}{3}{67}{Hypothesis Testing vs Hypothesis Generating}}\headcommand {\beamer@subsectionpages {64}{66}}
+\headcommand {\slideentry {3}{3}{1}{67/67}{Hypothesis Testing vs Hypothesis Generating}{0}}
+\headcommand {\beamer@framepages {67}{67}}
+\headcommand {\slideentry {3}{3}{2}{68/68}{Hypothesis Testing vs Hypothesis Generating}{0}}
+\headcommand {\beamer@framepages {68}{68}}
+\headcommand {\slideentry {3}{3}{3}{69/69}{Hypothesis Testing vs Hypothesis Generating}{0}}
+\headcommand {\beamer@framepages {69}{69}}
+\headcommand {\slideentry {3}{3}{4}{70/70}{Hypothesis Testing vs Hypothesis Generating}{0}}
+\headcommand {\beamer@framepages {70}{70}}
+\headcommand {\sectionentry {4}{\textbf {Conclusion}}{71}{\textbf {Conclusion}}{0}}
+\headcommand {\beamer@sectionpages {49}{70}}
+\headcommand {\beamer@subsectionpages {67}{70}}
+\headcommand {\slideentry {4}{0}{5}{71/71}{}{0}}
+\headcommand {\beamer@framepages {71}{71}}
+\headcommand {\slideentry {4}{0}{6}{72/72}{}{0}}
+\headcommand {\beamer@framepages {72}{72}}
+\headcommand {\sectionentry {5}{\translate {References}}{73}{\translate {References}}{0}}
+\headcommand {\beamer@sectionpages {71}{72}}
+\headcommand {\beamer@subsectionpages {71}{72}}
+\headcommand {\slideentry {5}{0}{7}{73/73}{}{0}}
+\headcommand {\beamer@framepages {73}{73}}
+\headcommand {\slideentry {5}{0}{7}{73/74}{}{0}}
+\headcommand {\beamer@framepages {73}{74}}
+\headcommand {\beamer@partpages {1}{74}}
+\headcommand {\beamer@subsectionpages {71}{74}}
+\headcommand {\beamer@sectionpages {71}{74}}
+\headcommand {\beamer@documentpages {74}}
+\headcommand {\def \inserttotalframenumber {74}}

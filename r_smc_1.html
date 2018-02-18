@@ -32,7 +32,7 @@
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-86134798-1', 'auto');
+  ga('create', 'UA-114370844-1', 'auto');
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
@@ -383,7 +383,7 @@ div.tocify {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/mathemedicine/mathemedicine.github.io">
+  <a href="https://github.com/jinseob2kim/jinseob2kim.github.io">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -542,12 +542,11 @@ twomean(4,6)</code></pre>
 <div id="-" class="section level3">
 <h3>디렉토리 지정</h3>
 <p>데이터를 불러오기 전에 미리 디렉토리를 지정하면 그 다음부터는 편하게 읽고 쓸 수 있다.</p>
-<pre class="r"><code>getwd()                                                                  ## 현재 디렉토리 </code></pre>
-<pre><code>## [1] &quot;/home/secondmath/Dropbox/Hompage/mathemedicine.github.io&quot;</code></pre>
-<pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/Hompage/mathemedicine.github.io&quot;)        ## 디렉토리 설정 
+<pre class="r"><code>#getwd()                                                                  ## 현재 디렉토리 
+#setwd(&quot;/home/secondmath/Dropbox/Hompage/mathemedicine.github.io&quot;)        ## 디렉토리 설정 
 #setwd(&quot;C:/Users/sec/Desktop/Language/r/edu&quot;)        
 getwd()</code></pre>
-<pre><code>## [1] &quot;/home/secondmath/Dropbox/Hompage/mathemedicine.github.io&quot;</code></pre>
+<pre><code>## [1] &quot;/home/secondmath/Dropbox/Hompage/jinseob2kim.github.io&quot;</code></pre>
 <p>여기서 주의해야 할 점은 폴더간의 구분을 / 로 해야 한다는 점이다. <em>R</em> 은 유닉스 기반의 언어이기 때문이다. 이제 실습 데이터를 읽어보도록 하자. 가급적이면 데이터포맷은 <code>csv</code>로 통일하는 것을 추천한다. 콤마로 분리된 가장 간단 한 형태의 파일로서 용량도 작고 어떤 소프트웨어에서도 읽을 수 있다는 장점이 있다. 물론 <em>R</em>에서 SPSS, SAS, Excel파일을 읽을 수도 있지만 본 실습에서는 생략하도록 하겠다.</p>
 <pre class="r"><code>a=read.csv(&quot;smc_example.csv&quot;)                             ## 첫번째 행은 변수명으로 자동 인식
 a=read.table(&quot;smc_example.csv&quot;, sep=&quot;,&quot;, header=T)        ## 구분자와 첫번째 행 인식여부를 직접
@@ -624,7 +623,7 @@ write.csv(a,&quot;smc_example1.csv&quot;,row.names=F)   ## 행번호 삭제 </co
 <pre class="r"><code>str(a)                ## 데이터 구조 살펴보기 </code></pre>
 <pre><code>## &#39;data.frame&#39;:    1000 obs. of  15 variables:
 ##  $ Patient_ID  : int  22095995 26848489 3738312 14676241 18426462 12687805 18188715 4456864 14618335 23304153 ...
-##  $ Sex         : chr  &quot;M&quot; &quot;M&quot; &quot;M&quot; &quot;F&quot; ...
+##  $ Sex         : Factor w/ 2 levels &quot;F&quot;,&quot;M&quot;: 2 2 2 1 2 2 1 1 1 1 ...
 ##  $ Age         : int  52 67 75 66 52 56 67 65 68 45 ...
 ##  $ Height      : int  160 162 163 154 165 166 155 155 145 156 ...
 ##  $ Weight      : num  63 63 63 61 64 70 56 57 55 56 ...
@@ -636,16 +635,16 @@ write.csv(a,&quot;smc_example1.csv&quot;,row.names=F)   ## 행번호 삭제 </co
 ##  $ Death       : int  0 0 0 0 0 0 0 0 0 0 ...
 ##  $ MACCE_date  : int  1056 270 1875 2112 2052 792 2171 1210 2437 1078 ...
 ##  $ Death_date  : int  1056 270 1875 2112 2052 792 2171 1210 2437 1078 ...
-##  $ STRESS_EXIST: chr  &quot;No test&quot; &quot;No test&quot; &quot;No test&quot; &quot;Test&quot; ...
+##  $ STRESS_EXIST: Factor w/ 2 levels &quot;No test&quot;,&quot;Test&quot;: 1 1 1 2 1 1 1 1 2 1 ...
 ##  $ Number_stent: int  3 2 2 1 2 1 3 1 1 1 ...</code></pre>
 <pre class="r"><code>summary(a)            ## 대략적인 요약.</code></pre>
-<pre><code>##    Patient_ID           Sex                 Age           Height     
-##  Min.   :    7419   Length:1000        Min.   :21.0   Min.   : 99.0  
-##  1st Qu.: 7723744   Class :character   1st Qu.:56.0   1st Qu.:158.0  
-##  Median :15435939   Mode  :character   Median :63.0   Median :165.0  
-##  Mean   :14272770                      Mean   :62.8   Mean   :163.4  
-##  3rd Qu.:20308317                      3rd Qu.:70.0   3rd Qu.:170.0  
-##  Max.   :27116710                      Max.   :93.0   Max.   :190.0  
+<pre><code>##    Patient_ID       Sex          Age           Height     
+##  Min.   :    7419   F:254   Min.   :21.0   Min.   : 99.0  
+##  1st Qu.: 7723744   M:746   1st Qu.:56.0   1st Qu.:158.0  
+##  Median :15435939           Median :63.0   Median :165.0  
+##  Mean   :14272770           Mean   :62.8   Mean   :163.4  
+##  3rd Qu.:20308317           3rd Qu.:70.0   3rd Qu.:170.0  
+##  Max.   :27116710           Max.   :93.0   Max.   :190.0  
 ##      Weight            BMI               DM             HTN       
 ##  Min.   : 36.00   Min.   : 14.33   Min.   :0.000   Min.   :0.000  
 ##  1st Qu.: 60.00   1st Qu.: 23.05   1st Qu.:0.000   1st Qu.:0.000  
@@ -660,13 +659,13 @@ write.csv(a,&quot;smc_example1.csv&quot;,row.names=F)   ## 행번호 삭제 </co
 ##  Mean   :0.265   Mean   :0.223   Mean   :0.059   Mean   :1353  
 ##  3rd Qu.:1.000   3rd Qu.:0.000   3rd Qu.:0.000   3rd Qu.:2013  
 ##  Max.   :1.000   Max.   :1.000   Max.   :1.000   Max.   :3502  
-##    Death_date     STRESS_EXIST        Number_stent  
-##  Min.   :   1.0   Length:1000        Min.   :1.000  
-##  1st Qu.: 872.8   Class :character   1st Qu.:1.000  
-##  Median :1518.5   Mode  :character   Median :1.000  
-##  Mean   :1568.2                      Mean   :1.597  
-##  3rd Qu.:2211.2                      3rd Qu.:2.000  
-##  Max.   :3502.0                      Max.   :6.000</code></pre>
+##    Death_date      STRESS_EXIST  Number_stent  
+##  Min.   :   1.0   No test:603   Min.   :1.000  
+##  1st Qu.: 872.8   Test   :397   1st Qu.:1.000  
+##  Median :1518.5                 Median :1.000  
+##  Mean   :1568.2                 Mean   :1.597  
+##  3rd Qu.:2211.2                 3rd Qu.:2.000  
+##  Max.   :3502.0                 Max.   :6.000</code></pre>
 <pre class="r"><code>a$BMI
 a[,&quot;BMI&quot;]
 a[,11]
@@ -1122,17 +1121,40 @@ t(sapply(&quot;Number_stent&quot;,wcsum))</code></pre>
 ## Number_stent       1    1       1    1       2    2 0.1692172</code></pre>
 <pre class="r"><code>## New grammar: dplyr package: %&gt;%-  ctrl+ shift + M
 #install.packages(&quot;dplyr&quot;)
-library(dplyr)
-a %&gt;% group_by(STRESS_EXIST) %&gt;% select(varname_num) %&gt;% summarise_each(funs(mean))</code></pre>
+library(dplyr)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;dplyr&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:gridExtra&#39;:
+## 
+##     combine</code></pre>
+<pre><code>## The following object is masked from &#39;package:MASS&#39;:
+## 
+##     select</code></pre>
+<pre><code>## The following object is masked from &#39;package:nlme&#39;:
+## 
+##     collapse</code></pre>
+<pre><code>## The following object is masked from &#39;package:glue&#39;:
+## 
+##     collapse</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     between, first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## 
+##     filter, lag</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     intersect, setdiff, setequal, union</code></pre>
+<pre class="r"><code>a %&gt;% group_by(STRESS_EXIST) %&gt;% select(varname_num) %&gt;% summarise_each(funs(mean))</code></pre>
 <pre><code>## Adding missing grouping variables: `STRESS_EXIST`</code></pre>
 <pre><code>## `summarise_each()` is deprecated.
 ## Use `summarise_all()`, `summarise_at()` or `summarise_if()` instead.
 ## To map `funs` over all variables, use `summarise_all()`</code></pre>
 <pre><code>## # A tibble: 2 x 7
-##   STRESS_EXIST      Age   Height   Weight      BMI MACCE_date Death_date
-##          &lt;chr&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-## 1      No test 63.82753 163.0730 66.59022 35.97794   1286.682   1470.844
-## 2         Test 61.23678 163.9773 67.94307 41.94524   1453.028   1716.010</code></pre>
+##   STRESS_EXIST   Age Height Weight   BMI MACCE_date Death_date
+##   &lt;fct&gt;        &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
+## 1 No test       63.8    163   66.6  36.0       1287       1471
+## 2 Test          61.2    164   67.9  41.9       1453       1716</code></pre>
 <pre class="r"><code>dpres2 = a %&gt;% group_by(STRESS_EXIST) %&gt;% select(varname_num) %&gt;% summarise_each(funs(mean,sd))</code></pre>
 <pre><code>## Adding missing grouping variables: `STRESS_EXIST`
 ## `summarise_each()` is deprecated.
@@ -1141,9 +1163,9 @@ a %&gt;% group_by(STRESS_EXIST) %&gt;% select(varname_num) %&gt;% summarise_each
 <pre class="r"><code>dpres2</code></pre>
 <pre><code>## # A tibble: 2 x 13
 ##   STRESS_EXIST Age_mean Height_mean Weight_mean BMI_mean MACCE_date_mean
-##          &lt;chr&gt;    &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;           &lt;dbl&gt;
-## 1      No test 63.82753    163.0730    66.59022 35.97794        1286.682
-## 2         Test 61.23678    163.9773    67.94307 41.94524        1453.028
+##   &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;           &lt;dbl&gt;
+## 1 No test          63.8         163        66.6     36.0            1287
+## 2 Test             61.2         164        67.9     41.9            1453
 ## # ... with 7 more variables: Death_date_mean &lt;dbl&gt;, Age_sd &lt;dbl&gt;,
 ## #   Height_sd &lt;dbl&gt;, Weight_sd &lt;dbl&gt;, BMI_sd &lt;dbl&gt;, MACCE_date_sd &lt;dbl&gt;,
 ## #   Death_date_sd &lt;dbl&gt;</code></pre>
@@ -1545,9 +1567,14 @@ sapply(varname2,function(x){table(a[,x],a$STRESS_EXIST)})</code></pre>
 <h2>Table 1 만들기</h2>
 <p>지금까지 배운 것을 한번에 정리할 수 있는 테이블 1을 간단히 만들어 보자. <code>moonBook, ztable</code>패키지를 미리 설치하자.</p>
 <pre class="r"><code>#install.packages(c(&quot;moonbook&quot;,&quot;ztable&quot;))
-library(moonBook);library(ztable)
-
-## Make table 1: digits 반올림, max.ylev: 범주형 변수 한계, method 2: 비모수통계 for 연속변수 
+library(moonBook);library(ztable)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;moonBook&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:gplots&#39;:
+## 
+##     space</code></pre>
+<pre><code>## Welcome to package ztable ver 0.1.5</code></pre>
+<pre class="r"><code>## Make table 1: digits 반올림, max.ylev: 범주형 변수 한계, method 2: 비모수통계 for 연속변수 
 tb1=mytable(STRESS_EXIST ~Sex + Age + Height + Weight + BMI + DM + HTN + Smoking + MACCE + Death + MACCE_date + Death_date + Number_stent, data=a)  
 tb1 </code></pre>
 <pre><code>## 

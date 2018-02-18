@@ -1,6 +1,8 @@
 ---
 title: 'R 의학통계: 삼성서울병원(1)'
 subtitle: 'R 기초 문법 및 Table 1만들기'
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -130,8 +132,8 @@ twomean(4,6)
 ### 디렉토리 지정
 데이터를 불러오기 전에 미리 디렉토리를 지정하면 그 다음부터는 편하게 읽고 쓸 수 있다.
 ```{r}
-getwd()                                                                  ## 현재 디렉토리 
-setwd("/home/secondmath/Dropbox/Hompage/mathemedicine.github.io")        ## 디렉토리 설정 
+#getwd()                                                                  ## 현재 디렉토리 
+#setwd("/home/secondmath/Dropbox/Hompage/mathemedicine.github.io")        ## 디렉토리 설정 
 #setwd("C:/Users/sec/Desktop/Language/r/edu")        
 getwd()
 ```

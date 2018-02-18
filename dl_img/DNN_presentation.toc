@@ -1,0 +1,12 @@
+\beamer@endinputifotherversion {3.24pt}
+\beamer@sectionintoc {1}{\textbf {What is Deep Learning?}}{2}{0}{1}
+\beamer@sectionintoc {2}{\textbf {History}}{9}{0}{2}
+\beamer@subsectionintoc {2}{1}{Perceptron}{10}{0}{2}
+\beamer@subsectionintoc {2}{2}{Multilayer Perceptron}{12}{0}{2}
+\beamer@subsectionintoc {2}{3}{1st Breakthrough: Unsupervised Learning}{25}{0}{2}
+\beamer@subsectionintoc {2}{4}{2nd Breakthrough: Supervised Learning}{37}{0}{2}
+\beamer@sectionintoc {3}{\textbf {Apply to Public Health}}{49}{0}{3}
+\beamer@subsectionintoc {3}{1}{Epidemiology vs Machine Learning}{50}{0}{3}
+\beamer@subsectionintoc {3}{2}{Deep Learning vs Other ML}{64}{0}{3}
+\beamer@subsectionintoc {3}{3}{Hypothesis Testing vs Hypothesis Generating}{67}{0}{3}
+\beamer@sectionintoc {4}{\textbf {Conclusion}}{71}{0}{4}

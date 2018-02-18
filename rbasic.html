@@ -32,7 +32,7 @@
   (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
   m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
   })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
-  ga('create', 'UA-86134798-1', 'auto');
+  ga('create', 'UA-114370844-1', 'auto');
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
@@ -383,7 +383,7 @@ div.tocify {
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li>
-  <a href="https://github.com/mathemedicine/mathemedicine.github.io">
+  <a href="https://github.com/jinseob2kim/jinseob2kim.github.io">
     <span class="fa fa-github fa-lg"></span>
      
   </a>
@@ -579,18 +579,18 @@ sum_f=function(x){
 }
 system.time(sum_f(10^6))                  ## system.time - 시간 잰다.</code></pre>
 <pre><code>##    user  system elapsed 
-##    0.10    0.16    0.29</code></pre>
+##   0.192   0.258   0.451</code></pre>
 <pre class="r"><code>system.time(sum(as.numeric(1:10^6)))      ## 내장 sum 함수- 더할 것이 많으면 as.numeric을 넣어줘야 한다. </code></pre>
 <pre><code>##    user  system elapsed 
-##   0.000   0.004   0.005</code></pre>
+##   0.008   0.000   0.008</code></pre>
 <p>따라서 for문을 최대한 덜 쓰고 벡터연산을 활용하는 것이 실행시간을 줄이는 핵심이며, Apply 문의 적극적인 사용으로 이를 해결할 수 있다. 더 나아가서 멀티코어를 활요한 병렬처리 명령어를 이용함으로서 더욱 시간을 줄일 수 있는데 1초동안 가만히 있는 <code>Sys.sleep(1)</code> 함수를 가지고 예를 들어보겠다. 단, 병렬처리는 가급적 <code>Mac/Linux</code> 환경에서 수행하는 것을 추천하는데 <code>mclapply</code>라는 함수로 그냥 <code>sapply</code>, <code>lapply</code> 쓰듯이 똑같이 쓸 수 있는 장점이 있다. Window 환경에서는 이보다는 복잡한 과정을 거쳐야 한다.</p>
 <pre class="r"><code>for (i in 1:8){Sys.sleep(1)}
 system.time(for (i in 1:8){Sys.sleep(1)})             ## 걸리는 시간 : 8초 정도</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.020   0.016   8.003</code></pre>
+##   0.030   0.025   8.006</code></pre>
 <pre class="r"><code>system.time(sapply(1:8,function(x){Sys.sleep(1)}))    ## 약간 덜?</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.024   0.016   8.004</code></pre>
+##   0.033   0.027   8.008</code></pre>
 <pre class="r"><code>library(parallel)                                     ## for 병렬 처리 
 mclapply(1:8,function(x){Sys.sleep(1)})              ## Only for MAc/Linux : Not for window - 코어 하나만 이용한다.</code></pre>
 <pre><code>## [[1]]
@@ -645,7 +645,7 @@ parSapply(cl,1:8,function(x){Sys.sleep(1)})</code></pre>
 ## NULL</code></pre>
 <pre class="r"><code>system.time(parSapply(cl,1:8,function(x){Sys.sleep(1)}))  ## 1초</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.012   0.000   2.012</code></pre>
+##   0.660   0.937   2.592</code></pre>
 <pre class="r"><code>#clusterEvalQ(cl, {library(survival)})                ## parSapply 안의 함수안에 특정 패키지의 명령어가 있다면 그 패키지 미리 지정. 
 #clusterExport(cl,c(&quot;run_feature&quot;,&quot;event_time&quot;))      ## 자체 만든 함수나 객체를 쓴다면 미리 지정 
 stopCluster(cl)                                       ## 종료 </code></pre>
@@ -658,7 +658,7 @@ stopCluster(cl)                                       ## 종료 </code></pre>
 <h2>데이터 불러오기, 저장하기</h2>
 <p>데이터를 불러오기 전에 미리 디렉토리를 지정하면 그 다음부터는 편하게 읽고 쓸 수 있다.</p>
 <pre class="r"><code>getwd()                                                   ## 현재 디렉토리 </code></pre>
-<pre><code>## [1] &quot;/home/secondmath/Dropbox/Hompage/mathemedicine.github.io&quot;</code></pre>
+<pre><code>## [1] &quot;/home/secondmath/Dropbox/Hompage/jinseob2kim.github.io&quot;</code></pre>
 <pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/consult/practice&quot;)        ## 디렉토리 설정 
 getwd()</code></pre>
 <pre><code>## [1] &quot;/home/secondmath/Dropbox/consult/practice&quot;</code></pre>
@@ -1044,62 +1044,17 @@ a[,names(a)[1:7]]                                                               
 <div id="--" class="section level2">
 <h2>결측치 관련 실습</h2>
 <p>한편, 실습 데이터는 08년-14년의 데이터를 전부 합친 것이기 때문에 특정년도에만 있는 변수들이 많다. 즉, 어떤 년도에는 전부 NA인 변수도 있다는 뜻이다(예: 08-10년은 BMI가 없다). 이를 확인해 보자. 그룹별로 살펴보는 것은 <code>tapply</code> 또는 <code>aggregate</code> 함수를 이용할 수 있다.</p>
-<pre class="r"><code>tapply(a$E_BMI,a$EXMD_BZ_YYYY,mean)                                              ## 변수, 그룹변수, 함수 </code></pre>
+<pre class="r"><code>library(stats)
+tapply(a$E_BMI,a$EXMD_BZ_YYYY,mean)                                              ## 변수, 그룹변수, 함수 </code></pre>
 <pre><code>##     2008     2009     2010     2011     2012     2013     2014 
 ##       NA       NA       NA       NA       NA 16.06088 16.10955</code></pre>
 <pre class="r"><code>tapply(a$E_BMI,a$EXMD_BZ_YYYY,function(x){mean(x,na.rm=T)})                      ## NA 고려. </code></pre>
 <pre><code>##     2008     2009     2010     2011     2012     2013     2014 
 ##      NaN      NaN      NaN 16.06146 16.03154 16.06088 16.10955</code></pre>
-<pre class="r"><code>aggregate(a$E_BMI,by=list(a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)})          ## aggregate 이용   </code></pre>
-<pre><code>##   Group.1        x
-## 1    2008      NaN
-## 2    2009      NaN
-## 3    2010      NaN
-## 4    2011 16.06146
-## 5    2012 16.03154
-## 6    2013 16.06088
-## 7    2014 16.10955</code></pre>
-<pre class="r"><code>aggregate(a$E_BMI,by=list(a$number,a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)}) ## 그룹 동시에 지정가능</code></pre>
-<pre><code>##    Group.1 Group.2        x
-## 1        1    2008      NaN
-## 2        2    2008      NaN
-## 3        1    2009      NaN
-## 4        2    2009      NaN
-## 5        2    2010      NaN
-## 6        3    2010      NaN
-## 7        4    2010      NaN
-## 8        3    2011      NaN
-## 9        4    2011      NaN
-## 10       5    2011 16.06146
-## 11       4    2012      NaN
-## 12       5    2012 16.02235
-## 13       6    2012 16.08277
-## 14       5    2013 16.22651
-## 15       6    2013 16.02604
-## 16       7    2013 16.23650
-## 17       6    2014 16.49000
-## 18       7    2014 16.10379</code></pre>
-<pre class="r"><code>aggregate(a[,c(&quot;E_BMI&quot;,&quot;E_WGHT&quot;,&quot;E_HGHT&quot;)],by=list(a$number,a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)}) </code></pre>
-<pre><code>##    Group.1 Group.2    E_BMI    E_WGHT    E_HGHT
-## 1        1    2008      NaN  8.038865  67.04957
-## 2        2    2008      NaN  9.676650  74.00964
-## 3        1    2009      NaN  8.232188  67.75818
-## 4        2    2009      NaN  9.859588  75.46062
-## 5        2    2010      NaN 10.298889  77.25222
-## 6        3    2010      NaN 12.092907  86.17143
-## 7        4    2010      NaN 13.842272  92.81584
-## 8        3    2011      NaN 12.467797  87.68475
-## 9        4    2011      NaN 14.196340  93.89133
-## 10       5    2011 16.06146 16.069463  99.90654
-## 11       4    2012      NaN 14.852778  95.43611
-## 12       5    2012 16.02235 16.300202 100.76224
-## 13       6    2012 16.08277 18.436036 106.89977
-## 14       5    2013 16.22651 17.096386 102.51325
-## 15       6    2013 16.02604 18.626004 107.63504
-## 16       7    2013 16.23650 20.960565 113.35175
-## 17       6    2014 16.49000 20.108571 110.24714
-## 18       7    2014 16.10379 21.040875 114.08385</code></pre>
-<pre class="r"><code>## 여러 변수 가능 </code></pre>
+<pre class="r"><code>#aggregate(a$E_BMI,by=list(a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)})          ## aggregate 이용   
+#aggregate(a$E_BMI,by=list(a$number,a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)}) ## 그룹 동시에 지정가능
+#aggregate(a[,c(&quot;E_BMI&quot;,&quot;E_WGHT&quot;,&quot;E_HGHT&quot;)],by=list(a$number,a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)}) 
+## 여러 변수 가능 </code></pre>
 <p>간단한 실습을 위해 변수목록을 줄이자.</p>
 <pre class="r"><code>subvar=c(1:2,36,4,7,10,17:31)                   ## 변수번호   
 subvar</code></pre>
@@ -1674,14 +1629,31 @@ hist(c[,3])</code></pre>
 </div>
 <div id="lattice--" class="section level2">
 <h2>lattice 패키지 이용</h2>
-<pre class="r"><code>library(lattice)
-xyplot(E_BMI~E_HGHT|EXMD_BZ_YYYY,data=c, main=&quot;Plot per year&quot;)</code></pre>
+<pre class="r"><code>library(lattice)</code></pre>
+<pre><code>## 
+## Attaching package: &#39;lattice&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:moonBook&#39;:
+## 
+##     densityplot</code></pre>
+<pre><code>## The following object is masked from &#39;package:epiDisplay&#39;:
+## 
+##     dotplot</code></pre>
+<pre class="r"><code>xyplot(E_BMI~E_HGHT|EXMD_BZ_YYYY,data=c, main=&quot;Plot per year&quot;)</code></pre>
 <p><img src="rbasic_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
 </div>
 <div id="-" class="section level2">
 <h2>상관관계 분석</h2>
-<pre class="r"><code>library(Hmisc)
-rcorr(as.matrix(c[,4:6]))</code></pre>
+<pre class="r"><code>library(Hmisc)</code></pre>
+<pre><code>## Loading required package: Formula</code></pre>
+<pre><code>## 
+## Attaching package: &#39;Hmisc&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     src, summarize</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     format.pval, units</code></pre>
+<pre class="r"><code>rcorr(as.matrix(c[,4:6]))</code></pre>
 <pre><code>##        E_HGHT E_WGHT E_BMI
 ## E_HGHT   1.00    0.8  0.15
 ## E_WGHT   0.80    1.0  0.70
@@ -1710,8 +1682,31 @@ rcorr(as.matrix(c[,4:6]))</code></pre>
 ## E_WGHT  0             0   
 ## E_BMI   0      0</code></pre>
 <pre class="r"><code>##intstall.packages(&quot;PerformanceAnalytics&quot;)
-library(PerformanceAnalytics)
-chart.Correlation(c[,4:6],pch=&quot;+&quot;,main=&quot;Correlation plot&quot;)            ## histogram=F, method=&quot;spearman&quot; 옵션가능 </code></pre>
+library(PerformanceAnalytics)</code></pre>
+<pre><code>## Loading required package: xts</code></pre>
+<pre><code>## Loading required package: zoo</code></pre>
+<pre><code>## 
+## Attaching package: &#39;zoo&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:base&#39;:
+## 
+##     as.Date, as.Date.numeric</code></pre>
+<pre><code>## 
+## Attaching package: &#39;xts&#39;</code></pre>
+<pre><code>## The following objects are masked from &#39;package:dplyr&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
+## 
+##     first, last</code></pre>
+<pre><code>## 
+## Attaching package: &#39;PerformanceAnalytics&#39;</code></pre>
+<pre><code>## The following object is masked from &#39;package:gplots&#39;:
+## 
+##     textplot</code></pre>
+<pre><code>## The following object is masked from &#39;package:graphics&#39;:
+## 
+##     legend</code></pre>
+<pre class="r"><code>chart.Correlation(c[,4:6],pch=&quot;+&quot;,main=&quot;Correlation plot&quot;)            ## histogram=F, method=&quot;spearman&quot; 옵션가능 </code></pre>
 <p><img src="rbasic_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
 </div>
 <div id="-" class="section level2">

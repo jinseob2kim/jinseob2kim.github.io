@@ -13,7 +13,7 @@ knitr::opts_chunk$set(echo = TRUE,cache=T,message = F,warning = F)
 ### Load package & Data Load
 ```{r}
 library(hierfstat);library(data.table);library(knitr);library(DT)
-fst.file="https://raw.github.com/jinseob2kim/jinseob2kim/master/fstexample.txt"
+fst.file="https://raw.githubusercontent.com/jinseob2kim/jinseob2kim.github.io/master/fstexample.txt"
 a=fread(fst.file)
 ```
 
