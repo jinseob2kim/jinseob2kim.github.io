@@ -67,13 +67,13 @@ volcanoly(z, highlight = SNP.interest, effect_size_line = c(-10,10),genomewideli
 Regional plot은 manhattan plot에서 특정 위치를 자세히 살펴보는 그림이며 locuszoom이 대표적인 웹사이트이다. http://locuszoom.org/genform.php?type=yourdata 에 분석결과를 웹에 업로드한 후 몇 가지 옵션을 지정하면 아래와 같은 그림을 PDF 파일로 받아볼 수 있다. 
 
 ```{r, out.width= "100%",echo=F,fig.cap="Locuszoom 실행결과"}
-include_graphics("/home/secondmath/Dropbox/Hompage/mathemedicine.github.io/gwas/regional.png")
+include_graphics("/home/secondmath/Dropbox/Hompage/jinseob2kim.github.io/gwas/regional.png")
 ```
 
 
 아래와 같이 결과 파일을 업로드한 후 P값, SNP의 컬럼을 지정하고 보여줄 화면(SNP, Gene, 특정 region)을 지정하면 된다. 
 ```{r, out.width= "100%",echo=F,fig.cap="Locuszoom 실행화면"}
-include_graphics("/home/secondmath/Dropbox/Hompage/mathemedicine.github.io/gwas/locuszoom.png")
+include_graphics("/home/secondmath/Dropbox/Hompage/jinseob2kim.github.io/gwas/locuszoom.png")
 ```
 
 ## Interactive regional plot 
