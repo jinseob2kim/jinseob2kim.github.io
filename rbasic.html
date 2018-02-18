@@ -579,18 +579,18 @@ sum_f=function(x){
 }
 system.time(sum_f(10^6))                  ## system.time - 시간 잰다.</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.192   0.258   0.451</code></pre>
+##    0.04    0.00    0.04</code></pre>
 <pre class="r"><code>system.time(sum(as.numeric(1:10^6)))      ## 내장 sum 함수- 더할 것이 많으면 as.numeric을 넣어줘야 한다. </code></pre>
 <pre><code>##    user  system elapsed 
-##   0.008   0.000   0.008</code></pre>
+##   0.009   0.001   0.009</code></pre>
 <p>따라서 for문을 최대한 덜 쓰고 벡터연산을 활용하는 것이 실행시간을 줄이는 핵심이며, Apply 문의 적극적인 사용으로 이를 해결할 수 있다. 더 나아가서 멀티코어를 활요한 병렬처리 명령어를 이용함으로서 더욱 시간을 줄일 수 있는데 1초동안 가만히 있는 <code>Sys.sleep(1)</code> 함수를 가지고 예를 들어보겠다. 단, 병렬처리는 가급적 <code>Mac/Linux</code> 환경에서 수행하는 것을 추천하는데 <code>mclapply</code>라는 함수로 그냥 <code>sapply</code>, <code>lapply</code> 쓰듯이 똑같이 쓸 수 있는 장점이 있다. Window 환경에서는 이보다는 복잡한 과정을 거쳐야 한다.</p>
 <pre class="r"><code>for (i in 1:8){Sys.sleep(1)}
 system.time(for (i in 1:8){Sys.sleep(1)})             ## 걸리는 시간 : 8초 정도</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.030   0.025   8.006</code></pre>
+##   0.004   0.000   8.013</code></pre>
 <pre class="r"><code>system.time(sapply(1:8,function(x){Sys.sleep(1)}))    ## 약간 덜?</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.033   0.027   8.008</code></pre>
+##   0.006   0.000   8.017</code></pre>
 <pre class="r"><code>library(parallel)                                     ## for 병렬 처리 
 mclapply(1:8,function(x){Sys.sleep(1)})              ## Only for MAc/Linux : Not for window - 코어 하나만 이용한다.</code></pre>
 <pre><code>## [[1]]
@@ -645,7 +645,7 @@ parSapply(cl,1:8,function(x){Sys.sleep(1)})</code></pre>
 ## NULL</code></pre>
 <pre class="r"><code>system.time(parSapply(cl,1:8,function(x){Sys.sleep(1)}))  ## 1초</code></pre>
 <pre><code>##    user  system elapsed 
-##   0.660   0.937   2.592</code></pre>
+##   0.004   0.000   1.004</code></pre>
 <pre class="r"><code>#clusterEvalQ(cl, {library(survival)})                ## parSapply 안의 함수안에 특정 패키지의 명령어가 있다면 그 패키지 미리 지정. 
 #clusterExport(cl,c(&quot;run_feature&quot;,&quot;event_time&quot;))      ## 자체 만든 함수나 객체를 쓴다면 미리 지정 
 stopCluster(cl)                                       ## 종료 </code></pre>
