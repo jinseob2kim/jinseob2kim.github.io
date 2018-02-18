@@ -1,0 +1,55 @@
+
+@----------------------------------------------------------@
+|        PLINK!       |     v1.07      |   10/Aug/2009     |
+|----------------------------------------------------------|
+|  (C) 2009 Shaun Purcell, GNU General Public License, v2  |
+|----------------------------------------------------------|
+|  For documentation, citation & bug-report instructions:  |
+|        http://pngu.mgh.harvard.edu/purcell/plink/        |
+@----------------------------------------------------------@
+
+Skipping web check... [ --noweb ] 
+Writing this text to log file [ lin.log ]
+Analysis started: Fri Feb  2 10:24:39 2018
+
+Options in effect:
+	--noweb
+	--bfile /home/secondmath/Dropbox/example/Nong_1787
+	--pheno /home/secondmath/Dropbox/example/Nong_1787_tgnew.pheno
+	--pheno-name tg
+	--linear
+	--covar /home/secondmath/Dropbox/example/Nong_1787_tgnew.pheno
+	--covar-name age,sex
+	--out lin
+
+Reading map (extended format) from [ /home/secondmath/Dropbox/example/Nong_1787.bim ] 
+139025 markers to be included from [ /home/secondmath/Dropbox/example/Nong_1787.bim ]
+Reading pedigree information from [ /home/secondmath/Dropbox/example/Nong_1787.fam ] 
+1787 individuals read from [ /home/secondmath/Dropbox/example/Nong_1787.fam ] 
+0 individuals with nonmissing phenotypes
+Assuming a disease phenotype (1=unaff, 2=aff, 0=miss)
+Missing phenotype value is also -9
+0 cases, 0 controls and 1787 missing
+845 males, 942 females, and 0 of unspecified sex
+Reading genotype bitfile from [ /home/secondmath/Dropbox/example/Nong_1787.bed ] 
+Detected that binary PED file is v1.00 SNP-major mode
+Reading alternate phenotype from [ /home/secondmath/Dropbox/example/Nong_1787_tgnew.pheno ] 
+1787 individuals with non-missing alternate phenotype
+Assuming a quantitative trait
+Missing phenotype value is -9
+Reading 4 covariates from [ /home/secondmath/Dropbox/example/Nong_1787_tgnew.pheno ] with nonmissing values for 1787 individuals
+Selected subset of 2 from 4 covariates
+For these, nonmissing covariate values for 1787 individuals
+Before frequency and genotyping pruning, there are 139025 SNPs
+1787 founders and 0 non-founders found
+Total genotyping rate in remaining individuals is 0.999403
+0 SNPs failed missingness test ( GENO > 1 )
+0 SNPs failed frequency test ( MAF < 0 )
+After frequency and genotyping pruning, there are 139025 SNPs
+After filtering, 1787 individuals with non-missing status
+After filtering, 845 males, 942 females, and 0 of unspecified sex
+Converting data to Individual-major format
+Writing linear model association results to [ lin.assoc.linear ] 
+
+Analysis finished: Fri Feb  2 10:27:51 2018
+

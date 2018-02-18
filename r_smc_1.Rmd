@@ -1,0 +1,548 @@
+---
+title: 'R 의학통계: 삼성서울병원(1)'
+subtitle: 'R 기초 문법 및 Table 1만들기'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=T)
+```
+## 시작하기 전에
+본 강의는 *R*과 *Rstudio* 의 설치과정은 생략한다. 혹시 설치를 하지 못하였다면 <http://www.r-project.org/> 와 <http://www.rstudio.com/> 를 참조하여 설치하길 바란다. *R*에 대한 전반적인 도움말은 **help.start()** 명령어를 활용하면 되고 함수 별 도움말을 보려면 **help(which)** 와 같이 실행하면 된다.
+
+
+## 본 강의의 목표
+*R*의 이용능력을 대략적으로 다음과 같이 분류할 수 있다.
+
+1. 데이터 정리는 excel로 미리 다 해놓고 통계만 *R*로 수행.
+2. 데이터 정리와 통계 분석.
+3. *R*로 그림을 그린다.
+4. 논문에 들어갈 테이블과 그림을 *R*에서..
+5. 논문 시작부터 끝까지 *R*로만..
+
+본 강의에서는 **데이터 정리는 엑셀에서 한다고 가정한 후** *R*에서 분석을 수행하는 것을 목표로 할 것이다. 실습데이터는 [여기](https://github.com/mathemedicine/mathemedicine.github.io/blob/master/smc_example.csv)에서 다운받을 수 있으며 *R*코드 파일은 [여기](https://github.com/mathemedicine/mathemedicine.github.io/blob/master/r_smc_1.r)에서 다운받을 수 있다. 
+
+
+
+## *R* 기초연산 : 벡터(vector) 
+*R* 의 기본 연산 단위는 벡터이며 `x=c(1,2,3)` 이라고 쓰면 1,2,3 으로 이루어진 길이 3인 벡터를 `x`에 저장하는 것이다. 기타 연산은 직접 실습으로 알아보자.
+```{r}
+x=c(1,2,3,4,5,6)            ## vector of variable
+y=c(7,8,9,10,11,12)
+x+y              
+x*y
+sqrt(x)
+sum(x)
+sum(x>=4)   ## No sum, number
+diff(x) 
+mean(x)
+sd(x)
+max(x)
+max(x,y)
+length(x)
+
+x[2]
+x[-2]  
+x[1:3]
+x[c(1,3,4,5,6)]
+x[c(1,2,3)]
+```
+
+
+### 벡터만들기
+이번에는 벡터를 생성하는 다양한 방법들을 예시를 통해 배워보도록 한다.
+```{r}
+## Sequence
+v1=seq(-5,5,by=.2); v1 
+## Repeat 
+v2=rep(1,3); v2
+v3=rep(c(1,2,3),2); v3              ## Repeat for vector
+v4=rep(c(1,2,3),each = 2); v4       ## Repeat for vector : each
+```
+
+
+### for, if, else, ifelse 문 
+마찬가지로 예시를 통해 배워보자.
+
+```{r}
+## for loop
+for (i in 1:3){
+  print(i)
+}
+
+i=0
+for (j in c(1,2,4,5,6)){
+  i=i+j
+}
+i
+
+## if 
+x=5
+if (x >=3 ){
+  x=x+3
+}
+x
+
+x=5
+if (x >=10){
+  print("High")
+} else if (x >=5){
+  print("Medium")
+} else {
+  print("Low")
+}                                ## if, else if 주의: 반드시 } 와 같은 줄에 위치하도록.
+ 
+
+## ifelse
+x=5
+y=ifelse(x==5,"OK","Suck")       ## ifelse(조건,참일때,거짓일때)
+y
+```
+
+
+### 함수 만들기 
+기초수준에서는 함수를 만들어 쓸일이 거의 없을 것이다. 그러나 평균, 분산 등을 구할 때 결측치가 있으면 *R*은 `NA`를 출력하는 문제점이 있어 이를 해결하기 위해서라도 기본적인 함수 만드는 법은 알고 있는 것이 좋다. 예제를 통해 살펴보자.
+
+```{r}
+x=c(1:10,12,13,NA,NA,15,17)               ## 결측치가 포함되어 있다면..
+mean(x)
+mean0=function(x){
+  mean(x,na.rm=T)
+}                                         ## x에 대한 함수이며 mean함수에 na.rm 옵션을 TRUE로 해두었다. default는 F
+
+mean0=function(x){mean(x,na.rm=T)}        ## 한줄에 쓸 수도 있다. 
+mean0(x)
+```
+
+하나 이상의 변수를 포함한 함수도 다음과 같이 만들 수 있다.
+
+```{r}
+twomean=function(x1,x2){
+  a=(x1+x2)/2
+  a
+}
+twomean(4,6)
+```
+
+
+## 데이터 불러오기 & 저장하기. 
+이제부터는 실제 데이터를 읽어서 그 데이터를 매니징 하는 방법을 배워보도록 하겠다. 
+
+### 디렉토리 지정
+데이터를 불러오기 전에 미리 디렉토리를 지정하면 그 다음부터는 편하게 읽고 쓸 수 있다.
+```{r}
+getwd()                                                                  ## 현재 디렉토리 
+setwd("/home/secondmath/Dropbox/Hompage/mathemedicine.github.io")        ## 디렉토리 설정 
+#setwd("C:/Users/sec/Desktop/Language/r/edu")        
+getwd()
+```
+여기서 주의해야 할 점은 폴더간의 구분을  / 로 해야 한다는 점이다. *R* 은 유닉스 기반의 언어이기 때문이다. 이제 실습 데이터를 읽어보도록 하자. 가급적이면 데이터포맷은 `csv`로 통일하는 것을 추천한다. 콤마로 분리된 가장 간단 한 형태의 파일로서 용량도 작고 어떤 소프트웨어에서도 읽을 수 있다는 장점이 있다. 물론 *R*에서 SPSS, SAS, Excel파일을 읽을 수도 있지만 본 실습에서는 생략하도록 하겠다.
+
+```{r}
+a=read.csv("smc_example.csv")                             ## 첫번째 행은 변수명으로 자동 인식
+a=read.table("smc_example.csv", sep=",", header=T)        ## 구분자와 첫번째 행 인식여부를 직접
+head(a)                                             ## 처음 6행 보기
+```
+
+저장도 `csv`로 하는 것을 추천하며 실습도 이것만 하겠다.
+
+```{r}
+write.csv(a,"smc_example1.csv")
+write.csv(a,"smc_example1.csv",row.names=F)   ## 행번호 삭제 
+```
+
+
+## 읽은 데이터 살펴보기 
+이제부터는 본격적으로 읽은 데이터를 살펴보도록 하겠다. 실습데이터는 심장질환 환자의 정보를 포함하고 있다. 
+
+```{r}
+head(a)               ## 처음 6행
+```
+
+*R*은 결측치를 `NA` 로 표시한다.
+
+```{r}
+tail(a)               ## 마지막 6행
+names(a)              ## 변수명
+a$BMI[1:10]           ## BMI변수의 처음 10개 행만..                  
+dim(a)                ## 행갯수, 열갯수
+nrow(a)               ## 행
+ncol(a)               ## 열 
+class(a)              ## 클라스. 일단 data.frame이라는 정도만 알고 넘어가자.
+str(a)                ## 데이터 구조 살펴보기 
+summary(a)            ## 대략적인 요약.
+```
+
+
+```{r,eval=FALSE}
+a$BMI
+a[,"BMI"]
+a[,11]
+
+#a[1:7]                       ## 이러면 안된다. ","로 행인지 열인지 구분을 해 줘야.
+a[,1:7]                       ## 1열부터 7열까지.
+a[,c(1,2,3,4,5,6,7)]
+a[,seq(1,7)]
+a[,c("Patient_ID","Sex", "Age" , "Height" ,"Weight","BMI","DM")]  ## 변수명으로도 가능 
+a[,names(a)[1:7]]                                                                               ## Same
+```
+
+```{r}
+length(a$BMI)
+a[2,11]  ## 2행 11열
+a[2,]   ## 11행
+```
+
+```{r}
+mean(a$BMI)                            ## 결측치 없을 때만..
+mean(a$BMI,na.rm=T)                    ## 결측치 빼고
+round(mean(a$BMI,na.rm=T),2)          ## 반올림 
+mean(a[,6],na.rm=T)
+sd(a$BMI,na.rm=T)                    ## 표준편차
+var(a$BMI,na.rm=T)                   ## 분산
+median(a$BMI,na.rm=T)                ## 중간값
+IQR(a$BMI,na.rm=T)                   ## 25%-75% range
+quantile(a$BMI, na.rm=T)             ## quantile
+max(a$BMI,na.rm=T)                   ## Max
+min(a$BMI,na.rm=T)                   ## Min
+```
+
+```{r}
+tb=table(a$Sex,a$STRESS_EXIST)
+tb                              ## Table 
+prop.table(tb)                  ## Proportion
+prop.table(tb,1)                ## By Row
+prop.table(tb,2)                ## By Col
+```
+
+
+### 기타: 다양한 조건문 활용 
+이번에는 연속형 변수인 `BMI`변수를 예시로 우리가 원하는 조건에 해당하는 정보를 뽑아내는 것을 연습해 보겠다. 
+
+```{r}
+mean(a$BMI)
+cut= a$BMI >=25                                   ## TRUE of FALSE
+table(cut)                         
+rows=which(a$BMI >= 25)                           ## row numbers
+head(rows)                               
+values=a$BMI[a$BMI>=25]                         ## Values
+head(values)
+length(values)
+BMI_old_and=(a$BMI>=25 & a$Age >= 50)          ## and
+BMI_old_or=(a$BMI>=25 | a$Age >= 50)           ## or
+table(BMI_old_and)
+table(BMI_old_or)
+stent123 = (a$Number_stent %in% c(1,2,3))      ## %in%
+table(stent123,a$Number_stent)
+```
+
+
+## 기초통계 : 그룹비교 
+
+### 연속변수 비교: 2 그룹
+2그룹의 평균값을 비교하는 가장 대표적인 방법으로는 **t-test**가 있다. 
+
+<center><img src="r_smc_1/t-test-comp2.jpg"></center>
+<center> t-test comparison of distributions </center>
+
+```{r}
+## t.test
+t.test(a$Age ~ a$STRESS_EXIST)
+t.test(a[,"Age"] ~ a[,"STRESS_EXIST"])
+t.test(a[,3]~a[,14])
+tt=t.test(Age~STRESS_EXIST,data=a)
+tt
+tt$p.value
+
+## wilcoxon rank sum test: Non parametric t.test
+wilcox.test(a$Age ~ a$STRESS_EXIST)
+wilcox.test(a[,"Age"] ~ a[,"STRESS_EXIST"])
+wilcox.test(a[,3]~a[,14])
+wt=wilcox.test(Age~STRESS_EXIST,data=a)
+wt$p.value
+
+## paired t.test
+t.test(a$MACCE_date,a$Death_date,paired=T)
+ptt=t.test(a[,"MACCE_date"],a[,"Death_date"],paired=T)
+ptt
+ptt$p.value
+
+## wilcoxon signed rank test: Non parametric paired t.test
+wilcox.test(a$MACCE_date,a$Death_date,paired=T)
+wptt=wilcox.test(a[,"MACCE_date"],a[,"Death_date"],paired=T)
+wptt
+wptt$p.value
+```
+정규분포라고 장담할 수 없다면(변수성질, 샘플 수 부족(30 이하)) 비모수방법을 이용하게 되고 윌콕슨테스트를 사용한다. 아래 그림은 t-test와 wilcoxon rank sum test를 비교한 그림이다. 
+
+<center><img src="r_smc_1/wilcox_rank.jpg"></center>
+<center> t-test VS wilcoxon rank sum test </center>
+
+---
+
+아래 그림은 paired t-test와 wilcoxon singed rank test를 비교한 그림이다. 
+
+<center><img src="r_smc_1/wilcox_signed.jpg"></center>
+<center> paired t-test VS wilcoxon signed rank test </center>
+
+---
+
+#### 정규성 검정
+정규분포를 하는지 아닌지는 임상적으로 판단 혹은 그림을 그려서 눈으로 확인하는 것이 원칙이나, 통계분석을 꼭 원한다면 몇 가지 통계방법이 있다.
+
+<center><img src="r_smc_1/shapiro.gif"></center>
+<center> Shapiro test of Normality </center>
+
+```{r}
+hist(a$Age)
+shapiro.test(a$Age)
+ks.test(a$Age,pnorm)                ## pnorm: probability of normal distribution
+
+hist(a$Number_stent)          
+shapiro.test(a$Number_stent)
+```
+
+
+#### 여러 변수 한번에 분석 하기
+
+```{r}
+varname=c("Age","Height","Weight","BMI","MACCE_date","Death_date")
+varname
+varname_num=c(3:6,12,13)
+
+## For loop: print 
+for(i in varname){
+  res=t.test(a[,i]~a$STRESS_EXIST)
+  print(res)
+}
+
+## For loop: Only p-value
+for(i in varname){
+  res=t.test(a[,i]~a$STRESS_EXIST)
+  print(res$p.value)
+}
+
+## Apply
+tfunc=function(x){
+  t.test(a[,x]~a$STRESS_EXIST)$p.value
+}
+
+sapply(varname,tfunc)                                                        ## vector
+tps_vector=sapply(varname,function(x){t.test(a[,x]~a$STRESS_EXIST)$p.value})
+tps_vector[1]
+
+tps_list=lapply(varname,tfunc)                                               ## List
+tps_list[[1]]
+
+```
+
+#### 분석결과 정리
+```{r}
+# Mean, Sd per group
+## Method 1: tapply
+tapply(a$Age,a$STRESS_EXIST,mean)
+tapply(a$Age,a$STRESS_EXIST,function(x){mean(x,na.rm=T)})
+tapply(a$Age,a$STRESS_EXIST,sd)
+
+## Method2: aggegate
+aggregate(a[,varname],list(a$STRESS_EXIST),mean)
+aggregate(a[,varname],list(a$STRESS_EXIST,a$Sex),sd)
+
+
+## Method3: mean, sd, pvalue
+ttsum=function(x){
+  mn=tapply(a[,x],a$STRESS_EXIST,mean)
+  s= tapply(a[,x],a$STRESS_EXIST,sd)
+  pv=t.test(a[,x]~a$STRESS_EXIST)$p.value
+  return(c(mn,s,pv))
+}
+t(sapply(varname,ttsum))
+
+
+## Method4: Nonparametric
+wcsum=function(x){
+  md=tapply(a[,x],a$STRESS_EXIST,median)                         ## Median
+  q25=tapply(a[,x],a$STRESS_EXIST,function(x){quantile(x)[2]})   ## 25%
+  q75=tapply(a[,x],a$STRESS_EXIST,function(x){quantile(x)[4]})   ## 75%
+  pv=wilcox.test(a[,x]~a$STRESS_EXIST)$p.value
+  return(c(md,q25,q75,pv))
+}
+
+t(sapply("Number_stent",wcsum))
+
+
+## New grammar: dplyr package: %>%-  ctrl+ shift + M
+#install.packages("dplyr")
+library(dplyr)
+a %>% group_by(STRESS_EXIST) %>% select(varname_num) %>% summarise_each(funs(mean))
+
+dpres2 = a %>% group_by(STRESS_EXIST) %>% select(varname_num) %>% summarise_each(funs(mean,sd))
+dpres2
+t(dpres2)
+```
+
+
+
+### 연속변수 비교: 3 그룹- ANOVA
+<center><img src="r_smc_1/anova.png"></center>
+<center> One-way ANOVA </center>
+
+```{r}
+## Create BMI group variables
+a$BMI_group=ifelse(a$BMI>25,"High",ifelse(a$BMI>20,"Normal","Low"))  # High/Normal/Low
+a$BMI_group2= (a$BMI > 25) + (a$BMI >20)                             # 2/1/0
+
+## ANOVA
+aov(a$Age~a$BMI_group)               
+aov(a[,"Age"]~a[,"BMI_group"])            
+a_res=aov(Age~BMI_group, data=a)
+summary(a_res)                                                      ## ANOVA table
+summary(a_res)[[1]][["Pr(>F)"]][1]                                  ## Only p-value
+
+
+## Non-parametric ANOVA 
+kruskal.test(a$Number_stent~a$BMI_group2)                                        
+kruskal.test(a[,"Number_stent"]~a[,"BMI_group2"])            
+a_res=kruskal.test(Number_stent~BMI_group2, data=a)
+a_res
+a_res$p.value                                                      ## Only p-value
+```
+
+
+### 범주형 변수 비교
+<center><img src="r_smc_1/chisq17.gif"></center>
+<center> Chi-square test: Expected vs Observed </center>
+
+```{r}
+## Create table
+tb=table(a$Sex,a$STRESS_EXIST)
+
+## Chi-square test
+chisq.test(tb)
+chisq.test(table(a$Sex,a$STRESS_EXIST))
+chisq.test(tb)$p.value
+
+table(a$BMI_group,a$STRESS_EXIST)
+chisq.test(table(a$BMI_group,a$STRESS_EXIST))
+
+## Non-parametric: fisher-test
+tb2=table(a[,"Number_stent"],a$STRESS_EXIST)
+chisq.test(tb2)
+
+fisher.test(tb2)
+fisher.test(tb2)$p.value
+```
+
+#### 여러 변수 한번에 분석 하기
+```{r}
+varname2=c("Sex","DM","HTN","Smoking","MACCE","Death","Number_stent","BMI_group")
+
+## For loop 
+for (i in varname2){
+  tb=table(a[,i],a$STRESS_EXIST)
+  print(tb)
+  print(chisq.test(tb))
+}
+
+for (i in varname2){
+  print(chisq.test(table(a[,i],a$STRESS_EXIST))$p.value)
+}
+
+for (i in varname2){
+  print(fisher.test(table(a[,i],a$STRESS_EXIST))$p.value)
+}
+
+## Apply 
+### P-value
+p_chisq=function(x){
+  chisq.test(table(a[,x],a$STRESS_EXIST))$p.value
+}
+
+sapply(varname2,p_chisq)
+sapply(varname2,function(x){chisq.test(table(a[,x],a$STRESS_EXIST))$p.value})
+sapply(varname2,function(x){fisher.test(table(a[,x],a$STRESS_EXIST))$p.value})  ## Fisher
+
+### Table
+sapply(varname2,function(x){table(a[,x],a$STRESS_EXIST)})
+lapply(varname2,function(x){table(a[,x],a$STRESS_EXIST)})
+
+
+```
+
+## Table 1 만들기 
+지금까지 배운 것을 한번에 정리할 수 있는 테이블 1을 간단히 만들어 보자. `moonBook, ztable`패키지를 미리 설치하자. 
+
+```{r}
+#install.packages(c("moonbook","ztable"))
+library(moonBook);library(ztable)
+
+## Make table 1: digits 반올림, max.ylev: 범주형 변수 한계, method 2: 비모수통계 for 연속변수 
+tb1=mytable(STRESS_EXIST ~Sex + Age + Height + Weight + BMI + DM + HTN + Smoking + MACCE + Death + MACCE_date + Death_date + Number_stent, data=a)  
+tb1 
+
+mytable(STRESS_EXIST ~Sex + Age + Height + Weight + BMI + DM + HTN + Smoking + MACCE + Death + MACCE_date + Death_date + Number_stent, data=a, digits=2, max.ylev=6 )
+
+mytable(STRESS_EXIST ~Sex + Age + Height + Weight + BMI + DM + HTN + Smoking + MACCE + Death + MACCE_date + Death_date + Number_stent, data=a, digits=2, max.ylev=6,method=2 ) ## Non-parametric: Median, 25%;75% 
+
+
+```
+
+
+```{r,results="asis"}
+options(ztable.type="html")
+ztable(tb1)
+```
+
+
+
+## 기타
+### 연속변수, 범주형변수 지정
+사실 가장 앞에 나와야 할 내용인데 `class`의 개념이 나와야 해서 이제야 언급하게 되었다. 데이터를 받으면 가장 먼저 해야할 것은 연속형, 범주형 변수를 설정해 주는 것이다. **Feamle**, **Male** 등 이미 변수가 범주로 되어 있다면 상관이 없겠지만, 그렇지 않고 0,1로 되어있을 때는 숫자형으로 되어있는게 default이기 때문이다. 
+```{r}
+conti_var=c(3:6,12,13,15)                                       ## Age, Height, Weight, BMI, date, number_stent
+cat_var= names(a)[-conti_var]                                   ## Not conti_var
+
+cat_var
+
+for (vn in conti_var){
+  a[,vn]=as.numeric(a[,vn])
+}
+
+for (vn in cat_var){
+  a[,vn]=as.factor(a[,vn])
+}
+
+summary(a)
+```
+
+
+
+### Sort
+정렬에는 `order`함수가 사용된다. 
+```{r}
+ord=order(a$BMI)         ## 작은순서대로 Rank  
+head(a$BMI[ord])        
+ord2=order(-a$BMI)       ## 큰순서대로 Rank
+tail(a$BMI[ord2])
+b=a[ord,]       ## 콤마 앞에 즉, 행에 순서변수를 넣는다. 
+head(b)
+```
+
+### Subset
+특정 조건을 만족하는 부분 데이터셋을 만드는 것은 지금까지 배웠던 것을 응용할 수도 있고 `subset`이라는 함수를 쓸 수도 있다. 
+```{r}
+b=a[a$Age %in% 50:60,]                    ## 행에 조건 써준다. 
+b=subset(a, Age %in% 50:60)               ## 문법이 간단하여 이것을 주로 쓴다. 
+b=subset(a, (Age >= 50 & Age <= 60))      ## Same  
+```
+
+### Merge
+Merge는 `merge`함수를 이용한다. 실습을 위해 데이터 두 개의 데이터셋으로 나눈 후 합쳐보겠다.
+```{r}
+b=a[,1:6]                 ## ID + Sex~BMI
+c=a[,c(1,7:15)]           ## ID + 기본정보 + 범주형변수 
+head(b)
+head(c)
+d=merge(b,c,by=c("Patient_ID"), all=F)  ##all=T로 하면 안겹치는 것도 NA포함해서 만듦.
+```
+
+

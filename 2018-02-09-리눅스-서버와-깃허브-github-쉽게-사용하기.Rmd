@@ -1,0 +1,121 @@
+---
+title: 리눅스 서버와 깃허브(github) 쉽게 사용하기
+date: '2018-02-09'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(knitr)
+```
+
+데스크탑 리눅스는 GUI환경에서 쉽게 사용할 수 있으나 서버는 그렇지 못하다. 이에 본 강의에서는 **Rstudio**를 활용하여 GUI환경에서 리눅스 서버를 사용하는 법을 알아보겠다. 
+
+
+## 학습 목표
+
+1. **Rstudio server**를 이용하여 GUI환경에서 리눅스서버를 활용할 수 있다. 
+
+ 
+2. **Rstudio**를 활용하여 GUI환경에서 **github**를 사용할 수 있다. 
+
+
+3. **Github**에서 개인 홈페이지를 만들 수 있다(option).
+
+
+## 실습용 무료 서버 만들기(Google Cloud)
+
+구글 클라우드(https://cloud.google.com/) 를 이용해서 실습용 무료 서버를 만들 수 있다. https://brunch.co.kr/@topasvga/168 를 참고하여 서버를 만들고 이미 사용하는 서버가 있다면 이 내용은 skip하자. 본 실습에서는 구글 클라우드에 **rstuido-server**라는 이름의 VM-인스턴스를 생성한 것으로 가정하겠다.
+ 
+
+## Rstudio server 설치하기
+
+### 개인 서버
+
+Ubuntu 기준으로 아래의 코드를 통해 **R**과 **Rstudio**를 설치할 수 있으며 다른 리눅스 버전은 https://www.rstudio.com/products/rstudio/download-server/ 를 참고하자.
+
+```{r, engine = 'bash', eval = FALSE}
+sudo apt-get install r-base
+sudo apt-get install gdebi-core
+sudo wget https://download2.rstudio.org/rstudio-server-1.1.419-amd64.deb
+sudo gdebi rstudio-server-1.1.419-amd64.deb
+```
+
+그후 http://서버ip:8787 을 입력하고 계정 ID와 비번을 입력하면 된다. 계정 ID가 없을 경우 터미널에서 **adduser** 명령어를 사용하여 ID와 비번을 만들자. 
+
+### Google Cloud 서버
+구글 클라우드에서 rstudio를 설치하려면 terminal에서 아래의 명령어를 추가로 입력해야 한다.  
+
+```{r, engine = 'bash', eval = FALSE}
+gcloud beta compute firewall-rules create allow-rstudio-server \
+    --allow tcp:8787 \
+    --target-tags rstudio-server
+
+gcloud compute instances add-tags rstudio-server --tags rstudio-server
+```
+
+이후 과정은 개인 서버와 같다. 터미널에서 **adduser** 명령어를 사용하여 ID와 비번을 만들고 http://외부서버ip:8787 로 접속하여 ID와 비번을 입력하면 된다.
+
+```{r, out.width="100%",echo=F,fig.cap= "구글 클라우드의 외부ip 주소"}
+include_graphics("linux_fig/rstudio_ip.png")
+```
+
+
+## Rstudio에서 리눅스서버 다루기
+Rstudio 서버에 접속하면 아래와 같이 데스크탑용 **Rstudio**와 같은 화면이 웹에 보일 것이다. 왼쪽 아래를 보면 Console탭 옆에 Terminal이란 탭이 있고 이것을 클릭하면 Terminal이 나와 리눅스 서버를 사용할 수 있다. 
+
+```{r, out.width="100%",echo=F,fig.cap= "Rstudio서버 메인화면: Terminal탭"}
+include_graphics("linux_fig/rstudio_main.png")
+```
+
+### Rstudio GUI 환경 이용.
+ 
+Rstuidio 환경을 이용해서 다음과 같은 작업을 쉽게 할 수 있다. 
+
+1. 우측 아래의 **Files**탭에서 파일과 폴더의 실행/편집, 복사/이동, 생성/삭제를 자유롭게 수행할 수 있다.
+
+
+2. 왼쪽 위의 코드 보기 창에서 R파일 뿐만 아니라 sh, python, c/c++ 등 다양한 파일을 직접 편집하고 실행할 수 있다. 
+
+```{r, out.width="100%",echo=F,fig.cap= "파이썬 실행: Run script 클릭"}
+include_graphics("linux_fig/py.png")
+```
+
+```{r, out.width="100%",echo=F,fig.cap= "sh 실행: Run 혹은 Run script 클릭"}
+include_graphics("linux_fig/sh.png")
+```
+
+
+## 깃허브(Github)란?
+
+## 깃허브 이용 준비
+
+### 깃허브 계정 생성
+
+1. https://github.com/ 에 들어가서 사용자 이름과 이메일, 그리고 비밀번호를 입력하면 계정을 생성할 수 있다. 
+
+```{r, out.width="100%",echo=F,fig.cap= "깃허브 가입페이지"}
+include_graphics("http://cfile28.uf.tistory.com/image/2316EA475686386C0D0EE8")
+```
+
+2. 그 후 아래와 같이 plan을 물어보는 화면이 뜨는데 free를 선택하고 finish버튼을 누르면 된다.
+
+```{r, out.width="100%",echo=F,fig.cap= "깃허브 가입페이지"}
+include_graphics("http://cfile28.uf.tistory.com/image/2359A3475686386D3D8105")
+```
+
+3. 가입할 때 적은 이메일로 확인 메일이 가고 메일에서 승인을 눌러주면 가입완료. 
+
+
+### 깃허브 repository 생성
+
+
+## Rstudio에서 깃허브 이용하기
+
+### Rstudio에서 불러오기
+
+#### Commit
+
+#### Push 
+
+
+## 웹페이지 만들기

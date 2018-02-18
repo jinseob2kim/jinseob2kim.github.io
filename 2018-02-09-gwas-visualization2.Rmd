@@ -1,0 +1,203 @@
+---
+title: "GWAS visualization (2): Interactive plot"
+date: '2018-02-09'
+editor_options: 
+  chunk_output_type: console
+output: 
+  html_document: 
+    fig_height: 6
+    fig_width: 6
+    code_folding: show
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,cache=F)
+library(knitr)
+```
+
+
+
+**manhattanly** 패키지를 활용해서 interactive plot을 그려보도록 하겠다. 자세한 내용은 http://sahirbhatnagar.com/manhattanly/ 를 참고하기 바란다. Interactive plot은 용량이 커 로드에 시간이 걸린다. 본 실습에서는 top 10000개의 결과만 그리겠다. 서버 https://secondmath.shinyapps.io/gwas/ 에도 올려놓았으니 참고하기 바란다. 
+
+## Read data: Result of (1)
+
+```{r}
+library(data.table);library(ggplot2);library(manhattanly);library(DT);library(glue)
+
+dir="/home/secondmath/Dropbox/example"
+setwd(dir)
+res.final = fread("ResGWASAddgene.csv")[order(P)][1:10000]
+#set.seed(5385)
+#res.prune.addgene = fread("ResPruneAddgene.csv")
+#res.final=res.prune.addgene
+#res.final = res.prune.addgene[sample(.N,10000)]
+
+## SNP of interest
+SNP.interest = res.final[P<=5e-8,SNP]
+```
+
+## QQ plot
+```{r,fig.cap="Example: qqly"}
+#devtools::install_github("sahirbhatnagar/manhattanly", build_vignettes = TRUE)
+qqly(res.final, snp = "SNP",p="P",gene="symbol", highlight =SNP.interest, annotation1="CHR", annotation2="BP")
+```
+
+## Manhattan plot
+```{r,fig.height=4,fig.width=10, fig.cap="Example: manhattanly"}
+manhattanly(res.final, snp = "SNP",p="P", chr = "CHR", bp = "BP", gene="symbol",highlight = SNP.interest ,annotation1="BP",annotation2="BETA")
+```
+
+
+## Volcano plot
+
+Volcano plot은 Beta/OR 값과 p-value를 동시에 살펴볼 수 있는 그림이다. 패키지가 불완전한 관계로 아래의 예를 참고하여 effect size 변수를 지정하는 것을 잊지 말자.
+
+```{r,"Example: volcanoly"}
+## pre-setting: effect size
+z=volcanor(res.final, p = "P",effect_size = "BETA",snp="SNP",gene="symbol",annotation1="BP",annotation2="CHR")
+names(z$data)[1]="BETA"
+
+## Plot
+volcanoly(z, highlight = SNP.interest, effect_size_line = c(-10,10),genomewideline = -log10(5e-08))
+```
+
+## Regional plot
+
+Regional plot은 manhattan plot에서 특정 위치를 자세히 살펴보는 그림이며 locuszoom이 대표적인 웹사이트이다. http://locuszoom.org/genform.php?type=yourdata 에 분석결과를 웹에 업로드한 후 몇 가지 옵션을 지정하면 아래와 같은 그림을 PDF 파일로 받아볼 수 있다. 
+
+```{r, out.width= "100%",echo=F,fig.cap="Locuszoom 실행결과"}
+include_graphics("/home/secondmath/Dropbox/Hompage/mathemedicine.github.io/gwas/regional.png")
+```
+
+
+아래와 같이 결과 파일을 업로드한 후 P값, SNP의 컬럼을 지정하고 보여줄 화면(SNP, Gene, 특정 region)을 지정하면 된다. 
+```{r, out.width= "100%",echo=F,fig.cap="Locuszoom 실행화면"}
+include_graphics("/home/secondmath/Dropbox/Hompage/mathemedicine.github.io/gwas/locuszoom.png")
+```
+
+## Interactive regional plot 
+TG 결과의 **rs2075290**으로 Interactive regional plot을 그려보겠다.
+
+### Download recombination information
+ftp://ftp.hapmap.org/hapmap/recombination/2008-03_rel22_B36/rates/ 에서 미리 다운받자. 먼저 해당 주소의 파일이름들을 모은다.  
+
+```{r}
+library(RCurl)
+dir <- "/home/secondmath/Dropbox/example"
+
+## your base url
+url <- "ftp://ftp.hapmap.org/hapmap/recombination/2008-03_rel22_B36/rates/"
+
+filenames=getURL(url,ftp.use.epsv = FALSE, dirlistonly = TRUE)
+filenames
+
+filenames=strsplit(filenames, "\r*\n")[[1]]
+filenames
+```
+
+이제 다운로드한다. 
+```{r,eval=F}
+for (i in 1:length(filenames)){
+  download.file(glue("{url}{filenames[i]}"),glue("{dir}/recombination/{filenames[i]}"))
+}
+
+```
+
+
+### Setting
+
+데이터와 SNP 정보를 미리 setting한다. 
+```{r}
+## Directory
+dir="/home/secondmath/Dropbox/example"
+setwd(dir)
+
+## GWAS result with gene
+res.final = fread("ResGWASAddgene.csv")
+setkey(res.final,BP)
+
+## SNP info 
+SNP.show="rs2075290"
+chr.show= res.final[SNP==SNP.show,CHR]
+SNP.pos = res.final[SNP==SNP.show,BP]
+
+##  Top SNP +- BP range
+range = 400* 1000
+
+```
+
+### Recombination 데이터 불러오기 
+```{r}
+## chr.show = 11
+recomb=fread(glue("{dir}/recombination/genetic_map_chr",{chr.show},"_b36.txt"))
+setnames(recomb,"position","BP")
+setkey(recomb,BP)
+```
+
+### LD 계산
+PLINK를 이용하여 **rs2075290**과 주위 $\pm 400K$범위의 SNP들 사이의 $R^2$값을 계산하겠다. 먼저 parameter를 설정한다.
+
+```{r}
+bfile=glue("{dir}/Nong_1787")
+SNP.show="rs2075290"
+range = 400* 1000
+out.ld = SNP.show
+```
+
+위의 parameter들을 적용하여 PLINK를 실행하여 $R^2$값을 구한다.
+```{r,eval=T}
+system(glue("plink --noweb --bfile {bfile} --r2 --ld-snp {SNP.show} --ld-window-kb {range/1000} --ld-window 99999 --ld-window-r2 0 --out {dir}/{out.ld}"),intern=T)
+```
+
+결과는 rs2075290.ld 파일에 저장했다. 
+```{r}
+ld = fread(glue("{dir}/{out.ld}.ld"))
+datatable(ld, rownames=F, caption = glue("LD calculation: {SNP.show}"))
+```
+
+### Merge: GWAS결과 + LD + Recombination 정보 
+Plot을 위한 최종 데이터를 만들기 위해서 GWAS, LD, recombination 정보를 합치겠다. 먼저 GWAS결과와 LD정보를 합치자. 
+
+```{r}
+setnames(ld, "BP_B", "BP")
+setkey(ld,BP)
+
+## Left join
+res.final.ld = res.final[ld[,c("BP","R2")]]
+datatable(res.final.ld, rownames=F, caption="Merge: GWAS & LD calculation")
+```
+
+이 데이터와 recombination 정보를 합치자. 
+```{r}
+zz=merge(res.final.ld, recomb, all=T)[(BP>=SNP.pos-range) & (BP <= SNP.pos+range)]
+```
+
+### Interactive plot: ggiraph 패키지 이용
+
+```{r}
+#devtools::install_github('davidgohel/ggiraph')
+library(ggiraph)
+
+mlogp.max = zz[,max(-log10(P),na.rm=T)]
+zz[,BP:=BP/10^6]
+zz[,tooltip := c(paste0("SNP = ",SNP , "\n BP = ", BP*10^6, "\n Gene = ", symbol, "\n P = ", P ,"\n BETA = ", BETA,"\n R2 = ", R2))]
+zzsub= zz[SNP==SNP.show]
+
+
+kk=ggplot(zz) + geom_point_interactive(aes(BP,-log10(P),tooltip=tooltip, color=R2),size=1.5) + 
+  geom_point_interactive(data=zzsub, aes(BP,-log10(P),tooltip=tooltip),colour="red") + 
+  geom_line(data=zz[!is.na(get("COMBINED_rate(cM/Mb)")),], aes(BP, get("COMBINED_rate(cM/Mb)")* mlogp.max/100),color="blue") + 
+  scale_y_continuous(sec.axis = sec_axis(~ . * 100 / mlogp.max , name = "Recombination fraction (cM/Mb)")) + 
+  theme( axis.line.y.right = element_line(color = "blue"), axis.ticks.y.right = element_line(color = "blue"),axis.text.y.right = element_text(color = "blue"),axis.title.y.right = element_text(color = "blue")) + 
+  ggtitle(glue("Regional plot: {SNP.show}")) + 
+  theme(plot.title = element_text(hjust = 0.5)) +  
+  geom_text(data =zzsub, aes(x = zzsub[,BP], y = zzsub[,-log10(P)]+0.4, label = SNP.show)) + 
+  xlab(glue("Position on Chr {chr.show} (Mb)")) +
+  ylab(expression(-log[10](italic(P)))) +
+  labs(colour=expression(italic(R)^2)) + 
+  theme(legend.position ="right")
+  
+
+ggiraph(code= print(kk),zoom_max = 7, width=1,width_svg=7, height_svg=3.5,hover_css = "cursor:pointer;fill:red;stroke:red;")
+```

@@ -1,0 +1,66 @@
+name: Jinseob's Home
+output_dir: '.'
+navbar:
+  title: Jinseob's Home
+  type: inverse
+  left:
+  - text: Statistics
+    menu:
+    - text: Likelihood
+      href: probability_likelihood.html
+    - text: Normal Distribution
+      href: Normal_distribution.html
+    - text: '야구에서의 통계학: WAR'
+      href: WAR.html
+    - text: 가설검정의 심리학
+      href: hypothesis.html
+    - text: '건강지표: DALY, QALY'
+      href: health_metrics.html
+  - text: Mathematics
+    menu:
+    - text: 괴델의 불완전성 정리
+      href: godel.html
+    - text: 조건부 확률로 알아보는 프로포즈 전략
+      href: propose.html
+  - text: ML
+    menu:
+    - text: 딥러닝의 역사
+      href: deep_learning.html
+  - text: R Lecture
+    menu:
+    - text: R을 이용한 데이터 매니지먼트 기초
+      href: rbasic.html
+    - text: 'R 의학통계 강의계획: 삼성서울병원'
+      href: rbasic_plan_smc.html
+    - text: 'R 의학통계: 삼성서울병원(1)- 기초 문법 및 Table 1'
+      href: r_smc_1.html
+    - text: 'GAM: 고려대학교 의과대학'
+      href: gam_korea.html
+    - text: 'Population Genetics Index: 유전체역학 2017'
+      href: PopGene.html
+    - text: 리눅스 서버와 깃허브(github) 쉽게 사용하기
+      href: 2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html
+    - text: 'GWAS visualization (1): Summary table'
+      href: 2018-02-09-gwas-visualization1.html
+    - text: 'GWAS visualization (2): Interactive plot'
+      href: 2018-02-09-gwas-visualization2.html
+    - text: 'GWAS visualization (3): Automation'
+      href: 2018-02-09-gwas-visualization3.html
+  right:
+  - icon: fa-github fa-lg
+    href: https://github.com/mathemedicine/mathemedicine.github.io
+output:
+  html_document:
+    theme: cosmo
+    highlight: textmate
+    toc: yes
+    toc_float:
+      collapsed: no
+    include:
+      in_header: head.html
+      before_body: header.html
+      after_body: footer.html
+    css: styles.css
+    lib_dir: site_libs
+    self_contained: no
+

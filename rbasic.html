@@ -1,0 +1,1795 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>R을 이용한 데이터 매니지먼트 기초</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-86134798-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Jinseob's Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="probability_likelihood.html">Likelihood</a>
+    </li>
+    <li>
+      <a href="Normal_distribution.html">Normal Distribution</a>
+    </li>
+    <li>
+      <a href="WAR.html">야구에서의 통계학: WAR</a>
+    </li>
+    <li>
+      <a href="hypothesis.html">가설검정의 심리학</a>
+    </li>
+    <li>
+      <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Mathematics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="godel.html">괴델의 불완전성 정리</a>
+    </li>
+    <li>
+      <a href="propose.html">조건부 확률로 알아보는 프로포즈 전략</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    ML
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="deep_learning.html">딥러닝의 역사</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Lecture
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="rbasic.html">R을 이용한 데이터 매니지먼트 기초</a>
+    </li>
+    <li>
+      <a href="rbasic_plan_smc.html">R 의학통계 강의계획: 삼성서울병원</a>
+    </li>
+    <li>
+      <a href="r_smc_1.html">R 의학통계: 삼성서울병원(1)- 기초 문법 및 Table 1</a>
+    </li>
+    <li>
+      <a href="gam_korea.html">GAM: 고려대학교 의과대학</a>
+    </li>
+    <li>
+      <a href="PopGene.html">Population Genetics Index: 유전체역학 2017</a>
+    </li>
+    <li>
+      <a href="2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html">리눅스 서버와 깃허브(github) 쉽게 사용하기</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization1.html">GWAS visualization (1): Summary table</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization2.html">GWAS visualization (2): Interactive plot</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization3.html">GWAS visualization (3): Automation</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mathemedicine/mathemedicine.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style>
+   p {line-height: 2.5em;}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore"><em>R</em>을 이용한 데이터 매니지먼트 기초</h1>
+<h3 class="subtitle"><em>국민건강보험공단 영유아검진 표본코호트 DB를 이용하여</em></h3>
+
+</div>
+
+
+<div id="-" class="section level1">
+<h1>시작하기 전에</h1>
+<p>본 강의는 <em>R</em>과 <em>Rstudio</em> 의 설치과정은 생략한다. 혹시 설치를 하지 못하였다면 <a href="http://www.r-project.org/" class="uri">http://www.r-project.org/</a> 와 <a href="http://www.rstudio.com/" class="uri">http://www.rstudio.com/</a> 를 참조하여 설치하길 바란다. <em>R</em>에 대한 전반적인 도움말은 <strong>help.start()</strong> 명령어를 활용하면 되고 함수 별 도움말을 보려면 <strong>help(which)</strong> 와 같이 실행하면 된다.</p>
+<div id="--" class="section level2">
+<h2>본 강의의 목표</h2>
+<p><em>R</em>의 이용능력을 대략적으로 다음과 같이 분류할 수 있다.</p>
+<ol style="list-style-type: decimal">
+<li>데이터 정리는 excel로 미리 다 해놓고 통계만 <em>R</em>로 수행.</li>
+<li>데이터 정리와 통계분석.</li>
+<li><em>R</em>로 그림을 그린다.</li>
+<li>논문에 들어갈 테이블과 그림을 <em>R</em>에서..</li>
+<li>논문 시작부터 끝까지 <em>R</em>로만..</li>
+<li><strong>추가!! for문 대신 apply문을 써서 실행시간을 단축시키고 더 나아가 병렬처리를 할 수 있다</strong></li>
+</ol>
+<p>본 강의에서는 기본적인 <strong>데이터 정리를 <em>R</em>에서 수행</strong>하는 것을 첫번째 목표로 할 것이며 <strong>Table 1</strong> 를 간단히 작성하는 법, 기본적인 <strong>그림</strong> 그리는 방법을 추가적으로 학습할 것이다.</p>
+</div>
+</div>
+<div id="r--vector" class="section level1">
+<h1><em>R</em> 기초연산 : 벡터(vector)</h1>
+<p><em>R</em> 의 기본 연산 단위는 벡터이며 <code>x=c(1,2,3)</code> 이라고 쓰면 1,2,3 으로 이루어진 길이 3인 벡터를 <code>x</code>에 저장하는 것이다. 기타 연산은 직접 실습으로 알아보자.</p>
+<pre class="r"><code>x=c(1,2,3,4,5,6)            ## vector of variable
+y=c(7,8,9,10,11,12)
+x+y              </code></pre>
+<pre><code>## [1]  8 10 12 14 16 18</code></pre>
+<pre class="r"><code>x*y</code></pre>
+<pre><code>## [1]  7 16 27 40 55 72</code></pre>
+<pre class="r"><code>sqrt(x)</code></pre>
+<pre><code>## [1] 1.000000 1.414214 1.732051 2.000000 2.236068 2.449490</code></pre>
+<pre class="r"><code>sum(x)</code></pre>
+<pre><code>## [1] 21</code></pre>
+<pre class="r"><code>sum(x&gt;=4)   ## No sum, number</code></pre>
+<pre><code>## [1] 3</code></pre>
+<pre class="r"><code>diff(x) </code></pre>
+<pre><code>## [1] 1 1 1 1 1</code></pre>
+<pre class="r"><code>mean(x)</code></pre>
+<pre><code>## [1] 3.5</code></pre>
+<pre class="r"><code>sd(x)</code></pre>
+<pre><code>## [1] 1.870829</code></pre>
+<pre class="r"><code>max(x)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>max(x,y)</code></pre>
+<pre><code>## [1] 12</code></pre>
+<pre class="r"><code>length(x)</code></pre>
+<pre><code>## [1] 6</code></pre>
+<pre class="r"><code>x[2]</code></pre>
+<pre><code>## [1] 2</code></pre>
+<pre class="r"><code>x[-2]  </code></pre>
+<pre><code>## [1] 1 3 4 5 6</code></pre>
+<pre class="r"><code>x[1:3]</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<pre class="r"><code>x[c(1,3,4,5,6)]</code></pre>
+<pre><code>## [1] 1 3 4 5 6</code></pre>
+<pre class="r"><code>x[c(1,2,3)]</code></pre>
+<pre><code>## [1] 1 2 3</code></pre>
+<div class="section level2">
+<h2>벡터만들기</h2>
+<p>이번에는 벡터를 생성하는 다양한 방법들을 예시를 통해 배워보도록 한다.</p>
+<pre class="r"><code>## Sequence
+v1=seq(-5,5,by=.2); v1 </code></pre>
+<pre><code>##  [1] -5.0 -4.8 -4.6 -4.4 -4.2 -4.0 -3.8 -3.6 -3.4 -3.2 -3.0 -2.8 -2.6 -2.4
+## [15] -2.2 -2.0 -1.8 -1.6 -1.4 -1.2 -1.0 -0.8 -0.6 -0.4 -0.2  0.0  0.2  0.4
+## [29]  0.6  0.8  1.0  1.2  1.4  1.6  1.8  2.0  2.2  2.4  2.6  2.8  3.0  3.2
+## [43]  3.4  3.6  3.8  4.0  4.2  4.4  4.6  4.8  5.0</code></pre>
+<pre class="r"><code>## Repeat 
+v2=rep(1,3); v2</code></pre>
+<pre><code>## [1] 1 1 1</code></pre>
+<pre class="r"><code>v3=rep(c(1,2,3),2); v3              ## Repeat for vector</code></pre>
+<pre><code>## [1] 1 2 3 1 2 3</code></pre>
+<pre class="r"><code>v4=rep(c(1,2,3),each = 2); v4       ## Repeat for vector : each</code></pre>
+<pre><code>## [1] 1 1 2 2 3 3</code></pre>
+</div>
+<div id="for-if-else-ifelse-" class="section level2">
+<h2>for, if, else, ifelse 문</h2>
+<p>마찬가지로 예시를 통해 배워보자.</p>
+<pre class="r"><code>## for loop
+for (i in 1:3){
+  print(i)
+}</code></pre>
+<pre><code>## [1] 1
+## [1] 2
+## [1] 3</code></pre>
+<pre class="r"><code>i=0
+for (j in c(1,2,4,5,6)){
+  i=i+j
+}
+i</code></pre>
+<pre><code>## [1] 18</code></pre>
+<pre class="r"><code>## if 
+x=5
+if (x &gt;=3 ){
+  x=x+3
+}
+x</code></pre>
+<pre><code>## [1] 8</code></pre>
+<pre class="r"><code>x=5
+if (x &gt;=10){
+  print(&quot;High&quot;)
+} else if (x &gt;=5){
+  print(&quot;Medium&quot;)
+} else {
+  print(&quot;Low&quot;)
+}                                ## if, else if 주의: 반드시 } 와 같은 줄에 위치하도록.</code></pre>
+<pre><code>## [1] &quot;Medium&quot;</code></pre>
+<pre class="r"><code>## ifelse
+x=5
+y=ifelse(x==5,&quot;OK&quot;,&quot;Suck&quot;)       ## ifelse(조건,참일때,거짓일때)
+y</code></pre>
+<pre><code>## [1] &quot;OK&quot;</code></pre>
+</div>
+<div id="-" class="section level2">
+<h2>함수 만들기</h2>
+<p>기초수준에서는 함수를 만들어 쓸일이 거의 없을 것이다. 그러나 평균, 분산 등을 구할 때 결측치가 있으면 <em>R</em>은 <code>NA</code>를 출력하는 문제점이 있어 이를 해결하기 위해서라도 기본적인 함수 만드는 법은 알고 있는 것이 좋다. 예제를 통해 살펴보자.</p>
+<pre class="r"><code>x=c(1:10,12,13,NA,NA,15,17)               ## 결측치가 포함되어 있다면..
+mean(x)</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>mean0=function(x){
+  mean(x,na.rm=T)
+}                                         ## x에 대한 함수이며 mean함수에 na.rm 옵션을 TRUE로 해두었다. default는 F
+
+mean0=function(x){mean(x,na.rm=T)}        ## 한줄에 쓸 수도 있다. 
+mean0(x)</code></pre>
+<pre><code>## [1] 8</code></pre>
+<p>하나 이상의 변수를 포함한 함수도 다음과 같이 만들 수 있다.</p>
+<pre class="r"><code>twomean=function(x1,x2){
+  a=(x1+x2)/2
+  a
+}
+twomean(4,6)</code></pre>
+<pre><code>## [1] 5</code></pre>
+</div>
+<div id="apply--apply-sapply-lapply" class="section level2">
+<h2>Apply 문 : apply, sapply, lapply</h2>
+<p><em>R</em>은 벡터 기반의 연산을 지원하므로 이를 이용하면 여러가지 계산을 간단히 할 수 있다. 예제로 살펴보자.</p>
+<pre class="r"><code>mat=matrix(1:20,nrow=4,byrow=T)   ## 4행 5열, byrow=T : 행부터 채운다. 
+mat</code></pre>
+<pre><code>##      [,1] [,2] [,3] [,4] [,5]
+## [1,]    1    2    3    4    5
+## [2,]    6    7    8    9   10
+## [3,]   11   12   13   14   15
+## [4,]   16   17   18   19   20</code></pre>
+<pre class="r"><code>apply(mat,1,mean)                 ## 1: 행- 행별로 평균</code></pre>
+<pre><code>## [1]  3  8 13 18</code></pre>
+<pre class="r"><code>apply(mat,2,mean)                 ## 2: 열- 열별로 평균</code></pre>
+<pre><code>## [1]  8.5  9.5 10.5 11.5 12.5</code></pre>
+<pre class="r"><code>sapply(1:nrow(mat),function(x){mean(mat[x,])})       </code></pre>
+<pre><code>## [1]  3  8 13 18</code></pre>
+<pre class="r"><code>sapply(1:ncol(mat),function(x){mean(mat[,x])})</code></pre>
+<pre><code>## [1]  8.5  9.5 10.5 11.5 12.5</code></pre>
+<pre class="r"><code>lapply(1:nrow(mat),function(x){mean(mat[x,])})             ## Return list type</code></pre>
+<pre><code>## [[1]]
+## [1] 3
+## 
+## [[2]]
+## [1] 8
+## 
+## [[3]]
+## [1] 13
+## 
+## [[4]]
+## [1] 18</code></pre>
+<pre class="r"><code>unlist(lapply(1:nrow(mat),function(x){mean(mat[x,])}))     ## Same to sapply</code></pre>
+<pre><code>## [1]  3  8 13 18</code></pre>
+<p>한편 <code>for</code>문의 과도한 사용은 분석의 속도를 저하시키는 가장 큰 요인 중 하나인데 간단한 예를 통해 문제점을 살펴보자.</p>
+<pre class="r"><code>## for 문을 이용한 합구하는 함수 만들기 
+sum_f=function(x){
+  out=0
+  for (i in 1:x){
+    out=out+i
+    }
+  return(out)
+}
+system.time(sum_f(10^6))                  ## system.time - 시간 잰다.</code></pre>
+<pre><code>##    user  system elapsed 
+##    0.10    0.16    0.29</code></pre>
+<pre class="r"><code>system.time(sum(as.numeric(1:10^6)))      ## 내장 sum 함수- 더할 것이 많으면 as.numeric을 넣어줘야 한다. </code></pre>
+<pre><code>##    user  system elapsed 
+##   0.000   0.004   0.005</code></pre>
+<p>따라서 for문을 최대한 덜 쓰고 벡터연산을 활용하는 것이 실행시간을 줄이는 핵심이며, Apply 문의 적극적인 사용으로 이를 해결할 수 있다. 더 나아가서 멀티코어를 활요한 병렬처리 명령어를 이용함으로서 더욱 시간을 줄일 수 있는데 1초동안 가만히 있는 <code>Sys.sleep(1)</code> 함수를 가지고 예를 들어보겠다. 단, 병렬처리는 가급적 <code>Mac/Linux</code> 환경에서 수행하는 것을 추천하는데 <code>mclapply</code>라는 함수로 그냥 <code>sapply</code>, <code>lapply</code> 쓰듯이 똑같이 쓸 수 있는 장점이 있다. Window 환경에서는 이보다는 복잡한 과정을 거쳐야 한다.</p>
+<pre class="r"><code>for (i in 1:8){Sys.sleep(1)}
+system.time(for (i in 1:8){Sys.sleep(1)})             ## 걸리는 시간 : 8초 정도</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.020   0.016   8.003</code></pre>
+<pre class="r"><code>system.time(sapply(1:8,function(x){Sys.sleep(1)}))    ## 약간 덜?</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.024   0.016   8.004</code></pre>
+<pre class="r"><code>library(parallel)                                     ## for 병렬 처리 
+mclapply(1:8,function(x){Sys.sleep(1)})              ## Only for MAc/Linux : Not for window - 코어 하나만 이용한다.</code></pre>
+<pre><code>## [[1]]
+## NULL
+## 
+## [[2]]
+## NULL
+## 
+## [[3]]
+## NULL
+## 
+## [[4]]
+## NULL
+## 
+## [[5]]
+## NULL
+## 
+## [[6]]
+## NULL
+## 
+## [[7]]
+## NULL
+## 
+## [[8]]
+## NULL</code></pre>
+<pre class="r"><code>## For windows
+num_cores &lt;- detectCores()                            ## Number of Cores
+cl &lt;- makeCluster(num_cores)                          ## Cluster 만들기
+parSapply(cl,1:8,function(x){Sys.sleep(1)})</code></pre>
+<pre><code>## [[1]]
+## NULL
+## 
+## [[2]]
+## NULL
+## 
+## [[3]]
+## NULL
+## 
+## [[4]]
+## NULL
+## 
+## [[5]]
+## NULL
+## 
+## [[6]]
+## NULL
+## 
+## [[7]]
+## NULL
+## 
+## [[8]]
+## NULL</code></pre>
+<pre class="r"><code>system.time(parSapply(cl,1:8,function(x){Sys.sleep(1)}))  ## 1초</code></pre>
+<pre><code>##    user  system elapsed 
+##   0.012   0.000   2.012</code></pre>
+<pre class="r"><code>#clusterEvalQ(cl, {library(survival)})                ## parSapply 안의 함수안에 특정 패키지의 명령어가 있다면 그 패키지 미리 지정. 
+#clusterExport(cl,c(&quot;run_feature&quot;,&quot;event_time&quot;))      ## 자체 만든 함수나 객체를 쓴다면 미리 지정 
+stopCluster(cl)                                       ## 종료 </code></pre>
+</div>
+</div>
+<div id="--" class="section level1">
+<h1>데이터 불러와서 작업하기</h1>
+<p>이제부터는 실제 데이터를 읽어서 그 데이터를 매니징 하는 방법을 배워보도록 하겠다.</p>
+<div id="--" class="section level2">
+<h2>데이터 불러오기, 저장하기</h2>
+<p>데이터를 불러오기 전에 미리 디렉토리를 지정하면 그 다음부터는 편하게 읽고 쓸 수 있다.</p>
+<pre class="r"><code>getwd()                                                   ## 현재 디렉토리 </code></pre>
+<pre><code>## [1] &quot;/home/secondmath/Dropbox/Hompage/mathemedicine.github.io&quot;</code></pre>
+<pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/consult/practice&quot;)        ## 디렉토리 설정 
+getwd()</code></pre>
+<pre><code>## [1] &quot;/home/secondmath/Dropbox/consult/practice&quot;</code></pre>
+<p>여기서 주의해야 할 점은 폴더간의 구분을 / 로 해야 한다는 점이다. <em>R</em> 은 유닉스 기반의 언어이기 때문이다. 이제 실습 데이터를 읽어보도록 하자. 가급적이면 데이터포맷은 <code>csv</code>로 통일하는 것을 추천한다. 콤마로 분리된 가장 간단 한 형태의 파일로서 용량도 작고 어떤 소프트웨어에서도 읽을 수 있다는 장점이 있다. 물론 <em>R</em>에서 SPSS, SAS, Excel파일을 읽을 수도 있지만 본 실습에서는 생략하도록 하겠다.</p>
+<pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/consult/practice&quot;) 
+a=read.csv(&quot;i_all.csv&quot;)                             ## 첫번째 행은 변수명으로 자동 인식
+a=read.table(&quot;i_all.csv&quot;, sep=&quot;,&quot;, header=T)        ## 구분자와 첫번째 행 인식여부를 직접
+head(a)                                             ## 처음 6행 보기</code></pre>
+<pre><code>##   PERSON_ID EXMD_BZ_YYYY YKIHO_GUBUN_CD E_HGHT E_HGHT_PCT E_HGHT_JDG
+## 1  10934240         2014             33  106.3          2          2
+## 2  11209245         2014             37  107.9          9          1
+## 3  11222323         2014             20  113.5         47          1
+## 4  11536379         2014             30  117.0         67          1
+## 5  11822836         2014             34  111.0         19          1
+## 6  12020725         2014             30  105.9          3          2
+##   E_WGHT E_WGHT_PCT E_WGHT_JDG E_BMI E_BMI_PCT E_BMI_JDG E_VIS_Q_JDG
+## 1   19.1         23          1  16.9        74         1           2
+## 2   17.5         12          1  15.0        34         1           1
+## 3   20.1         50          1  15.6        51         1           1
+## 4   20.2         39          1  14.8        22         1           1
+## 5   17.9          9          1  14.5        15         1           1
+## 6   18.2         21          1  16.2        66         1           1
+##   E_AUD_Q_JDG E_DVAS_MTHD E_DVAS_JDG Q_PREM Q_BTH_WGHT Q_VCC_BCG_YN
+## 1           1          NA          1      2        3.3            1
+## 2           1          NA          1      2        3.1            1
+## 3           1          NA          1      2        3.2            1
+## 4           1          NA          1      2        2.9            1
+## 5           1          NA          1      2        2.7            1
+## 6           1          NA          1      1        1.8            1
+##   Q_VCC_HBV_YN Q_VCC_HBV_FRQ Q_VCC_DPT_YN Q_VCC_DPT_FRQ Q_VCC_POLIO_YN
+## 1            1             3            1             5              1
+## 2            1             3            1             4              1
+## 3            1             3            1             4              1
+## 4            1             3            1             5              1
+## 5            1             3            1             5              1
+## 6            1             3            1             5              1
+##   Q_VCC_POLIO_FRQ Q_VCC_MMR_YN Q_VCC_MMR_FRQ Q_VCC_CPOX_YN Q_VCC_CPOX_FRQ
+## 1               4            1             2             1              1
+## 2               3            1             1             1              1
+## 3               3            1             2             1              1
+## 4               4            1             2             1              1
+## 5               4            1             2             1              1
+## 6               4            1             2             1              1
+##   Q_VCC_JENC_YN Q_VCC_JENC_FRQ Q_PSMK_Q1 Q_PSMK_Q2 Q_PSMK_Q3 Q_PSMK_Q4
+## 1             1              3         1         2         1        NA
+## 2             1              3         1         2         2         1
+## 3             1              3         2         2         1         1
+## 4             1              3         2         2         2         2
+## 5             1              3         2         2         1         1
+## 6             1              3         2         2         1         1
+##   number Q_NTR_Q2_1 Q_NTR_Q2_2 Q_NTR_Q2_3 Q_NTR_Q2_4 Q_NTR_Q2_5
+## 1      7         NA         NA         NA         NA         NA
+## 2      7         NA         NA         NA         NA         NA
+## 3      7         NA         NA         NA         NA         NA
+## 4      7         NA         NA         NA         NA         NA
+## 5      7         NA         NA         NA         NA         NA
+## 6      7         NA         NA         NA         NA         NA</code></pre>
+<p>저장도 <code>csv</code>로 하는 것을 추천하며 실습도 이것만 하겠다.</p>
+<pre class="r"><code>write.csv(a,&quot;i_all_write.csv&quot;)
+write.csv(a,&quot;i_all_write.csv&quot;,quote=F,row.names=F)   ## 문자형변수의 &#39;&#39;빼기, 행번호 삭제 </code></pre>
+</div>
+<div id="--" class="section level2">
+<h2>읽은 데이터 살펴보기</h2>
+<p>이제부터는 본격적으로 읽은 데이터를 살펴보도록 하겠다. 실습데이터는 2008-2014년의 영유아 건강검진 자료이며 자세 한 설명은 다른 문서를 참조하길 바란다.</p>
+<pre class="r"><code>head(a)               ## 처음 6행</code></pre>
+<pre><code>##   PERSON_ID EXMD_BZ_YYYY YKIHO_GUBUN_CD E_HGHT E_HGHT_PCT E_HGHT_JDG
+## 1  10934240         2014             33  106.3          2          2
+## 2  11209245         2014             37  107.9          9          1
+## 3  11222323         2014             20  113.5         47          1
+## 4  11536379         2014             30  117.0         67          1
+## 5  11822836         2014             34  111.0         19          1
+## 6  12020725         2014             30  105.9          3          2
+##   E_WGHT E_WGHT_PCT E_WGHT_JDG E_BMI E_BMI_PCT E_BMI_JDG E_VIS_Q_JDG
+## 1   19.1         23          1  16.9        74         1           2
+## 2   17.5         12          1  15.0        34         1           1
+## 3   20.1         50          1  15.6        51         1           1
+## 4   20.2         39          1  14.8        22         1           1
+## 5   17.9          9          1  14.5        15         1           1
+## 6   18.2         21          1  16.2        66         1           1
+##   E_AUD_Q_JDG E_DVAS_MTHD E_DVAS_JDG Q_PREM Q_BTH_WGHT Q_VCC_BCG_YN
+## 1           1          NA          1      2        3.3            1
+## 2           1          NA          1      2        3.1            1
+## 3           1          NA          1      2        3.2            1
+## 4           1          NA          1      2        2.9            1
+## 5           1          NA          1      2        2.7            1
+## 6           1          NA          1      1        1.8            1
+##   Q_VCC_HBV_YN Q_VCC_HBV_FRQ Q_VCC_DPT_YN Q_VCC_DPT_FRQ Q_VCC_POLIO_YN
+## 1            1             3            1             5              1
+## 2            1             3            1             4              1
+## 3            1             3            1             4              1
+## 4            1             3            1             5              1
+## 5            1             3            1             5              1
+## 6            1             3            1             5              1
+##   Q_VCC_POLIO_FRQ Q_VCC_MMR_YN Q_VCC_MMR_FRQ Q_VCC_CPOX_YN Q_VCC_CPOX_FRQ
+## 1               4            1             2             1              1
+## 2               3            1             1             1              1
+## 3               3            1             2             1              1
+## 4               4            1             2             1              1
+## 5               4            1             2             1              1
+## 6               4            1             2             1              1
+##   Q_VCC_JENC_YN Q_VCC_JENC_FRQ Q_PSMK_Q1 Q_PSMK_Q2 Q_PSMK_Q3 Q_PSMK_Q4
+## 1             1              3         1         2         1        NA
+## 2             1              3         1         2         2         1
+## 3             1              3         2         2         1         1
+## 4             1              3         2         2         2         2
+## 5             1              3         2         2         1         1
+## 6             1              3         2         2         1         1
+##   number Q_NTR_Q2_1 Q_NTR_Q2_2 Q_NTR_Q2_3 Q_NTR_Q2_4 Q_NTR_Q2_5
+## 1      7         NA         NA         NA         NA         NA
+## 2      7         NA         NA         NA         NA         NA
+## 3      7         NA         NA         NA         NA         NA
+## 4      7         NA         NA         NA         NA         NA
+## 5      7         NA         NA         NA         NA         NA
+## 6      7         NA         NA         NA         NA         NA</code></pre>
+<p><em>R</em>은 결측치를 <code>NA</code> 로 표시한다.</p>
+<pre class="r"><code>tail(a)               ## 마지막 6행</code></pre>
+<pre><code>##       PERSON_ID EXMD_BZ_YYYY YKIHO_GUBUN_CD E_HGHT E_HGHT_PCT E_HGHT_JDG
+## 45532  67072117         2008             33   63.6         37          1
+## 45533  67102166         2008             31   62.0         17          1
+## 45534  67555298         2008             31   75.4         99          1
+## 45535  68245952         2008             35   67.5         76          1
+## 45536  68377071         2008             31   65.8         70          1
+## 45537  68484655         2008             33   64.5         32          1
+##       E_WGHT E_WGHT_PCT E_WGHT_JDG E_BMI E_BMI_PCT E_BMI_JDG E_VIS_Q_JDG
+## 45532    6.2         12          1    NA        NA        NA           1
+## 45533    6.5         22          1    NA        NA        NA           1
+## 45534    8.1         88          1    NA        NA        NA           1
+## 45535    8.0         70          1    NA        NA        NA           1
+## 45536    7.3         59          1    NA        NA        NA           1
+## 45537    6.7         15          1    NA        NA        NA           1
+##       E_AUD_Q_JDG E_DVAS_MTHD E_DVAS_JDG Q_PREM Q_BTH_WGHT Q_VCC_BCG_YN
+## 45532           1          NA         NA     NA         NA           NA
+## 45533           1          NA         NA     NA         NA           NA
+## 45534           2          NA         NA     NA         NA           NA
+## 45535           1          NA         NA     NA         NA           NA
+## 45536           1          NA         NA     NA         NA           NA
+## 45537           1          NA         NA     NA         NA           NA
+##       Q_VCC_HBV_YN Q_VCC_HBV_FRQ Q_VCC_DPT_YN Q_VCC_DPT_FRQ Q_VCC_POLIO_YN
+## 45532           NA            NA           NA            NA             NA
+## 45533           NA            NA           NA            NA             NA
+## 45534           NA            NA           NA            NA             NA
+## 45535           NA            NA           NA            NA             NA
+## 45536           NA            NA           NA            NA             NA
+## 45537           NA            NA           NA            NA             NA
+##       Q_VCC_POLIO_FRQ Q_VCC_MMR_YN Q_VCC_MMR_FRQ Q_VCC_CPOX_YN
+## 45532              NA           NA            NA            NA
+## 45533              NA           NA            NA            NA
+## 45534              NA           NA            NA            NA
+## 45535              NA           NA            NA            NA
+## 45536              NA           NA            NA            NA
+## 45537              NA           NA            NA            NA
+##       Q_VCC_CPOX_FRQ Q_VCC_JENC_YN Q_VCC_JENC_FRQ Q_PSMK_Q1 Q_PSMK_Q2
+## 45532             NA            NA             NA        NA        NA
+## 45533             NA            NA             NA        NA        NA
+## 45534             NA            NA             NA        NA        NA
+## 45535             NA            NA             NA        NA        NA
+## 45536             NA            NA             NA        NA        NA
+## 45537             NA            NA             NA        NA        NA
+##       Q_PSMK_Q3 Q_PSMK_Q4 number Q_NTR_Q2_1 Q_NTR_Q2_2 Q_NTR_Q2_3
+## 45532        NA        NA      1         NA         NA         NA
+## 45533        NA        NA      1         NA         NA         NA
+## 45534        NA        NA      1         NA         NA         NA
+## 45535        NA        NA      1         NA         NA         NA
+## 45536        NA        NA      1         NA         NA         NA
+## 45537        NA        NA      1         NA         NA         NA
+##       Q_NTR_Q2_4 Q_NTR_Q2_5
+## 45532         NA         NA
+## 45533         NA         NA
+## 45534         NA         NA
+## 45535         NA         NA
+## 45536         NA         NA
+## 45537         NA         NA</code></pre>
+<pre class="r"><code>names(a)              ## 변수명</code></pre>
+<pre><code>##  [1] &quot;PERSON_ID&quot;       &quot;EXMD_BZ_YYYY&quot;    &quot;YKIHO_GUBUN_CD&quot; 
+##  [4] &quot;E_HGHT&quot;          &quot;E_HGHT_PCT&quot;      &quot;E_HGHT_JDG&quot;     
+##  [7] &quot;E_WGHT&quot;          &quot;E_WGHT_PCT&quot;      &quot;E_WGHT_JDG&quot;     
+## [10] &quot;E_BMI&quot;           &quot;E_BMI_PCT&quot;       &quot;E_BMI_JDG&quot;      
+## [13] &quot;E_VIS_Q_JDG&quot;     &quot;E_AUD_Q_JDG&quot;     &quot;E_DVAS_MTHD&quot;    
+## [16] &quot;E_DVAS_JDG&quot;      &quot;Q_PREM&quot;          &quot;Q_BTH_WGHT&quot;     
+## [19] &quot;Q_VCC_BCG_YN&quot;    &quot;Q_VCC_HBV_YN&quot;    &quot;Q_VCC_HBV_FRQ&quot;  
+## [22] &quot;Q_VCC_DPT_YN&quot;    &quot;Q_VCC_DPT_FRQ&quot;   &quot;Q_VCC_POLIO_YN&quot; 
+## [25] &quot;Q_VCC_POLIO_FRQ&quot; &quot;Q_VCC_MMR_YN&quot;    &quot;Q_VCC_MMR_FRQ&quot;  
+## [28] &quot;Q_VCC_CPOX_YN&quot;   &quot;Q_VCC_CPOX_FRQ&quot;  &quot;Q_VCC_JENC_YN&quot;  
+## [31] &quot;Q_VCC_JENC_FRQ&quot;  &quot;Q_PSMK_Q1&quot;       &quot;Q_PSMK_Q2&quot;      
+## [34] &quot;Q_PSMK_Q3&quot;       &quot;Q_PSMK_Q4&quot;       &quot;number&quot;         
+## [37] &quot;Q_NTR_Q2_1&quot;      &quot;Q_NTR_Q2_2&quot;      &quot;Q_NTR_Q2_3&quot;     
+## [40] &quot;Q_NTR_Q2_4&quot;      &quot;Q_NTR_Q2_5&quot;</code></pre>
+<pre class="r"><code>a$E_BMI[1:10]         ## BMI변수의 처음 10개 행만..                  </code></pre>
+<pre><code>##  [1] 16.9 15.0 15.6 14.8 14.5 16.2 14.5 15.2 17.4 21.0</code></pre>
+<pre class="r"><code>dim(a)                ## 행갯수, 열갯수</code></pre>
+<pre><code>## [1] 45537    41</code></pre>
+<pre class="r"><code>nrow(a)               ## 행</code></pre>
+<pre><code>## [1] 45537</code></pre>
+<pre class="r"><code>ncol(a)               ## 열 </code></pre>
+<pre><code>## [1] 41</code></pre>
+<pre class="r"><code>class(a)              ## 클라스. 일단 data.frame이라는 정도만 알고 넘어가자.</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>str(a)                ## 데이터 구조 살펴보기 </code></pre>
+<pre><code>## &#39;data.frame&#39;:    45537 obs. of  41 variables:
+##  $ PERSON_ID      : int  10934240 11209245 11222323 11536379 11822836 12020725 12199586 12266756 12641133 12690137 ...
+##  $ EXMD_BZ_YYYY   : int  2014 2014 2014 2014 2014 2014 2014 2014 2014 2014 ...
+##  $ YKIHO_GUBUN_CD : int  33 37 20 30 34 30 30 35 34 32 ...
+##  $ E_HGHT         : num  106 108 114 117 111 ...
+##  $ E_HGHT_PCT     : int  2 9 47 67 19 3 17 32 38 92 ...
+##  $ E_HGHT_JDG     : int  2 1 1 1 1 2 1 1 1 1 ...
+##  $ E_WGHT         : num  19.1 17.5 20.1 20.2 17.9 18.2 17.7 19 22 30.4 ...
+##  $ E_WGHT_PCT     : int  23 12 50 39 9 21 7 33 74 99 ...
+##  $ E_WGHT_JDG     : int  1 1 1 1 1 1 1 1 1 2 ...
+##  $ E_BMI          : num  16.9 15 15.6 14.8 14.5 16.2 14.5 15.2 17.4 21 ...
+##  $ E_BMI_PCT      : int  74 34 51 22 15 66 15 40 85 99 ...
+##  $ E_BMI_JDG      : int  1 1 1 1 1 1 1 1 1 2 ...
+##  $ E_VIS_Q_JDG    : int  2 1 1 1 1 1 1 1 1 1 ...
+##  $ E_AUD_Q_JDG    : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ E_DVAS_MTHD    : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ E_DVAS_JDG     : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_PREM         : int  2 2 2 2 2 1 2 2 2 2 ...
+##  $ Q_BTH_WGHT     : num  3.3 3.1 3.2 2.9 2.7 1.8 3.1 3.5 2.9 3.8 ...
+##  $ Q_VCC_BCG_YN   : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_VCC_HBV_YN   : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_VCC_HBV_FRQ  : int  3 3 3 3 3 3 3 3 3 3 ...
+##  $ Q_VCC_DPT_YN   : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_VCC_DPT_FRQ  : int  5 4 4 5 5 5 4 5 5 4 ...
+##  $ Q_VCC_POLIO_YN : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_VCC_POLIO_FRQ: int  4 3 3 4 4 4 3 4 4 3 ...
+##  $ Q_VCC_MMR_YN   : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_VCC_MMR_FRQ  : int  2 1 2 2 2 2 1 2 2 1 ...
+##  $ Q_VCC_CPOX_YN  : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_VCC_CPOX_FRQ : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_VCC_JENC_YN  : int  1 1 1 1 1 1 1 1 1 1 ...
+##  $ Q_VCC_JENC_FRQ : int  3 3 3 3 3 3 2 3 3 3 ...
+##  $ Q_PSMK_Q1      : int  1 1 2 2 2 2 1 2 1 2 ...
+##  $ Q_PSMK_Q2      : int  2 2 2 2 2 2 1 2 1 2 ...
+##  $ Q_PSMK_Q3      : int  1 2 1 2 1 1 2 1 2 1 ...
+##  $ Q_PSMK_Q4      : int  NA 1 1 2 1 1 1 1 1 1 ...
+##  $ number         : int  7 7 7 7 7 7 7 7 7 7 ...
+##  $ Q_NTR_Q2_1     : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Q_NTR_Q2_2     : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Q_NTR_Q2_3     : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Q_NTR_Q2_4     : int  NA NA NA NA NA NA NA NA NA NA ...
+##  $ Q_NTR_Q2_5     : int  NA NA NA NA NA NA NA NA NA NA ...</code></pre>
+<pre class="r"><code>summary(a)            ## 대략적인 요약.</code></pre>
+<pre><code>##    PERSON_ID         EXMD_BZ_YYYY  YKIHO_GUBUN_CD      E_HGHT      
+##  Min.   :10005819   Min.   :2008   Min.   :10.00   Min.   :  9.30  
+##  1st Qu.:35800784   1st Qu.:2009   1st Qu.:30.00   1st Qu.: 73.50  
+##  Median :57100463   Median :2011   Median :32.00   Median : 91.30  
+##  Mean   :56411261   Mean   :2011   Mean   :30.57   Mean   : 89.72  
+##  3rd Qu.:77709454   3rd Qu.:2012   3rd Qu.:34.00   3rd Qu.:103.80  
+##  Max.   :99997712   Max.   :2014   Max.   :92.00   Max.   :174.00  
+##                                                    NA&#39;s   :12      
+##    E_HGHT_PCT      E_HGHT_JDG        E_WGHT        E_WGHT_PCT   
+##  Min.   : 1.00   Min.   :1.000   Min.   : 1.10   Min.   : 1.00  
+##  1st Qu.:29.00   1st Qu.:1.000   1st Qu.: 9.50   1st Qu.:30.00  
+##  Median :52.00   Median :1.000   Median :13.20   Median :55.00  
+##  Mean   :51.39   Mean   :1.029   Mean   :13.69   Mean   :53.71  
+##  3rd Qu.:74.00   3rd Qu.:1.000   3rd Qu.:17.00   3rd Qu.:78.00  
+##  Max.   :99.00   Max.   :2.000   Max.   :75.80   Max.   :99.00  
+##  NA&#39;s   :2       NA&#39;s   :16                      NA&#39;s   :5      
+##    E_WGHT_JDG        E_BMI         E_BMI_PCT       E_BMI_JDG    
+##  Min.   :1.000   Min.   : 5.80   Min.   : 1.00   Min.   :1.000  
+##  1st Qu.:1.000   1st Qu.:15.00   1st Qu.:32.00   1st Qu.:1.000  
+##  Median :1.000   Median :15.90   Median :57.00   Median :1.000  
+##  Mean   :1.045   Mean   :16.06   Mean   :54.71   Mean   :1.063  
+##  3rd Qu.:1.000   3rd Qu.:16.80   3rd Qu.:79.00   3rd Qu.:1.000  
+##  Max.   :2.000   Max.   :55.80   Max.   :99.00   Max.   :2.000  
+##  NA&#39;s   :19      NA&#39;s   :28157   NA&#39;s   :28164   NA&#39;s   :28159  
+##   E_VIS_Q_JDG     E_AUD_Q_JDG     E_DVAS_MTHD      E_DVAS_JDG   
+##  Min.   :1.000   Min.   :1.000   Min.   :1.000   Min.   :1.000  
+##  1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.000  
+##  Median :1.000   Median :1.000   Median :1.000   Median :1.000  
+##  Mean   :1.017   Mean   :1.016   Mean   :1.003   Mean   :1.039  
+##  3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:1.000  
+##  Max.   :2.000   Max.   :2.000   Max.   :2.000   Max.   :4.000  
+##  NA&#39;s   :8       NA&#39;s   :20      NA&#39;s   :15256   NA&#39;s   :9803   
+##      Q_PREM        Q_BTH_WGHT     Q_VCC_BCG_YN    Q_VCC_HBV_YN  
+##  Min.   :1.000   Min.   :0.000   Min.   :1.000   Min.   :1.000  
+##  1st Qu.:2.000   1st Qu.:3.000   1st Qu.:1.000   1st Qu.:1.000  
+##  Median :2.000   Median :3.200   Median :1.000   Median :1.000  
+##  Mean   :1.971   Mean   :3.193   Mean   :1.002   Mean   :1.001  
+##  3rd Qu.:2.000   3rd Qu.:3.500   3rd Qu.:1.000   3rd Qu.:1.000  
+##  Max.   :2.000   Max.   :9.900   Max.   :2.000   Max.   :2.000  
+##  NA&#39;s   :10617   NA&#39;s   :10112   NA&#39;s   :10129   NA&#39;s   :10081  
+##  Q_VCC_HBV_FRQ    Q_VCC_DPT_YN   Q_VCC_DPT_FRQ   Q_VCC_POLIO_YN 
+##  Min.   :0.000   Min.   :1.000   Min.   :0.00    Min.   :1.000  
+##  1st Qu.:3.000   1st Qu.:1.000   1st Qu.:3.00    1st Qu.:1.000  
+##  Median :3.000   Median :1.000   Median :4.00    Median :1.000  
+##  Mean   :2.701   Mean   :1.001   Mean   :3.57    Mean   :1.002  
+##  3rd Qu.:3.000   3rd Qu.:1.000   3rd Qu.:4.00    3rd Qu.:1.000  
+##  Max.   :7.000   Max.   :2.000   Max.   :9.00    Max.   :2.000  
+##  NA&#39;s   :10213   NA&#39;s   :10081   NA&#39;s   :10210   NA&#39;s   :10463  
+##  Q_VCC_POLIO_FRQ  Q_VCC_MMR_YN   Q_VCC_MMR_FRQ   Q_VCC_CPOX_YN  
+##  Min.   :0.000   Min.   :1.000   Min.   :0.000   Min.   :1.00   
+##  1st Qu.:3.000   1st Qu.:1.000   1st Qu.:1.000   1st Qu.:1.00   
+##  Median :3.000   Median :1.000   Median :1.000   Median :1.00   
+##  Mean   :2.907   Mean   :1.004   Mean   :1.189   Mean   :1.01   
+##  3rd Qu.:3.000   3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:1.00   
+##  Max.   :6.000   Max.   :2.000   Max.   :5.000   Max.   :2.00   
+##  NA&#39;s   :10624   NA&#39;s   :16827   NA&#39;s   :17045   NA&#39;s   :16832  
+##  Q_VCC_CPOX_FRQ  Q_VCC_JENC_YN   Q_VCC_JENC_FRQ    Q_PSMK_Q1    
+##  Min.   :0.00    Min.   :1.000   Min.   :0.000   Min.   :1.00   
+##  1st Qu.:1.00    1st Qu.:1.000   1st Qu.:2.000   1st Qu.:1.00   
+##  Median :1.00    Median :1.000   Median :3.000   Median :2.00   
+##  Mean   :0.98    Mean   :1.012   Mean   :2.331   Mean   :1.54   
+##  3rd Qu.:1.00    3rd Qu.:1.000   3rd Qu.:3.000   3rd Qu.:2.00   
+##  Max.   :5.00    Max.   :2.000   Max.   :7.000   Max.   :2.00   
+##  NA&#39;s   :17144   NA&#39;s   :16843   NA&#39;s   :17124   NA&#39;s   :40038  
+##    Q_PSMK_Q2       Q_PSMK_Q3       Q_PSMK_Q4         number     
+##  Min.   :1.00    Min.   :1.00    Min.   :1.00    Min.   :1.000  
+##  1st Qu.:2.00    1st Qu.:1.00    1st Qu.:1.00    1st Qu.:2.000  
+##  Median :2.00    Median :1.00    Median :1.00    Median :4.000  
+##  Mean   :1.87    Mean   :1.22    Mean   :1.09    Mean   :3.707  
+##  3rd Qu.:2.00    3rd Qu.:1.00    3rd Qu.:1.00    3rd Qu.:5.000  
+##  Max.   :2.00    Max.   :2.00    Max.   :2.00    Max.   :7.000  
+##  NA&#39;s   :40038   NA&#39;s   :40039   NA&#39;s   :40040                  
+##    Q_NTR_Q2_1      Q_NTR_Q2_2      Q_NTR_Q2_3      Q_NTR_Q2_4   
+##  Min.   :1.00    Min.   :1.00    Min.   :1.00    Min.   :1.00   
+##  1st Qu.:1.00    1st Qu.:1.00    1st Qu.:2.00    1st Qu.:2.00   
+##  Median :2.00    Median :2.00    Median :2.00    Median :2.00   
+##  Mean   :1.68    Mean   :1.63    Mean   :2.03    Mean   :1.96   
+##  3rd Qu.:2.00    3rd Qu.:2.00    3rd Qu.:2.00    3rd Qu.:2.00   
+##  Max.   :3.00    Max.   :3.00    Max.   :3.00    Max.   :3.00   
+##  NA&#39;s   :39736   NA&#39;s   :39734   NA&#39;s   :39742   NA&#39;s   :39740  
+##    Q_NTR_Q2_5   
+##  Min.   :1.00   
+##  1st Qu.:2.00   
+##  Median :2.00   
+##  Mean   :1.98   
+##  3rd Qu.:2.00   
+##  Max.   :3.00   
+##  NA&#39;s   :39744</code></pre>
+<pre class="r"><code>a$E_BMI
+a[,&quot;E_BMI&quot;]
+a[,11]
+
+#a[1:7]                       ## 이러면 안된다. &quot;,&quot;로 행인지 열인지 구분을 해 줘야.
+a[,1:7]                       ## 1열부터 7열까지.
+a[,c(1,2,3,4,5,6,7)]
+a[,seq(1,7)]
+a[,c(&quot;PERSON_ID&quot;,&quot;EXMD_BZ_YYYY&quot;,&quot;YKIHO_GUBUN_CD&quot;,&quot;E_HGHT&quot;,&quot;E_HGHT_PCT&quot;,&quot;E_HGHT_JDG&quot;,&quot;E_WGHT&quot;)]  ## 변수명으로도 가능 
+a[,names(a)[1:7]]                                                                               ## Same</code></pre>
+<pre class="r"><code>length(a$E_BMI)</code></pre>
+<pre><code>## [1] 45537</code></pre>
+<pre class="r"><code>a[2,11]  ## 2행 11열</code></pre>
+<pre><code>## [1] 34</code></pre>
+<pre class="r"><code>a[2,]   ## 11행</code></pre>
+<pre><code>##   PERSON_ID EXMD_BZ_YYYY YKIHO_GUBUN_CD E_HGHT E_HGHT_PCT E_HGHT_JDG
+## 2  11209245         2014             37  107.9          9          1
+##   E_WGHT E_WGHT_PCT E_WGHT_JDG E_BMI E_BMI_PCT E_BMI_JDG E_VIS_Q_JDG
+## 2   17.5         12          1    15        34         1           1
+##   E_AUD_Q_JDG E_DVAS_MTHD E_DVAS_JDG Q_PREM Q_BTH_WGHT Q_VCC_BCG_YN
+## 2           1          NA          1      2        3.1            1
+##   Q_VCC_HBV_YN Q_VCC_HBV_FRQ Q_VCC_DPT_YN Q_VCC_DPT_FRQ Q_VCC_POLIO_YN
+## 2            1             3            1             4              1
+##   Q_VCC_POLIO_FRQ Q_VCC_MMR_YN Q_VCC_MMR_FRQ Q_VCC_CPOX_YN Q_VCC_CPOX_FRQ
+## 2               3            1             1             1              1
+##   Q_VCC_JENC_YN Q_VCC_JENC_FRQ Q_PSMK_Q1 Q_PSMK_Q2 Q_PSMK_Q3 Q_PSMK_Q4
+## 2             1              3         1         2         2         1
+##   number Q_NTR_Q2_1 Q_NTR_Q2_2 Q_NTR_Q2_3 Q_NTR_Q2_4 Q_NTR_Q2_5
+## 2      7         NA         NA         NA         NA         NA</code></pre>
+<pre class="r"><code>mean(a$E_BMI)                          ## 결측치 없을 때만..</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>mean(a$E_BMI,na.rm=T)                  ## 결측치 빼고</code></pre>
+<pre><code>## [1] 16.06418</code></pre>
+<pre class="r"><code>round(mean(a$E_BMI,na.rm=T),2)         ## 반올림 </code></pre>
+<pre><code>## [1] 16.06</code></pre>
+<pre class="r"><code>mean(a[,11],na.rm=T)</code></pre>
+<pre><code>## [1] 54.71346</code></pre>
+<pre class="r"><code>sd(a$E_BMI,na.rm=T)                    ## 표준편차</code></pre>
+<pre><code>## [1] 1.658654</code></pre>
+<pre class="r"><code>var(a$E_BMI,na.rm=T)                   ## 분산</code></pre>
+<pre><code>## [1] 2.751134</code></pre>
+<pre class="r"><code>median(a$E_BMI,na.rm=T)                ## 중간값</code></pre>
+<pre><code>## [1] 15.9</code></pre>
+<pre class="r"><code>IQR(a$E_BMI,na.rm=T)                   ## 25%-75% range</code></pre>
+<pre><code>## [1] 1.8</code></pre>
+<pre class="r"><code>quantile(a$E_BMI, na.rm=T)             ## quantile</code></pre>
+<pre><code>##   0%  25%  50%  75% 100% 
+##  5.8 15.0 15.9 16.8 55.8</code></pre>
+<pre class="r"><code>max(a$E_BMI,na.rm=T)                   ## Max</code></pre>
+<pre><code>## [1] 55.8</code></pre>
+<pre class="r"><code>min(a$E_BMI,na.rm=T)                   ## Min</code></pre>
+<pre><code>## [1] 5.8</code></pre>
+</div>
+<div id="--" class="section level2">
+<h2>결측치 관련 실습</h2>
+<p>한편, 실습 데이터는 08년-14년의 데이터를 전부 합친 것이기 때문에 특정년도에만 있는 변수들이 많다. 즉, 어떤 년도에는 전부 NA인 변수도 있다는 뜻이다(예: 08-10년은 BMI가 없다). 이를 확인해 보자. 그룹별로 살펴보는 것은 <code>tapply</code> 또는 <code>aggregate</code> 함수를 이용할 수 있다.</p>
+<pre class="r"><code>tapply(a$E_BMI,a$EXMD_BZ_YYYY,mean)                                              ## 변수, 그룹변수, 함수 </code></pre>
+<pre><code>##     2008     2009     2010     2011     2012     2013     2014 
+##       NA       NA       NA       NA       NA 16.06088 16.10955</code></pre>
+<pre class="r"><code>tapply(a$E_BMI,a$EXMD_BZ_YYYY,function(x){mean(x,na.rm=T)})                      ## NA 고려. </code></pre>
+<pre><code>##     2008     2009     2010     2011     2012     2013     2014 
+##      NaN      NaN      NaN 16.06146 16.03154 16.06088 16.10955</code></pre>
+<pre class="r"><code>aggregate(a$E_BMI,by=list(a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)})          ## aggregate 이용   </code></pre>
+<pre><code>##   Group.1        x
+## 1    2008      NaN
+## 2    2009      NaN
+## 3    2010      NaN
+## 4    2011 16.06146
+## 5    2012 16.03154
+## 6    2013 16.06088
+## 7    2014 16.10955</code></pre>
+<pre class="r"><code>aggregate(a$E_BMI,by=list(a$number,a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)}) ## 그룹 동시에 지정가능</code></pre>
+<pre><code>##    Group.1 Group.2        x
+## 1        1    2008      NaN
+## 2        2    2008      NaN
+## 3        1    2009      NaN
+## 4        2    2009      NaN
+## 5        2    2010      NaN
+## 6        3    2010      NaN
+## 7        4    2010      NaN
+## 8        3    2011      NaN
+## 9        4    2011      NaN
+## 10       5    2011 16.06146
+## 11       4    2012      NaN
+## 12       5    2012 16.02235
+## 13       6    2012 16.08277
+## 14       5    2013 16.22651
+## 15       6    2013 16.02604
+## 16       7    2013 16.23650
+## 17       6    2014 16.49000
+## 18       7    2014 16.10379</code></pre>
+<pre class="r"><code>aggregate(a[,c(&quot;E_BMI&quot;,&quot;E_WGHT&quot;,&quot;E_HGHT&quot;)],by=list(a$number,a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)}) </code></pre>
+<pre><code>##    Group.1 Group.2    E_BMI    E_WGHT    E_HGHT
+## 1        1    2008      NaN  8.038865  67.04957
+## 2        2    2008      NaN  9.676650  74.00964
+## 3        1    2009      NaN  8.232188  67.75818
+## 4        2    2009      NaN  9.859588  75.46062
+## 5        2    2010      NaN 10.298889  77.25222
+## 6        3    2010      NaN 12.092907  86.17143
+## 7        4    2010      NaN 13.842272  92.81584
+## 8        3    2011      NaN 12.467797  87.68475
+## 9        4    2011      NaN 14.196340  93.89133
+## 10       5    2011 16.06146 16.069463  99.90654
+## 11       4    2012      NaN 14.852778  95.43611
+## 12       5    2012 16.02235 16.300202 100.76224
+## 13       6    2012 16.08277 18.436036 106.89977
+## 14       5    2013 16.22651 17.096386 102.51325
+## 15       6    2013 16.02604 18.626004 107.63504
+## 16       7    2013 16.23650 20.960565 113.35175
+## 17       6    2014 16.49000 20.108571 110.24714
+## 18       7    2014 16.10379 21.040875 114.08385</code></pre>
+<pre class="r"><code>## 여러 변수 가능 </code></pre>
+<p>간단한 실습을 위해 변수목록을 줄이자.</p>
+<pre class="r"><code>subvar=c(1:2,36,4,7,10,17:31)                   ## 변수번호   
+subvar</code></pre>
+<pre><code>##  [1]  1  2 36  4  7 10 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31</code></pre>
+<pre class="r"><code>b=a[,subvar]                                    ## 해당 변수만..
+head(b)</code></pre>
+<pre><code>##   PERSON_ID EXMD_BZ_YYYY number E_HGHT E_WGHT E_BMI Q_PREM Q_BTH_WGHT
+## 1  10934240         2014      7  106.3   19.1  16.9      2        3.3
+## 2  11209245         2014      7  107.9   17.5  15.0      2        3.1
+## 3  11222323         2014      7  113.5   20.1  15.6      2        3.2
+## 4  11536379         2014      7  117.0   20.2  14.8      2        2.9
+## 5  11822836         2014      7  111.0   17.9  14.5      2        2.7
+## 6  12020725         2014      7  105.9   18.2  16.2      1        1.8
+##   Q_VCC_BCG_YN Q_VCC_HBV_YN Q_VCC_HBV_FRQ Q_VCC_DPT_YN Q_VCC_DPT_FRQ
+## 1            1            1             3            1             5
+## 2            1            1             3            1             4
+## 3            1            1             3            1             4
+## 4            1            1             3            1             5
+## 5            1            1             3            1             5
+## 6            1            1             3            1             5
+##   Q_VCC_POLIO_YN Q_VCC_POLIO_FRQ Q_VCC_MMR_YN Q_VCC_MMR_FRQ Q_VCC_CPOX_YN
+## 1              1               4            1             2             1
+## 2              1               3            1             1             1
+## 3              1               3            1             2             1
+## 4              1               4            1             2             1
+## 5              1               4            1             2             1
+## 6              1               4            1             2             1
+##   Q_VCC_CPOX_FRQ Q_VCC_JENC_YN Q_VCC_JENC_FRQ
+## 1              1             1              3
+## 2              1             1              3
+## 3              1             1              3
+## 4              1             1              3
+## 5              1             1              3
+## 6              1             1              3</code></pre>
+<pre class="r"><code>subvar=names(a)[c(1:2,36,4,7,10,17:31)]         ## 변수명으로 해도 똑같다. 
+subvar</code></pre>
+<pre><code>##  [1] &quot;PERSON_ID&quot;       &quot;EXMD_BZ_YYYY&quot;    &quot;number&quot;         
+##  [4] &quot;E_HGHT&quot;          &quot;E_WGHT&quot;          &quot;E_BMI&quot;          
+##  [7] &quot;Q_PREM&quot;          &quot;Q_BTH_WGHT&quot;      &quot;Q_VCC_BCG_YN&quot;   
+## [10] &quot;Q_VCC_HBV_YN&quot;    &quot;Q_VCC_HBV_FRQ&quot;   &quot;Q_VCC_DPT_YN&quot;   
+## [13] &quot;Q_VCC_DPT_FRQ&quot;   &quot;Q_VCC_POLIO_YN&quot;  &quot;Q_VCC_POLIO_FRQ&quot;
+## [16] &quot;Q_VCC_MMR_YN&quot;    &quot;Q_VCC_MMR_FRQ&quot;   &quot;Q_VCC_CPOX_YN&quot;  
+## [19] &quot;Q_VCC_CPOX_FRQ&quot;  &quot;Q_VCC_JENC_YN&quot;   &quot;Q_VCC_JENC_FRQ&quot;</code></pre>
+<pre class="r"><code>b=a[,subvar]</code></pre>
+<p>이제부터는 <code>b</code> 데이터셋으로 실습을 진행하겠다. 결측치 현황을 살펴보면</p>
+<pre class="r"><code>summary(b)</code></pre>
+<pre><code>##    PERSON_ID         EXMD_BZ_YYYY      number          E_HGHT      
+##  Min.   :10005819   Min.   :2008   Min.   :1.000   Min.   :  9.30  
+##  1st Qu.:35800784   1st Qu.:2009   1st Qu.:2.000   1st Qu.: 73.50  
+##  Median :57100463   Median :2011   Median :4.000   Median : 91.30  
+##  Mean   :56411261   Mean   :2011   Mean   :3.707   Mean   : 89.72  
+##  3rd Qu.:77709454   3rd Qu.:2012   3rd Qu.:5.000   3rd Qu.:103.80  
+##  Max.   :99997712   Max.   :2014   Max.   :7.000   Max.   :174.00  
+##                                                    NA&#39;s   :12      
+##      E_WGHT          E_BMI           Q_PREM        Q_BTH_WGHT   
+##  Min.   : 1.10   Min.   : 5.80   Min.   :1.000   Min.   :0.000  
+##  1st Qu.: 9.50   1st Qu.:15.00   1st Qu.:2.000   1st Qu.:3.000  
+##  Median :13.20   Median :15.90   Median :2.000   Median :3.200  
+##  Mean   :13.69   Mean   :16.06   Mean   :1.971   Mean   :3.193  
+##  3rd Qu.:17.00   3rd Qu.:16.80   3rd Qu.:2.000   3rd Qu.:3.500  
+##  Max.   :75.80   Max.   :55.80   Max.   :2.000   Max.   :9.900  
+##                  NA&#39;s   :28157   NA&#39;s   :10617   NA&#39;s   :10112  
+##   Q_VCC_BCG_YN    Q_VCC_HBV_YN   Q_VCC_HBV_FRQ    Q_VCC_DPT_YN  
+##  Min.   :1.000   Min.   :1.000   Min.   :0.000   Min.   :1.000  
+##  1st Qu.:1.000   1st Qu.:1.000   1st Qu.:3.000   1st Qu.:1.000  
+##  Median :1.000   Median :1.000   Median :3.000   Median :1.000  
+##  Mean   :1.002   Mean   :1.001   Mean   :2.701   Mean   :1.001  
+##  3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:3.000   3rd Qu.:1.000  
+##  Max.   :2.000   Max.   :2.000   Max.   :7.000   Max.   :2.000  
+##  NA&#39;s   :10129   NA&#39;s   :10081   NA&#39;s   :10213   NA&#39;s   :10081  
+##  Q_VCC_DPT_FRQ   Q_VCC_POLIO_YN  Q_VCC_POLIO_FRQ  Q_VCC_MMR_YN  
+##  Min.   :0.00    Min.   :1.000   Min.   :0.000   Min.   :1.000  
+##  1st Qu.:3.00    1st Qu.:1.000   1st Qu.:3.000   1st Qu.:1.000  
+##  Median :4.00    Median :1.000   Median :3.000   Median :1.000  
+##  Mean   :3.57    Mean   :1.002   Mean   :2.907   Mean   :1.004  
+##  3rd Qu.:4.00    3rd Qu.:1.000   3rd Qu.:3.000   3rd Qu.:1.000  
+##  Max.   :9.00    Max.   :2.000   Max.   :6.000   Max.   :2.000  
+##  NA&#39;s   :10210   NA&#39;s   :10463   NA&#39;s   :10624   NA&#39;s   :16827  
+##  Q_VCC_MMR_FRQ   Q_VCC_CPOX_YN   Q_VCC_CPOX_FRQ  Q_VCC_JENC_YN  
+##  Min.   :0.000   Min.   :1.00    Min.   :0.00    Min.   :1.000  
+##  1st Qu.:1.000   1st Qu.:1.00    1st Qu.:1.00    1st Qu.:1.000  
+##  Median :1.000   Median :1.00    Median :1.00    Median :1.000  
+##  Mean   :1.189   Mean   :1.01    Mean   :0.98    Mean   :1.012  
+##  3rd Qu.:1.000   3rd Qu.:1.00    3rd Qu.:1.00    3rd Qu.:1.000  
+##  Max.   :5.000   Max.   :2.00    Max.   :5.00    Max.   :2.000  
+##  NA&#39;s   :17045   NA&#39;s   :16832   NA&#39;s   :17144   NA&#39;s   :16843  
+##  Q_VCC_JENC_FRQ 
+##  Min.   :0.000  
+##  1st Qu.:2.000  
+##  Median :3.000  
+##  Mean   :2.331  
+##  3rd Qu.:3.000  
+##  Max.   :7.000  
+##  NA&#39;s   :17124</code></pre>
+<p>원활한 실습읋 위해 결측치가 없는 데이터셋을 만든 후 계속 실습을 진행하려 한다. 결측치가 없는 행이 어떤 행인지를 알아보려면</p>
+<pre class="r"><code>dim(b)</code></pre>
+<pre><code>## [1] 45537    21</code></pre>
+<pre class="r"><code>nona=complete.cases(b)                       ## 결측치 없으면 T, 있으면 F
+table(nona)</code></pre>
+<pre><code>## nona
+## FALSE  TRUE 
+## 28896 16641</code></pre>
+<pre class="r"><code>c=b[nona,]                                   ## 결측치 없는 데이터 생성.
+c=na.omit(b)                                 ## na.omit 함수를 이용하면 더 편하다.
+dim(c)</code></pre>
+<pre><code>## [1] 16641    21</code></pre>
+</div>
+<div id="--" class="section level2">
+<h2>다양한 조건문 활용</h2>
+<p>이번에는 연속형 변수인 <code>BMI</code>변수를 예시로 우리가 원하는 조건에 해당하는 정보를 뽑아내는 것을 연습해 보겠다.</p>
+<pre class="r"><code>mean(c$E_BMI)</code></pre>
+<pre><code>## [1] 16.06117</code></pre>
+<pre class="r"><code>cut= c$E_BMI &gt;=16                                   ## TRUE of FALSE
+table(cut)                         </code></pre>
+<pre><code>## cut
+## FALSE  TRUE 
+##  8787  7854</code></pre>
+<pre class="r"><code>rows=which(c$E_BMI &gt;= 16)                           ## row numbers
+head(rows)                               </code></pre>
+<pre><code>## [1]  1  6  9 10 12 13</code></pre>
+<pre class="r"><code>values=c$E_BMI[c$E_BMI&gt;=16]                         ## Values
+head(values)</code></pre>
+<pre><code>## [1] 16.9 16.2 17.4 21.0 16.6 16.5</code></pre>
+<pre class="r"><code>length(values)</code></pre>
+<pre><code>## [1] 7854</code></pre>
+<pre class="r"><code>BMI_HGHT_and=(c$E_BMI&gt;=16 &amp; c$E_HGHT&gt;=100)          ## and
+BMI_HGHT_or=(c$E_BMI&gt;=16 | c$E_HGHT&gt;=100)           ## or
+table(BMI_HGHT_and)</code></pre>
+<pre><code>## BMI_HGHT_and
+## FALSE  TRUE 
+##  9945  6696</code></pre>
+<pre class="r"><code>table(BMI_HGHT_or)</code></pre>
+<pre><code>## BMI_HGHT_or
+## FALSE  TRUE 
+##  1466 15175</code></pre>
+<p>이번에는 년도 변수인 <code>EXMD_BZ_YYYY</code> 를 예로 실습을 해 보자.</p>
+<pre class="r"><code>y2011 = c$EXMD_BZ_YYYY==2011
+table(y2011)</code></pre>
+<pre><code>## y2011
+## FALSE  TRUE 
+## 15738   903</code></pre>
+<pre class="r"><code>y2011_2012 = (c$EXMD_BZ_YYYY == 2011 | c$EXMD_BZ_YYYY == 2012)
+y2011_2012 = c$EXMD_BZ_YYYY %in% c(2011,2012)                       ## Same 
+table(y2011_2012)</code></pre>
+<pre><code>## y2011_2012
+## FALSE  TRUE 
+## 10258  6383</code></pre>
+<pre class="r"><code>class(c$EXMD_BZ_YYYY)                                               ## continuous or categorial</code></pre>
+<pre><code>## [1] &quot;integer&quot;</code></pre>
+<pre class="r"><code>summary(c$EXMD_BZ_YYYY)                                             ## continuous</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2011    2012    2013    2013    2014    2014</code></pre>
+<pre class="r"><code>c$EXMD_BZ_YYYY=as.factor(c$EXMD_BZ_YYYY)                            ## continuous -&gt; categorial
+summary(c$EXMD_BZ_YYYY)</code></pre>
+<pre><code>## 2011 2012 2013 2014 
+##  903 5480 5682 4576</code></pre>
+<pre class="r"><code>kk=as.numeric(c$EXMD_BZ_YYYY)                                       ## NONONONO
+summary(kk)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   1.000   2.000   3.000   2.837   4.000   4.000</code></pre>
+<pre class="r"><code>c$EXMD_BZ_YYYY=as.numeric(as.character(c$EXMD_BZ_YYYY))             ## OK
+summary(c$EXMD_BZ_YYYY)</code></pre>
+<pre><code>##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    2011    2012    2013    2013    2014    2014</code></pre>
+</div>
+<div id="------" class="section level2">
+<h2>데이터 불러온 후 가장 먼저 해야할 것!!!!!!</h2>
+<p>사실 가장 앞에 나와야 할 내용인데 <code>class</code>의 개념이 나와야 해서 이제야 언급하게 되었다. 데이터를 받으면 가장 먼저 해야할 것은 연속형, 범주형 변수를 설정해 주는 것이다. <strong>Feamle</strong>, <strong>Male</strong> 등 이미 변수가 범주로 되어 있다면 상관이 없겠지만, 그렇지 않고 0,1로 되어있을 때는 숫자형으로 되어있는게 default이기 때문이다. 데이터셋 <code>c</code>로 연습해보자. 년도, 차수,키, 몸무게, BMI와 접종횟수를 연속변수로 보고 나머지는 범주형으로 보는 것으로 하자.</p>
+<pre class="r"><code>conti_var=c(2:6,8,seq(11,21,2))                                 ## 키, 몸무게, BMI, freq variable
+cat_var= which(!(1:ncol(c) %in% conti_var))                     ## !: Not
+cat_var</code></pre>
+<pre><code>## [1]  1  7  9 10 12 14 16 18 20</code></pre>
+<pre class="r"><code>for (vn in conti_var){
+  c[,vn]=as.numeric(c[,vn])
+}
+
+for (vn in cat_var){
+  c[,vn]=as.factor(c[,vn])
+}
+
+summary(c)</code></pre>
+<pre><code>##     PERSON_ID      EXMD_BZ_YYYY      number          E_HGHT     
+##  10033697:    3   Min.   :2011   Min.   :5.000   Min.   : 86.0  
+##  10035928:    3   1st Qu.:2012   1st Qu.:5.000   1st Qu.:102.0  
+##  10061169:    3   Median :2013   Median :6.000   Median :107.1  
+##  10072608:    3   Mean   :2013   Mean   :5.985   Mean   :107.3  
+##  10080964:    3   3rd Qu.:2014   3rd Qu.:7.000   3rd Qu.:112.4  
+##  10083933:    3   Max.   :2014   Max.   :7.000   Max.   :131.3  
+##  (Other) :16623                                                 
+##      E_WGHT         E_BMI       Q_PREM      Q_BTH_WGHT    Q_VCC_BCG_YN
+##  Min.   : 1.7   Min.   : 8.40   1:  432   Min.   :0.100   1:16591     
+##  1st Qu.:16.3   1st Qu.:15.00   2:16209   1st Qu.:3.000   2:   50     
+##  Median :18.0   Median :15.90             Median :3.200               
+##  Mean   :18.6   Mean   :16.06             Mean   :3.202               
+##  3rd Qu.:20.3   3rd Qu.:16.80             3rd Qu.:3.500               
+##  Max.   :49.0   Max.   :49.30             Max.   :5.900               
+##                                                                       
+##  Q_VCC_HBV_YN Q_VCC_HBV_FRQ  Q_VCC_DPT_YN Q_VCC_DPT_FRQ   Q_VCC_POLIO_YN
+##  1:16637      Min.   :0.00   1:16636      Min.   :0.000   1:16637       
+##  2:    4      1st Qu.:3.00   2:    5      1st Qu.:4.000   2:    4       
+##               Median :3.00                Median :4.000                 
+##               Mean   :2.88                Mean   :4.151                 
+##               3rd Qu.:3.00                3rd Qu.:5.000                 
+##               Max.   :7.00                Max.   :9.000                 
+##                                                                         
+##  Q_VCC_POLIO_FRQ Q_VCC_MMR_YN Q_VCC_MMR_FRQ   Q_VCC_CPOX_YN
+##  Min.   :0.000   1:16634      Min.   :0.000   1:16622      
+##  1st Qu.:3.000   2:    7      1st Qu.:1.000   2:   19      
+##  Median :3.000                Median :1.000                
+##  Mean   :3.253                Mean   :1.381                
+##  3rd Qu.:4.000                3rd Qu.:2.000                
+##  Max.   :6.000                Max.   :5.000                
+##                                                            
+##  Q_VCC_CPOX_FRQ  Q_VCC_JENC_YN Q_VCC_JENC_FRQ 
+##  Min.   :0.000   1:16626       Min.   :0.000  
+##  1st Qu.:1.000   2:   15       1st Qu.:2.000  
+##  Median :1.000                 Median :3.000  
+##  Mean   :1.042                 Mean   :2.648  
+##  3rd Qu.:1.000                 3rd Qu.:3.000  
+##  Max.   :5.000                 Max.   :6.000  
+## </code></pre>
+</div>
+<div id="--" class="section level2">
+<h2>새로운 변수 만들기</h2>
+<p>지금까지 배운 것을 토대로 간단히 새로운 변수를 만들 수 있다.</p>
+<pre class="r"><code>c$BMI_cat=0                             ## 0으로 된 변수만들고
+c$BMI_cat[c$E_BMI&gt;=16]=1                ## 16이상인 것만 1로 바꾼다.
+table(c$BMI_cat)</code></pre>
+<pre><code>## 
+##    0    1 
+## 8787 7854</code></pre>
+<pre class="r"><code>c$BMI_cat= c$E_BMI&gt;=16                  ## 방법 2: TRUE of FALSE 
+table(c$BMI_cat)</code></pre>
+<pre><code>## 
+## FALSE  TRUE 
+##  8787  7854</code></pre>
+<pre class="r"><code>c$BMI_cat= ifelse(c$E_BMI&gt;=16,&quot;1&quot;,&quot;0&quot;)  ## 방법 3: ifelse문 이용
+table(c$BMI_cat)</code></pre>
+<pre><code>## 
+##    0    1 
+## 8787 7854</code></pre>
+</div>
+<div id="sort" class="section level2">
+<h2>Sort</h2>
+<p>정렬에는 <code>order</code>함수가 사용된다.</p>
+<pre class="r"><code>ord=order(c$E_BMI)         ## 작은순서대로 Rank  
+head(c$E_BMI[ord])        </code></pre>
+<pre><code>## [1]  8.4 10.7 11.0 11.6 11.7 11.8</code></pre>
+<pre class="r"><code>ord2=order(-c$E_BMI)       ## 큰순서대로 Rank
+tail(c$E_BMI[ord2])</code></pre>
+<pre><code>## [1] 11.8 11.7 11.6 11.0 10.7  8.4</code></pre>
+<pre class="r"><code>d=c[ord,]       ## 콤마 앞에 즉, 행에 순서변수를 넣는다. 
+head(d)</code></pre>
+<pre><code>##       PERSON_ID EXMD_BZ_YYYY number E_HGHT E_WGHT E_BMI Q_PREM Q_BTH_WGHT
+## 2574   68204183         2014      7  118.3   11.8   8.4      2        3.3
+## 9167   78509257         2013      6  103.0   11.4  10.7      2        3.1
+## 9315   80696645         2013      6  120.6   16.0  11.0      2        3.7
+## 16720  16551997         2011      5   91.5    9.7  11.6      2        2.7
+## 13511  57691599         2012      5   99.4   11.6  11.7      2        2.7
+## 4959   16551997         2013      7  101.8   12.2  11.8      2        2.7
+##       Q_VCC_BCG_YN Q_VCC_HBV_YN Q_VCC_HBV_FRQ Q_VCC_DPT_YN Q_VCC_DPT_FRQ
+## 2574             1            1             3            1             5
+## 9167             1            1             3            1             4
+## 9315             1            1             3            1             4
+## 16720            1            1             3            1             4
+## 13511            1            1             3            1             4
+## 4959             1            1             3            1             4
+##       Q_VCC_POLIO_YN Q_VCC_POLIO_FRQ Q_VCC_MMR_YN Q_VCC_MMR_FRQ
+## 2574               1               4            1             1
+## 9167               1               3            1             1
+## 9315               1               3            1             1
+## 16720              1               3            1             1
+## 13511              1               3            1             1
+## 4959               1               3            1             1
+##       Q_VCC_CPOX_YN Q_VCC_CPOX_FRQ Q_VCC_JENC_YN Q_VCC_JENC_FRQ BMI_cat
+## 2574              1              1             1              3       0
+## 9167              1              1             1              3       0
+## 9315              1              1             1              3       0
+## 16720             1              1             1              2       0
+## 13511             1              1             1              2       0
+## 4959              1              1             1              3       0</code></pre>
+</div>
+<div id="subset" class="section level2">
+<h2>Subset</h2>
+<p>특정 조건을 만족하는 부분 데이터셋을 만드는 것은 지금까지 배웠던 것을 응용할 수도 있고 <code>subset</code>이라는 함수를 쓸 수도 있다.</p>
+<pre class="r"><code>d=c[c$EXMD_BZ_YYYY %in% 2013:2014,]       ## 행에 조건 써준다. 
+d=subset(c, EXMD_BZ_YYYY %in% 2013:2014)  ## 문법이 간단하여 이것을 주로 쓴다. </code></pre>
+</div>
+<div id="merge" class="section level2">
+<h2>Merge</h2>
+<p>Merge는 <code>merge</code>함수를 이용한다. 실습을 위해 데이터셋 <code>c</code>를 두 개의 데이터셋으로 나눈 후 합쳐보겠다.</p>
+<pre class="r"><code>d=c[,1:6]                 ## 기본정보 + 연속형변수 
+e=c[,c(1:3,7:21)]         ## 기본정보 + 범주형변수 
+c=merge(d,e,by=c(&quot;PERSON_ID&quot;,&quot;EXMD_BZ_YYYY&quot;,&quot;number&quot;), all=F)  ##all=T로 하면 안겹치는 것도 NA포함해서 만듦.</code></pre>
+</div>
+</div>
+<div id="table-1-" class="section level1">
+<h1>Table 1 만들기</h1>
+<p>이제부터는 실전에서 기술통계량 즉, 테이블 1을 간단히 만드는 방법을 연습해 보겠다. <code>moonBook, ztable</code>패키지를 미리 설치하자.</p>
+<pre class="r"><code>#install.packages(c(&quot;moonbook&quot;,&quot;ztable&quot;))
+library(moonBook);library(ztable)
+options(ztable.type=&quot;html&quot;)
+tb1=mytable(EXMD_BZ_YYYY ~ E_HGHT+E_WGHT+E_BMI +Q_PREM+Q_BTH_WGHT+Q_VCC_BCG_YN, data=c, digits=2)  ## 그룹변수 ~ 설명변수 
+ztable(tb1)</code></pre>
+<head>
+<style>
+        table {
+              font-family: serif;
+              text-align: right;}
+        th {
+              padding: 1px 1px 5px 5px;
+            }
+        td {
+             padding: 1px 1px 5px 5px; }
+      </style>
+</head>
+<table align="center" style="border-collapse: collapse; caption-side:top; font-size:11pt;">
+<caption style="text-align:center;">
+</caption>
+<tr>
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">
+</th>
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">
+2011
+</th>
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">
+2012
+</th>
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">
+2013
+</th>
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">
+2014
+</th>
+<th <th rowspan="2" align="center" style="font-weight: normal;border-left: 0px solid black;border-right:0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
+p
+</th>
+</tr>
+<tr>
+<th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+</th>
+<th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+(N=903)
+</th>
+<th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+(N=5480)
+</th>
+<th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+(N=5682)
+</th>
+<th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
+(N=4576)
+</th>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;">
+E_HGHT
+</td>
+<td align="center" style="border-left: 0px solid black;">
+99.93 ± 3.52
+</td>
+<td align="center" style="border-left: 0px solid black;">
+101.70 ± 4.52
+</td>
+<td align="center" style="border-left: 0px solid black;">
+108.42 ± 4.84
+</td>
+<td align="center" style="border-left: 0px solid black;">
+114.00 ± 4.58
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;">
+0.000
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+E_WGHT
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+16.07 ± 2.24
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+16.62 ± 2.30
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+18.96 ± 2.94
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+21.02 ± 3.29
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+0.000
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+E_BMI
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+16.05 ± 1.73
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+16.02 ± 1.50
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+16.06 ± 1.61
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+16.11 ± 1.80
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+0.020
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+Q_PREM
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+0.873
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+    1
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+23 (2.55%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+141 (2.57%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+155 (2.73%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+113 (2.47%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+    2
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+880 (97.45%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+5339 (97.43%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+5527 (97.27%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+4463 (97.53%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+Q_BTH_WGHT
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+3.21 ± 0.44
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+3.20 ± 0.44
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+3.20 ± 0.45
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+3.20 ± 0.44
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+0.338
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+Q_VCC_BCG_YN
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+0.000
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+    1
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+902 (99.89%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+5472 (99.85%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+5676 (99.89%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+4541 (99.24%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+</td>
+</tr>
+<tr>
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
+    2
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+1 (0.11%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+8 (0.15%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+6 (0.11%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+35 (0.76%)
+</td>
+<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+</td>
+</tr>
+<tr>
+<td colspan="6" align="left" style="font-size:9pt ;border-top: 1px solid black; border-bottom: hidden;">
+</td>
+</tr>
+</table>
+</div>
+<div id="r-plot" class="section level1">
+<h1>R Plot</h1>
+<p><em>R</em>의 큰 장점 중 하나는 수려한 그래픽이다. 본 실습에서 많은 부분은 할 수 없지만 기본적인 그림, 여러 그림 동시에 그리기 등 옵션들, 상관관계 그림을 알아보도록 하겠다.</p>
+<pre class="r"><code>hist(c$E_BMI,main=&quot;Histogram: BMI&quot;,xlab=&quot;BMI&quot;)</code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-29-1.png" width="672" /></p>
+<pre class="r"><code>hist(c$E_BMI,main=&quot;Histogram: BMI&quot;,xlab=&quot;BMI&quot;,breaks=10,freq=F)</code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-29-2.png" width="672" /></p>
+<pre class="r"><code>boxplot(c$E_BMI,main=&quot;Boxplot: BMI&quot;,ylab=&quot;BMI&quot;)</code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-29-3.png" width="672" /></p>
+<pre class="r"><code>boxplot(E_BMI~EXMD_BZ_YYYY,data=c, main=&quot;BMI per year&quot;, ylab=&quot;BMI&quot;)</code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-29-4.png" width="672" /></p>
+<pre class="r"><code>plot(c$E_BMI,c$E_HGHT, xlab=&quot;BMI&quot;, ylab=&quot;Height&quot;)</code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-29-5.png" width="672" /></p>
+<pre class="r"><code>plot(c[,4:6])                                       </code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-29-6.png" width="672" /></p>
+<div id="---." class="section level2">
+<h2>여러 그림 하나에 그리기.</h2>
+<pre class="r"><code>par(mfrow=c(2,2))                    ## 2*2 그림 (상 -&gt; 하), mfcol: 좌 -&gt; 우 
+hist(c[,4])
+hist(c[,5])
+hist(c[,6])
+hist(c[,3])</code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-30-1.png" width="672" /></p>
+</div>
+<div id="lattice--" class="section level2">
+<h2>lattice 패키지 이용</h2>
+<pre class="r"><code>library(lattice)
+xyplot(E_BMI~E_HGHT|EXMD_BZ_YYYY,data=c, main=&quot;Plot per year&quot;)</code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+</div>
+<div id="-" class="section level2">
+<h2>상관관계 분석</h2>
+<pre class="r"><code>library(Hmisc)
+rcorr(as.matrix(c[,4:6]))</code></pre>
+<pre><code>##        E_HGHT E_WGHT E_BMI
+## E_HGHT   1.00    0.8  0.15
+## E_WGHT   0.80    1.0  0.70
+## E_BMI    0.15    0.7  1.00
+## 
+## n= 16641 
+## 
+## 
+## P
+##        E_HGHT E_WGHT E_BMI
+## E_HGHT         0      0   
+## E_WGHT  0             0   
+## E_BMI   0      0</code></pre>
+<pre class="r"><code>rcorr(as.matrix(c[,4:6]),type=&quot;spearman&quot;)</code></pre>
+<pre><code>##        E_HGHT E_WGHT E_BMI
+## E_HGHT   1.00   0.85  0.09
+## E_WGHT   0.85   1.00  0.57
+## E_BMI    0.09   0.57  1.00
+## 
+## n= 16641 
+## 
+## 
+## P
+##        E_HGHT E_WGHT E_BMI
+## E_HGHT         0      0   
+## E_WGHT  0             0   
+## E_BMI   0      0</code></pre>
+<pre class="r"><code>##intstall.packages(&quot;PerformanceAnalytics&quot;)
+library(PerformanceAnalytics)
+chart.Correlation(c[,4:6],pch=&quot;+&quot;,main=&quot;Correlation plot&quot;)            ## histogram=F, method=&quot;spearman&quot; 옵션가능 </code></pre>
+<p><img src="rbasic_files/figure-html/unnamed-chunk-32-1.png" width="672" /></p>
+</div>
+<div id="-" class="section level2">
+<h2>그림 저장</h2>
+<pre class="r"><code>pdf(&quot;fig1.pdf&quot;,h=7,w=10)  ## h: height, w: width(inch)
+hist(c[,4])
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<pre class="r"><code>png(&quot;fig1.png&quot;,h=480,w=640)  ## h: height, w: width(pixel)
+hist(c[,4])
+dev.off()</code></pre>
+<pre><code>## png 
+##   2</code></pre>
+<p><strong>수고하셨습니다!! 질문은 <a href="mailto:secondmath85@gmail">secondmath85@gmail</a> 로 주시면 감사하겠습니다</strong></p>
+</div>
+</div>
+
+<p>Copyright &copy;2016 <a href="mailto:secondmath85@gmail.com">Jinseob Kim</a>&nbsp;&nbsp;
+
+<a href="https://www.facebook.com/secondmath"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i> </a> &nbsp;
+
+<a href="https://www.linkedin.com/in/jinseob-kim-%EA%B9%80%EC%A7%84%EC%84%AD-456550a5?trk=hp-identity-name"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a>&nbsp;
+
+<a href="https://github.com/mathemedicine/mathemedicine.github.io"><i class="fa fa-github fa-lg" aria-hidden="true"></i></a>
+
+</p>
+
+
+
+
+<div id="disqus_thread"></div>
+<script>/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-mathemedicine-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

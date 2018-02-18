@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>딥러닝의 역사</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-86134798-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Jinseob's Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="probability_likelihood.html">Likelihood</a>
+    </li>
+    <li>
+      <a href="Normal_distribution.html">Normal Distribution</a>
+    </li>
+    <li>
+      <a href="WAR.html">야구에서의 통계학: WAR</a>
+    </li>
+    <li>
+      <a href="hypothesis.html">가설검정의 심리학</a>
+    </li>
+    <li>
+      <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Mathematics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="godel.html">괴델의 불완전성 정리</a>
+    </li>
+    <li>
+      <a href="propose.html">조건부 확률로 알아보는 프로포즈 전략</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    ML
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="deep_learning.html">딥러닝의 역사</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Lecture
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="rbasic.html">R을 이용한 데이터 매니지먼트 기초</a>
+    </li>
+    <li>
+      <a href="rbasic_plan_smc.html">R 의학통계 강의계획: 삼성서울병원</a>
+    </li>
+    <li>
+      <a href="r_smc_1.html">R 의학통계: 삼성서울병원(1)- 기초 문법 및 Table 1</a>
+    </li>
+    <li>
+      <a href="gam_korea.html">GAM: 고려대학교 의과대학</a>
+    </li>
+    <li>
+      <a href="PopGene.html">Population Genetics Index: 유전체역학 2017</a>
+    </li>
+    <li>
+      <a href="2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html">리눅스 서버와 깃허브(github) 쉽게 사용하기</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization1.html">GWAS visualization (1): Summary table</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization2.html">GWAS visualization (2): Interactive plot</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization3.html">GWAS visualization (3): Automation</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mathemedicine/mathemedicine.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style>
+   p {line-height: 2.5em;}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">딥러닝의 역사</h1>
+
+</div>
+
+
+<p>이 글은 2014년 9월에 썼던 것을 HTML형식으로 재정리한 내용으로 최신지견이 아님을 감안하길 바란다. 슬라이드 버전은 <a href="http://www.slideshare.net/secondmath/deep-learning-by-jskim">여기</a>에서 볼 수 있다.</p>
+<div class="section level2">
+<h2>서론</h2>
+<p>기계학습(Machine Learning)은 컴퓨터가 스스로 학습하여 예측모형을 개발하는 인공지능의 한 분야이며, 딥러닝(Deep Learning)은 인간의 신경망의 원리를 이용한 심층신경망(Deep Neural Network)이론을 이용한 기계학습방법이다. 딥러닝 기술은 이미 구글, 페이스북, 아마존 등 글로벌 IT기업들에서 광범위하게 이용되고 있는 기술이며 특히, 패턴인식이나 사진, 음성 등의 인식, 기계번역 등의 자연언어처리(Natural Language Processing)에 좋은 성능을 발휘하는 것으로 알려져 있는데, MIT가 2013년을 빛낼 10대 혁신기술 중 하나로 선정하고 가트너(Gartner, Inc.)가 2014 세계 IT 시장 10대 주요 예측기술로 언급하는 등 최근 가장 뜨거운 이슈가 되고 있다<span class="citation">(동아일보, n.d.; Gartner, n.d.)</span>. 딥러닝이 기존의 통계학이나 다른 기계학습 방법과 다른 큰 차이점은 인간의 뇌를 기초로하여 설계되었다는 점이다. 인간은 컴퓨터가 아주 짧은 시간에 할 수 있는 계산도 쉽게 해낼 수 없는 반면, 컴퓨터는 인간이 쉽게 인지하는 사진이나 음성을 해석하지 못하는데 이는 인간의 뇌가 엄청난 수의 뉴런과 시냅스의 로 이루어져 있기 때문이다. 각각의 뉴런은 기능이 보잘것 없지만 수많은 뉴런들이 복잡하게 연결되어 병렬연산을 수행함으로서 컴퓨터가 하지 못하는 음성, 영상인식을 수월하게 할 수 있는 것이며 딥러닝은 이 수많은 뉴런과 시냅스의 병렬연산을 컴퓨터로 재현하는 방법인 것이다. 이것이 글로벌 IT기업들이 딥러닝을 주목하는 이유일 것이다. 이에 본 글에서는 인공신경망 이론의 역사부터 2014년 현재 상황까지를 간략히 리뷰해 보겠다.</p>
+<p>딥러닝의 역사는 크게 3시기로 나뉘어지는데 1세대는 최초의 인경신공망인 <strong>퍼셉트론(Perceptron)</strong>, 2세대는 <strong>다층(Multilayer) 퍼셉트론</strong>, 그리고 <strong>현재의 딥러닝</strong>을 3세대라고 할 수 있을 것이다.</p>
+</div>
+<div id="-perceptron" class="section level2">
+<h2>1세대: Perceptron</h2>
+<p>인공신경망(Neural Network)의 기원은 1958년에 Rosenblatt가 제안한 퍼셉트론이 시작이라 할 수 있다[<span class="citation">Rosenblatt (1958)</span>}. <span class="math inline">\(n\)</span>개의 input과 1개의 output에 대하여 각각의 input의 weight를 <span class="math inline">\(w_i\)</span>라 한 후 퍼셉트론을 수식으로 나타내면 다음과 같다<span class="citation">(Honkela, n.d.)</span>.</p>
+<p><span class="math display">\[y=\varphi(\sum_{i=1}^n w_ix_i+b)\]</span> (<span class="math inline">\(b\)</span>: bias, <span class="math inline">\(\varphi\)</span>: activation function(e.g: logistic or <span class="math inline">\(tanh\)</span>)</p>
+<div class="figure">
+<img src="dl_img/perceptron.png" alt="Concept of Perceptron" />
+<p class="caption">Concept of Perceptron</p>
+</div>
+<p>즉, <span class="math inline">\(n\)</span>개의 input의 선형결합(Linear Combination)에 Activation 함수를 적용하여 0$$1 사이의 확률값으로 <span class="math inline">\(y\)</span>값을 제공하는 것이며, 확률값으로 받은 후에는 편의에 따라 0를 기준으로 event냐 아니냐(1 VS -1)를 판단한다.</p>
+<p>이것이 인공신경망 모형의 시작이다. 허나 이 모형은 아주 간단한 XOR problem마저 학습하지 못하는 등, 심각한 문제가 있는데(아래 그림) 이 때문에 한동안 발전없이 포류되게 된다<span class="citation">(G. Hinton, n.d.)</span>.</p>
+<div class="figure">
+<img src="dl_img/notperceptron.png" alt="XOR problem in Perceptron" />
+<p class="caption">XOR problem in Perceptron</p>
+</div>
+</div>
+<div id="-multilayer-perceptron" class="section level2">
+<h2>2세대: Multilayer Perceptron</h2>
+<p>XOR 같은 간단한 것도 학습하지 못하는 퍼셉트론의 단점을 해결하기 위한 방법은 의외로 단순하였는데 Input layer와 output layer사이에 하나 이상의 hidden layer를 추가하여 학습하는 것이 그것이며 이를 다층 퍼셉트론(Multilayer perceptron)이라 한다. 아래 그림을 보면 hidden layer가 증가할수록 분류력이 좋아지는 것을 확인할 수 있다.<br />
+허나 이 방법은 hidden layer의 갯수가 증가할수록 weight의 갯수도 계속 증가하게 되어 학습(Traning)이 어렵다는 단점이 있는데 Rumelhart등은 에러역전파알고리즘(Error Backpropagation Algorithm)을 개발하여 다층 퍼셉트론의 학습을 가능하게 하였다<span class="citation">(Rumelhart, Hinton, and Williams 1985)</span>. 에러역전파알고리즘의 자세한 증명은 참고문헌이나 인터넷을 찾아보기 바라며 여기서는 기장 기초적인 예제인 <strong>음식 가격 맞추기</strong>로 설명해 보겠다.</p>
+<div class="figure">
+<img src="dl_img/neural3.jpg" alt="Multilayer Perceptron" />
+<p class="caption">Multilayer Perceptron</p>
+</div>
+<div id="---perceptroncant" class="section level3">
+<h3>예제: 음식의 가격 맞추기<span class="citation">(G. Hinton, n.d.)</span></h3>
+<p>물고기(fish) 2개 과자(chip) 5개, 케첩(ketchup) 3개를 구입해서 가격(price)가 850원인 상황을 수식과 그림으로 나타내면 아래와 같다.</p>
+<p><span class="math display">\[price = x_{fish}w_{fish} + x_{chips}w_{chips} + x_{ketchup}w_{ketchup}\]</span></p>
+<div class="figure">
+<img src="dl_img/mlpexam.png" alt="Example: Weight Estimation" />
+<p class="caption">Example: Weight Estimation</p>
+</div>
+<p>이 때 가격을 나타내는 vector <span class="math inline">\(w\)</span>를 <span class="math inline">\(w\)</span>=<span class="math inline">\((w_{fish},w_{chips},w_{ketchup})\)</span>과 같이 정의하고 error를 <span class="math inline">\(\frac{1}{2}(t-y)^2\)</span>로 정의하면(<span class="math inline">\(y\)</span>: Estimation, <span class="math inline">\(t\)</span>: Real), 우리의 목표는 에러값을 최소로 하는 <span class="math inline">\(w\)</span>를 추정하는 것이 된다. 다층퍼셉트론에서는 모수<span class="math inline">\(w_i\)</span>)들의 갯수가 너무 많아 회귀분석에서 쓰는 최소제곱추정량(Least Square Estimator), 최대가능도추정량(Maximum Likelihood Estimator)를 쓸 수 없고, 알고리즘을 이용하여 에러의 최소값에 가까워지게 해야 하는데 여기서 이용되는 것이 <strong>Gradient descent</strong> 방법이다. 이는 미분계수에 비례하여 모수를 수정한다는 것이 특징인데 이를 간단히 묘사하면 다음 그림과 같다<span class="citation">(Han-Hsing, n.d.)</span>.</p>
+<div class="figure">
+<img src="dl_img/grad.png" alt="Example: Gradient Descent Algorithm" />
+<p class="caption">Example: Gradient Descent Algorithm</p>
+</div>
+<p>우리가 원하는 최소값일 때는 대부분 미분계수가 0일 때이므로 미분계수가 크면 크게 weight를 바꿔주고 미분계수가 작으면 작게 바꿔준다는 것이다. 또한 Learning rate를 결정할 수 있어서 얼마나 크게 바꿀지 대략적인 정도를 결정할 수도 있다.</p>
+<p>이제 이를 적용하여 예제를 풀어보자, 초기값으로 고기와 과자 케첩이 모두 50원이라고 하면 물고기 2개, 과자 5개, 케첩 3개의 전체 가격은 500원이 된다. 한편 에러함수를 각각 <span class="math inline">\(w_i\)</span>에 대해 미분하면,</p>
+<p><span class="math display">\[\frac{\partial E}{\partial w_i}= \frac{\partial y}{\partial w_i} \frac{dE}{dy}\]</span> 가 되고 <span class="math inline">\(E=\frac{1}{2}(t-y)^2\)</span>, <span class="math inline">\(y=x_{fish}w_{fish} + x_{chips}w_{chips} + x_{ketchup}w_{ketchup}\)</span>을 대입하면</p>
+<p><span class="math display">\[\frac{\partial E}{\partial w_i}= \frac{\partial y}{\partial w_i} \frac{dE}{dy}= - x_i(t-y)\]</span> 가 되며 Learning rate를 감안한 <span class="math inline">\(w_i\)</span>의 변화량은</p>
+<p><span class="math display">\[\Delta w_i= -\epsilon \frac{\partial E}{\partial w_i}= \epsilon x_i(t-y)\]</span> 이 된다.</p>
+<p>대입해보면 <span class="math inline">\(t\)</span>=850, <span class="math inline">\(y\)</span>=500, <span class="math inline">\(w_{fish}=w_{chips}=w_{ketchup}\)</span>=50 이고 간단한 계산을 위해 <span class="math inline">\(\epsilon=\frac{1}{35}\)</span>로 하면 <span class="math inline">\(\Delta w_{fish}\)</span>=20, <span class="math inline">\(\Delta w_{chips}\)</span>=50, <span class="math inline">\(\Delta w_{chips}\)</span>=30이 되고 이를 적용하면 다시 구해진 weight는 순서대로 70, 100, 80이 되며 이를 토대로 추정한 가격은 880이 된다. 이제 880과 850을 가지고 위의 과정을 계속 반복하면 참값에 가까운 값을 얻을 수 있을 것이다.</p>
+<p>지금 설명한 것은 가장 기초적인 알고리즘을 설명한 것이며 실제 오류역전파 알고리즘은 초기 weight를 토대로 다층 hidden layer를 거쳐서 하나의 예측값을 구하고 그 예측값과 실제값의 차이를 토대로 역으로 weight들을 수정해 나가게 된다(아래 그림)<span class="citation">(Kim, n.d.)</span>.</p>
+<div class="figure">
+<img src="dl_img/backpropa.png" alt="Backpropagation algorithm" />
+<p class="caption">Backpropagation algorithm</p>
+</div>
+<p>에러역전파알고리즘으로 다층퍼셉트론을 학습할 수 있게 되었으나 이것을 실제로 사람들이 이용하기에는 많은 어려움이 따랐는데 그 이유들은 다음과 같다.</p>
+<ol style="list-style-type: decimal">
+<li>수많은 Labeled data가 필요하다.</li>
+<li>학습을 하면 할수록 성능이 떨어진다(Vanishing gradient problem).</li>
+<li>Overfitting problem</li>
+<li>Local minima에 빠질 가능성</li>
+</ol>
+<p>하나씩 살펴보자. 추정해야 하는 모수가 많기 때문에 데이터가 많이 필요하고 그 중에서도 labeled data가 많이 필요하다. 허나 우리가 갖고 있는 데이터는 unlabeled data가 훨씬 많으며 실제 인간의 뇌의 학습 중 많은 부분이 unlabeled data를 이용한 Unsupervised Learning이며, 적은 양의 labeled data로 다층퍼셉트론을 학습하면 종종 hidden layer가 1개인 경우보다 성능이 떨어지는 경우를 관찰할 수 있으며 이것이 과적합(Overfitting)의 예시이다.</p>
+<p>다음으로 Activation function을 살펴보면 logistic function이든 <span class="math inline">\(tanh\)</span> function이든 가운데 부분보다 양 끝이 현저히 기울기의 변화가 작은 것을 발견할 수 있다(아래 그림).</p>
+<div class="figure">
+<img src="dl_img/logistictan.png" alt="Sigmoid functions" />
+<p class="caption">Sigmoid functions</p>
+</div>
+<p>때문에 학습이 진행될수록 급속도로 기울기아 0에 가까워져서 나중에는 거의 Gradient descent가 일어나지 않아 학습이 되지 않는 단점이 있다<span class="citation">(Bengio, Simard, and Frasconi 1994)</span>.</p>
+<p>마지막으로 최소제곱추정량이나 최대가능도추정량등 직접적으로 최소값을 구하는 방법을 이용하지 못하고 알고리즘을 이용하여 최소값에 가까워지게 했기 때문에 학습에서 나온 최소값이 과연 진짜 최소값(Global minima)인가? 국소 최소값(Local minima)는 아닌가..에 대한 의문점이 풀리지 않게 된다. 시작점을 어떻게 두느냐에 따라 Local minima에 빠질 수도 있기 때문이다(아래 그림)<span class="citation">(Kim, n.d.)</span>.</p>
+<div class="figure">
+<img src="dl_img/minima.png" alt="Global and Local Minima" />
+<p class="caption">Global and Local Minima</p>
+</div>
+<p>이런 문제점들 때문에 실제로 Neural Network은 지지벡터머신(Support Vector Machine)등에 밀려 2000년 초까지 제대로 활용되지 못하였다.</p>
+</div>
+</div>
+<div id="-unsupervised-learning---boltzmann-machine" class="section level2">
+<h2>3세대: Unsupervised Learning - Boltzmann Machine</h2>
+<p>앞서 언급한 단점들 때문에 인공신경망 이론이 잘 이용되지 못하다가, 2006년 볼츠만 머신을 이용한 학습방법이 재조명되면서 인공신경망 이론이 다시 학계의 주목을 받게 되었는데 이 볼츠만 머신의 핵심 아이디어는 바로 Unsupervised Learning, 즉 label이 없는 데이터로 미리 충분한 학습을 한다는 것이며 그 후에 앞에 나온 역전파알고리즘 등을 통해 기존의 supervised learning을 수행한다[<span class="citation">Smolensky (1986)</span>;<span class="citation">Hinton and Salakhutdinov (2006)</span>}. 아래 그림에 대략적인 묘사가 표현되어 있는데 아기들은 단어나 음, 문장의 뜻을 전혀 모르는 상태로 학습을 시작하게 되고 음소(phoneme), 단어(word), 문장(sentence)순으로 Unsupervised learning을 수행하게 되며 그 후에 정답을 가지고 supervised learning을 수행하게 된다<span class="citation">(Kim, n.d.)</span>.</p>
+<div class="figure">
+<img src="dl_img/unsupervised.png" alt="Description of Unsupervised Learning" />
+<p class="caption">Description of Unsupervised Learning</p>
+</div>
+<p>이런 방법을 통해 앞서 언급한 다중 퍼셉트론의 단점들이 많이 해결되는데, Unlabeled data를 이용할 수 있고 이를 이용해 unsupervised pre-training을 수행함으로서 vanishing gradient problem, overfitting problem이 극복될 수 있으며, pre-training이 올바른 초기값 선정에도 도움을 주어 local minima problem도 해결할 수 있을 것이라 여겨지고 있다[<span class="citation">Bengio (2009)</span>}. 이에 본 글에서는 가장 대표적인 방법인 Deep Belief Network(DBN)과 이를 수행하기 위해 필요한 Restrict Boltzmann Machine(RBM)에 대하여 간단히 설명하기로 하겠다.</p>
+<div id="restricted-boltzmann-machinerbm" class="section level3">
+<h3>Restricted Boltzmann Machine(RBM)</h3>
+<p>볼츠만 머신은 visible layer와 1개의 hidden layer로 이루어진 방향이 없는 그래프(undirected graph)로 이루어져 있다. 이것의 특징은 Energy based model이라는 점인데 Energy based model이라는 것은 어떤 상태가 나올 확률밀도 함수를 에너지의 형태로 나타내겠다는 것이며 visible unit의 벡터를 <span class="math inline">\(v\)</span>, hidden unit의 벡터를 <span class="math inline">\(h\)</span>라 하면(<span class="math inline">\(v\)</span>,<span class="math inline">\(h\)</span>: binary vector- 0 or 1) 볼츠만 머신의 그래프와 확률밀도함수는 아래와 같다<span class="citation">(LeCun et al. 2006; LeCun and Huang 2005)</span>.</p>
+<div class="figure">
+<img src="dl_img/RBM.png" alt="Diagram of a Restricted Boltzmann(Wikipedia, n.d.)" />
+<p class="caption">Diagram of a Restricted Boltzmann<span class="citation">(Wikipedia, n.d.)</span></p>
+</div>
+<p><span class="math display">\[P(v,h)=\frac{1}{Z}\exp^{-E(v,h)}\]</span></p>
+<p>볼츠만 머신의 그림을 보면 <span class="math inline">\(v\)</span>끼리는 선이 연결되어 있지 않고 <span class="math inline">\(h\)</span>끼리도 마찬가지인데 이것이 Restricted의 의미이며 이 조건이 없으면 그냥 Boltmann Machine이며 RBM형태의 그래프를 이분그래프(bipartite graph)라 한다. 그냥 Boltzmann Machine은 너무 복잡해서 학습이 어려워 그 대안으로 나온 것이 RBM인 것이다. 한편 수식을 보면 그래프의 에너지 상태가 낮을수록 확률이 작아지는 것을 알 수 있는데 이 가정은 물리학의 열역학 2법칙을 연상시킨다. 이제 RBM의 Energy function을 살펴보면</p>
+<p><span class="math display">\[E(v,h)= -\sum_i a_i v_i - \sum_j b_j h_j -\sum_i \sum_j h_j w_{i,j} v_i=-a^{\mathrm{T}} v - b^{\mathrm{T}} h -h^{\mathrm{T}} W v\]</span> (<span class="math inline">\(a_i\)</span>: offset of visible variable, <span class="math inline">\(b_j\)</span>: offset of hidden variable, <span class="math inline">\(w_{i,j}\)</span>: weight between <span class="math inline">\(v_i\)</span> and <span class="math inline">\(h_j\)</span>)</p>
+<p>에너지에 대한 수식에서 눈여겨 보아야 할 부분이 <span class="math inline">\(\sum_j h_j w_{i,j} v_i\)</span>인데, <span class="math inline">\(v_i\)</span>, <span class="math inline">\(h_j\)</span>가 1인 곳에 weight가 클수록 에너지함수 값이 작아지고 결과적으로 확률밀도함수의 값이 높아진다. 이는 인간의 시냅스에서 일어나는 일과 비슷한데, 같이 켜지는 곳이 시냅스로 연결될 가능성이 높기 때문이다(아래 그림).</p>
+<div class="figure">
+<img src="dl_img/dog.png" />
+
+</div>
+<div class="figure">
+<img src="dl_img/dog2.png" alt="Hebb’s Law,kimjunmoppt(Muehlhauser, n.d.,kimjunmoppt)" />
+<p class="caption">Hebb’s Law<span class="citation">(Muehlhauser, n.d.,kimjunmoppt)</span></p>
+</div>
+<p>이제 우리가 원하는 것은 <span class="math inline">\(P(v)=\sum_h P(v,h)\)</span> 의 최댓값을 구하는 것인데 RBM은 이분그래프로 <span class="math inline">\(v\)</span>끼리, <span class="math inline">\(h\)</span>끼리는 전부 독립이므로</p>
+<p><span class="math display">\[P(v|h) = \prod_{i=1}^m P(v_i|h)\]</span> <span class="math display">\[P(h|v) = \prod_{j=1}^n P(h_j|v)\]</span></p>
+<p>로 간단히 분리할 수 있으며, 이에 따른 individual activation probabilities는</p>
+<p><span class="math display">\[p(h_j=1|v) = \sigma \left(b_j + \sum_{i=1}^m w_{i,j} v_i \right)\]</span> <span class="math display">\[p(v_i=1|h) = \sigma \left(a_i + \sum_{j=1}^n w_{i,j} h_j \right)\]</span></p>
+<p>로 표현할 수 있다(<span class="math inline">\(\sigma\)</span>: activation function). 이 장점을 이용하여 Gibbs sampling을 쓰면서 weight를 수정해 나가면 간단히 <span class="math inline">\(logP(v)\)</span>의 최댓값과 그때의 weight들을 구할 수 있는데 이 방법에 대해 간략히 알아보겠다.</p>
+</div>
+<div id="training-rbm" class="section level3">
+<h3>Training RBM</h3>
+<p>기본적인 아이디어는 앞서 퍼셉트론에서 언급한 Gradient descent 방법과 일치한다. 기울기(미분계수)에 비례해서 감소시키면 결국 minima에 도달할 것이라는 아이디어인데 RBM에서는 <span class="math inline">\(logP(v)\)</span>의 최댓값과 그때의 <span class="math inline">\(w\)</span>, <span class="math inline">\(a\)</span> , <span class="math inline">\(b\)</span> 들을 구하는 것이 목적이므로 Gradient descent의 반대 방향으로 알고리즘을 쓰면 된다(Gradient ascent). 한편 <span class="math inline">\(logP(v)\)</span>를 다시 표현하면</p>
+<p><span class="math display">\[logP(v)=log(\sum_{h} \frac{\exp^{-E(v,h)}}{Z})=log(\sum_h \exp^{-E(v,h)})-logZ=log(\sum_h \exp^{-E(v,h)})-log(\sum_{v,h} \exp^{-E(v,h)})\]</span></p>
+<p>과 같고 이를 미분하면</p>
+<p><span class="math display">\[\frac{\partial logP(v)}{\partial \theta}=-\frac{1}{\sum_h \exp^{-E(v,h)}} \sum_h \exp^{-E(v,h)}\frac{\partial E(v,h)}{\partial \theta}+\frac{1}{\sum_{v,h} \exp^{-E(v,h)}} \sum_{v,h} \exp^{-E(v,h)}\frac{\partial E(v,h)}{\partial \theta} \]</span></p>
+<p><span class="math display">\[= -\sum_{h} p(h\mid v) \frac{\partial E(v,h)}{\partial \theta} + \sum_{v,h} p(h,v)\frac{\partial E(v,h)}{\partial \theta}\]</span></p>
+<p>과 같으며 맨 아래의 식을 살펴보면 first term은 <span class="math inline">\(\frac{\partial E(v,h)}{\partial \theta}\)</span>를 <span class="math inline">\(p(h|v)\)</span>를 가지고 평균을 낸 것이고, second term은 같은 것을 <span class="math inline">\(p(h,v)\)</span>의 확률분포를 기반으로 평균을 낸 것이라 할 수 있다. 이 들은 모두 Gibbs sampling을 이용하여 sampling할 수 있는데 여기서는 일반적인 Gibbs sampling과는 약간 다른 Contrastive Divergence(CD-<span class="math inline">\(k\)</span>) 방법을 쓰게 된다. CD-<span class="math inline">\(k\)</span>의 과정을 간단히 설명하면 처음엔 training sample에서 <span class="math inline">\(v\)</span>를 random sampling하고 그 <span class="math inline">\(v\)</span>를 대상으로 <span class="math inline">\(p(h|v)\)</span> 함수를 이용하여 first term을 해결하며, 그 다음으로는 계속 이어서 <span class="math inline">\(k\)</span>-1번의 횟수동안 <span class="math inline">\(p(h|v)\)</span>, <span class="math inline">\(p(v|h)\)</span> 함수를 이용하여 sampling을 수행하여 나온 <span class="math inline">\(v^{(k)}\)</span>를 이용하여 second term을 해결한다는 것이다. <span class="math inline">\(k\)</span>는 보통 1으로도 충분하다고 알려져 있으며 위의 과정을 를 수행하여 나온 값을 기반으로 <span class="math inline">\(w\)</span>, <span class="math inline">\(a\)</span>, <span class="math inline">\(b\)</span>를 업데이트 하고 같은 과정을 반복해나가면 되는 것이다. 이를 pseudocode로 요약하면 아래 그림과 같다.</p>
+<div class="figure">
+<img src="dl_img/cdk.png" alt="Contrastive Divergence(CD-k)(Fischer and Igel 2012)" />
+<p class="caption">Contrastive Divergence(CD-<span class="math inline">\(k\)</span>)<span class="citation">(Fischer and Igel 2012)</span></p>
+</div>
+</div>
+<div id="deep-belief-networkdbn" class="section level3">
+<h3>Deep Belief Network(DBN)</h3>
+<p>DBN은 간략히 말하면 RBM을 여러 층으로 쌓은 것인데 아래 그림에 대략적인 묘사가 되어 있다.</p>
+<div class="figure">
+<img src="dl_img/dbn.jpg" alt="Deep Belief Network(Larochelle, n.d.)" />
+<p class="caption">Deep Belief Network<span class="citation">(Larochelle, n.d.)</span></p>
+</div>
+<p>즉 RBM을 여러 층을 두어 학습하고 마지막으로 기존의 오류역전파알고리즘을 이용하여 튜닝(Fine tuning)하는 것이다<span class="citation">(G. Hinton, Osindero, and Teh 2006; Hinton 2009; Bengio 2009)</span>. 이는 위에 예시로 든 아기가 언어를 학습하는 방식인 음소(phoneme), 단어(word), 문장(sentence)순의 Unsupervised training과 그 후의 supervised learning을 반영하는 모형이라 할 수 있다.</p>
+<p>DBN은 각각의 과정에서 확률적으로 hidden layer들의 값을 생성하게 되는데 이를 역으로 진행하면 정답을 토대로 input을 생성할 수도 있다. 이를 generative model이라 하는데 <a href="http://www.cs.toronto.edu/~hinton/adi/index.htm">Hinton교수의 홈페이지</a>에 손으로 쓴 숫자인식에 대한 예제가 나와 있으니 참고하기 바란다.</p>
+</div>
+<div class="section level3">
+<h3>기타</h3>
+<p>이외에도 locally connected convolution layer를 이용한 Convolutional RBM, 텍스트와 이미지를 동시에 학습할 수 있는 Multimodal Learning에 유용한 Deep Boltzmann Machine(DBM) 등이 있는데 이것들은 참고문헌을 참고하길 바란다<span class="citation">(Lee et al. 2009; R. Salakhutdinov and Hinton 2009)</span>.</p>
+</div>
+</div>
+<div id="-supervised-learning---rectified-linear-unit-relu-dropout" class="section level2">
+<h2>3세대: Supervised Learning - Rectified linear unit (ReLU), Dropout</h2>
+<p>RBM을 이용한 Unsupervised learning을 이용하게 되면서 다층퍼셉트론의 약점이 많은 부분 극복되었다. Unlabeled data를 사용할 수 있게 되었고 이를 충분히 활용하여 overfitting issue, vanishing gradient문제가 해결되었고 pre-training이 좋은 시작점을 제공하여 local minima 문제도 해결되는 것처럼 보였다. 한편, 언급된 다층퍼셉트론의 약점을 그냥 Supervised Learning에서 해법을 찾으려는 최근의 노력들이 있었고 그 결과로 지금까지 나온 대표적인 아이디어가 Rectified linear unit(ReLU), Dropout이다. 본 섹션에서는 이 두 방법에 대해 간단히 소개하도록 하겠다.</p>
+<div id="rectified-linear-unit-relu" class="section level3">
+<h3>Rectified linear unit (ReLU)</h3>
+<p>Vanishing gradient 즉, 학습을 할수록 weight의 기울기가 0에 급속도로 가까워 지는 것이 다층퍼셉트론(multilayer perceptron)에서 학습이 어려운 이유 중 하나였다. 이는 activation함수의 모양에서 기인하는데 아까 나왔던 sigmoid함수를 다시 살펴보자.</p>
+<div class="figure">
+<img src="dl_img/logistictan.png" alt="Sigmoid functions" />
+<p class="caption">Sigmoid functions</p>
+</div>
+<p>다시 살펴보면 logistic function이든 <span class="math inline">\(tanh\)</span>함수이든 가운데 부분만 기울기가 가파르고 양끝으로 갈수록 기울기가 급속도로 0에 가까워지는 것을 볼 수 있고 이것이 vanishing gradient의 실제이다. 2010년과 2011년에 걸쳐 이를 극복하기 위한 아이디어가 제시되었는데 그것이 바로 Rectified linear unit(ReLU)이다. 이름에서 직관적으로 느낄 수 있듯이 이는 <span class="math inline">\(x\)</span>가 0이상일 때는 선형증가하는 함수이며 0미만일 때는 모두 0인 함수인데, 아래 그림에서 볼 수 있듯이 0보다만 크면 항상 기울기가 1로 일정해 기울기가 감소하는 경우가 없어 학습이 용이하며 실제로 이것이 기존의 방법보다 학습성능이 좋고 pre-training의 필요성을 없애준다고 알려져 있다<span class="citation">(Nair and Hinton 2010; Glorot, Bordes, and Bengio 2011)</span>.</p>
+<div class="figure">
+<img src="dl_img/relu.png" alt="The proposed non-linearity, ReLU, and the standard neural network non-linearity, logistic(M. D. Zeiler et al. 2013)" />
+<p class="caption">The proposed non-linearity, ReLU, and the standard neural network non-linearity, logistic<span class="citation">(M. D. Zeiler et al. 2013)</span></p>
+</div>
+</div>
+<div id="dropout" class="section level3">
+<h3>DropOut</h3>
+<p>Labeled data의 부족 및 그로 인한 overfitting 즉, hidden layer들은 많은데 labeled data의 수가 적은 것도 다층퍼셉트론 학습이 어려운 이유 중 하나였다. 이에 Hinton교수는 2012년에 <strong>DropOut</strong>이라는 방법을 제안하는데 이는 기본적으로 여러개의 모형을 합쳐서 새로운 모형을 만드는 Ensemble 모형과 유사하다<span class="citation">(Hinton et al. 2012)</span>. Training example을 학습할 때 마다 모든 hidden unit을 50%의 확률로 끄는(DropOut)것인데 이를 비유하자면 회사에서 모든 팀이 모든 일을 함께 하는 것보다 팀별로 분담해서 일을 한 후 그것을 통합하는 것이 더 효율적으로 업무를 수행할 수 있는 것과 비슷하다고 할 수 있다. 즉, 각 데이터를 학습할 때마다 hidden unit의 절반만 써서 결론적으로 그 학습결과를 합치면 기존의 학습방법보다 좋은 성능을 보인다는 것이다. 2013년에는 이 아이디어를 확장하여 DropConnect라는 방법이 제안되었는데, 이것은 hidden unit을 끄는 대신 hidden unit과의 연결을 50%의 확률로 꺼서 학습하는 점이 DropOut과의 차이점이다(아래 그림)<span class="citation">(Wan et al. 2013)</span>.</p>
+<div class="figure">
+<img src="dl_img/dropout.png" alt="Description of DropOut &amp; DropConnect(Wan, n.d.)" />
+<p class="caption">Description of DropOut &amp; DropConnect<span class="citation">(Wan, n.d.)</span></p>
+</div>
+<p>실제로 DropOut과 DropConnect의 성능이 그렇지 않은 경우보다 우수함이 알려져 있다<span class="citation">(Wan et al. 2013)</span>.</p>
+<div class="figure">
+<img src="dl_img/dropperformance.png" alt="Using the MNIST dataset, in a) Ability of Dropout and DropConnect to prevent overfitting as the size of the 2 fully connected layers increase. b) Varying the drop-rate in a 400-400 network shows near optimal performance around the p = 0.5(Wan et al. 2013)" />
+<p class="caption">Using the MNIST dataset, in a) Ability of Dropout and DropConnect to prevent overfitting as the size of the 2 fully connected layers increase. b) Varying the drop-rate in a 400-400 network shows near optimal performance around the <span class="math inline">\(p\)</span> = 0.5<span class="citation">(Wan et al. 2013)</span></p>
+</div>
+</div>
+<div id="local-minima-issue" class="section level3">
+<h3>Local minima issue</h3>
+<p>우리가 구한 에러의 최소값이 실제 Global minima인가.. local minima에 빠지는 것은 아닌가.. 라는 문제도 오랫동안 다층퍼셉트론에서의 이슈였는데 현재의 공감대는 High dimension and non-convex optimization에서는 대부분의 local minima들의 값이 비슷비슷할 것이며 따라서 local minima나 global minima나 크게 차이가 없을 것이고 너무 이 문제에 신경쓸 필요가 없다는 점이다(아래 그림)<span class="citation">(M. Ranzato, n.d.)</span>.</p>
+<div class="figure">
+<img src="dl_img/dropout.png" alt="Local minima when high dimension and non-convex optimization(M. Ranzato, n.d.)" />
+<p class="caption">Local minima when high dimension and non-convex optimization<span class="citation">(M. Ranzato, n.d.)</span></p>
+</div>
+<p>수많은 차원에서 차원마다 local minima이기는 쉽지 않다고 직관적으로 이해할 수 있다.</p>
+</div>
+</div>
+<div id="--" class="section level2">
+<h2>마지막: 딥러닝 요약</h2>
+<p>1950년대 퍼셉트론(perceptron)에서 시작된 인공신경망 연구는 1980년대 오류역전파알고리즘(Error Backpropagation Algorithm)으로 다층퍼셉트론(Multilayer perceptron)을 학습할 수 있게 되면서 발전을 이루었다. 허나 Gradient vanishing, labeled data의 부족, overfitting, local minima issue 등이 잘 해결되지 못해 2000년대 초까지 인공신경망 연구는 답보를 이루고 있는데, 2006년부터 볼츠만머신을 이용한 Unsupervised Learning인 Restricted Boltzmann Machine(RBM), Deep Belief Network(DBN), Deep Boltzmann Machine(DBM), Convolutional Deep Belief Network 등이 개발되면서 unlabeled data를 이용하여 pre-training을 수행할 수 있게 되어 위에 언급된 다층퍼셉트론의 한계점이 극복되었다. 2010년부터는 빅데이터를 적극적으로 이용함으로서 수많은 labeled data를 사용할 수 있게 되었고, Rectified linear unit (ReLU), DropOut, DropConnect 등의 발견으로 vanishing gradient문제와 overfitting issue를 해결하여 아예 Supervised learning이 가능하게 되었으며, local minima issue도 High dimension non-convex optimization에서는 별로 중요한 부분이 아니라는 공감대가 확장되고 있다.</p>
+</div>
+<div class="section level2 unnumbered">
+<h2>참고문헌</h2>
+<div id="refs" class="references">
+<div id="ref-bengio2009learning">
+<p>Bengio, Yoshua. 2009. “Learning Deep Architectures for Ai.” <em>Foundations and Trends in Machine Learning</em> 2 (1). Now Publishers Inc.: 1–127.</p>
+</div>
+<div id="ref-bengio1994learning">
+<p>Bengio, Yoshua, Patrice Simard, and Paolo Frasconi. 1994. “Learning Long-Term Dependencies with Gradient Descent Is Difficult.” <em>Neural Networks, IEEE Transactions on</em> 5 (2). IEEE: 157–66.</p>
+</div>
+<div id="ref-fischer2012introduction">
+<p>Fischer, Asja, and Christian Igel. 2012. “An Introduction to Restricted Boltzmann Machines.” In <em>Progress in Pattern Recognition, Image Analysis, Computer Vision, and Applications</em>, 14–36. Springer.</p>
+</div>
+<div id="ref-gartnernews">
+<p>Gartner, Inc. n.d. “가트너, 2014 세계 It 시장 10대 주요 예측 발표.” <a href="http://www.acrofan.com/ko-kr/commerce/news/20131013/00000015" class="uri">http://www.acrofan.com/ko-kr/commerce/news/20131013/00000015</a>.</p>
+</div>
+<div id="ref-glorot2011deep">
+<p>Glorot, Xavier, Antoine Bordes, and Yoshua Bengio. 2011. “Deep Sparse Rectifier Networks.” In <em>Proceedings of the 14th International Conference on Artificial Intelligence and Statistics. Jmlr W&amp;CP Volume</em>, 15:315–23.</p>
+</div>
+<div id="ref-gradient">
+<p>Han-Hsing, Tu. n.d. “[ML, Python] Gradient Descent Algorithm (Revision 2).” <a href="http://hhtucode.blogspot.kr/2013/04/ml-gradient-descent-algorithm.html" class="uri">http://hhtucode.blogspot.kr/2013/04/ml-gradient-descent-algorithm.html</a>.</p>
+</div>
+<div id="ref-perceptroncant">
+<p>Hinton, Geoffrey. n.d. “Coursera: Neural Networks for Machine Learning.” <a href="https://class.coursera.org/neuralnets-2012-001" class="uri">https://class.coursera.org/neuralnets-2012-001</a>.</p>
+</div>
+<div id="ref-hinton2009deep">
+<p>Hinton, Geoffrey E. 2009. “Deep Belief Networks.” <em>Scholarpedia</em> 4 (5): 5947.</p>
+</div>
+<div id="ref-hinton2006reducing">
+<p>Hinton, Geoffrey E, and Ruslan R Salakhutdinov. 2006. “Reducing the Dimensionality of Data with Neural Networks.” <em>Science</em> 313 (5786). American Association for the Advancement of Science: 504–7.</p>
+</div>
+<div id="ref-hinton2012improving">
+<p>Hinton, Geoffrey E, Nitish Srivastava, Alex Krizhevsky, Ilya Sutskever, and Ruslan R Salakhutdinov. 2012. “Improving Neural Networks by Preventing Co-Adaptation of Feature Detectors.” <em>arXiv Preprint arXiv:1207.0580</em>.</p>
+</div>
+<div id="ref-hinton2006fast">
+<p>Hinton, Geoffrey, Simon Osindero, and Yee-Whye Teh. 2006. “A Fast Learning Algorithm for Deep Belief Nets.” <em>Neural Computation</em> 18 (7). MIT Press: 1527–54.</p>
+</div>
+<div id="ref-perceptronfig">
+<p>Honkela, Antti. n.d. “Multilayer Perceptrons.” <a href="https://www.hiit.fi/u/ahonkela/dippa/node41.html" class="uri">https://www.hiit.fi/u/ahonkela/dippa/node41.html</a>.</p>
+</div>
+<div id="ref-kimjunmoppt">
+<p>Kim, Junmo. n.d. “2014 패턴인식 및 기계학습 여름학교.” <a href="http://prml.yonsei.ac.kr/" class="uri">http://prml.yonsei.ac.kr/</a>.</p>
+</div>
+<div id="ref-dbnfig">
+<p>Larochelle, Hugo. n.d. “Deep Learning.” <a href="http://www.dmi.usherb.ca/~larocheh/projects_deep_learning.html" class="uri">http://www.dmi.usherb.ca/~larocheh/projects_deep_learning.html</a>.</p>
+</div>
+<div id="ref-lecun2005loss">
+<p>LeCun, Yann, and F Huang. 2005. “Loss Functions for Discriminative Training of Energybased Models.” In. AIStats.</p>
+</div>
+<div id="ref-lecun2006tutorial">
+<p>LeCun, Yann, Sumit Chopra, Raia Hadsell, M Ranzato, and F Huang. 2006. “A Tutorial on Energy-Based Learning.” <em>Predicting Structured Data</em>.</p>
+</div>
+<div id="ref-lee2009convolutional">
+<p>Lee, Honglak, Roger Grosse, Rajesh Ranganath, and Andrew Y Ng. 2009. “Convolutional Deep Belief Networks for Scalable Unsupervised Learning of Hierarchical Representations.” In <em>Proceedings of the 26th Annual International Conference on Machine Learning</em>, 609–16. ACM.</p>
+</div>
+<div id="ref-hebb2">
+<p>Muehlhauser, Luke. n.d. “A Crash Course in the Neuroscience of Human Motivation.” <a href="http://lesswrong.com/lw/71x/a_crash_course_in_the_neuroscience_of_human/" class="uri">http://lesswrong.com/lw/71x/a_crash_course_in_the_neuroscience_of_human/</a>.</p>
+</div>
+<div id="ref-nair2010rectified">
+<p>Nair, Vinod, and Geoffrey E Hinton. 2010. “Rectified Linear Units Improve Restricted Boltzmann Machines.” In <em>Proceedings of the 27th International Conference on Machine Learning (Icml-10)</em>, 807–14.</p>
+</div>
+<div id="ref-minima">
+<p>Ranzato, Marc’Aurelio. n.d. “Deep Learning for Vision: Tricks of the Trade.” <a href="www.cs.toronto.edu/~ranzato" class="uri">www.cs.toronto.edu/~ranzato</a>.</p>
+</div>
+<div id="ref-rosenblatt1958perceptron">
+<p>Rosenblatt, Frank. 1958. “The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain.” <em>Psychological Review</em> 65 (6). American Psychological Association: 386.</p>
+</div>
+<div id="ref-rumelhart1985learning">
+<p>Rumelhart, David E, Geoffrey E Hinton, and Ronald J Williams. 1985. “Learning Internal Representations by Error Propagation.” DTIC Document.</p>
+</div>
+<div id="ref-salakhutdinov2009deep">
+<p>Salakhutdinov, Ruslan, and Geoffrey E Hinton. 2009. “Deep Boltzmann Machines.” In <em>International Conference on Artificial Intelligence and Statistics</em>, 448–55.</p>
+</div>
+<div id="ref-smolensky1986information">
+<p>Smolensky, Paul. 1986. “Information Processing in Dynamical Systems: Foundations of Harmony Theory.” Department of Computer Science, University of Colorado, Boulder.</p>
+</div>
+<div id="ref-dropfig">
+<p>Wan, Li. n.d. “Regularization of Neural Networks Using Dropconnect.” <a href="http://cs.nyu.edu/~wanli/dropc/" class="uri">http://cs.nyu.edu/~wanli/dropc/</a>.</p>
+</div>
+<div id="ref-wan2013regularization">
+<p>Wan, Li, Matthew Zeiler, Sixin Zhang, Yann L Cun, and Rob Fergus. 2013. “Regularization of Neural Networks Using Dropconnect.” In <em>Proceedings of the 30th International Conference on Machine Learning (Icml-13)</em>, 1058–66.</p>
+</div>
+<div id="ref-RBMfigure">
+<p>Wikipedia. n.d. “Wikepedia.” <a href="http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine" class="uri">http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine</a>.</p>
+</div>
+<div id="ref-zeiler2013rectified">
+<p>Zeiler, Matthew D, M Ranzato, Rajat Monga, M Mao, K Yang, Quoc Viet Le, Patrick Nguyen, et al. 2013. “On Rectified Linear Units for Speech Processing.” In <em>Acoustics, Speech and Signal Processing (Icassp), 2013 Ieee International Conference on</em>, 3517–21. IEEE.</p>
+</div>
+<div id="ref-mitnews">
+<p>동아일보. n.d. “MIT,올해의 10대 혁신기술 선정.” <a href="http://news.donga.com/3/all/20130426/54713529/1" class="uri">http://news.donga.com/3/all/20130426/54713529/1</a>.</p>
+</div>
+</div>
+</div>
+
+<p>Copyright &copy;2016 <a href="mailto:secondmath85@gmail.com">Jinseob Kim</a>&nbsp;&nbsp;
+
+<a href="https://www.facebook.com/secondmath"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i> </a> &nbsp;
+
+<a href="https://www.linkedin.com/in/jinseob-kim-%EA%B9%80%EC%A7%84%EC%84%AD-456550a5?trk=hp-identity-name"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a>&nbsp;
+
+<a href="https://github.com/mathemedicine/mathemedicine.github.io"><i class="fa fa-github fa-lg" aria-hidden="true"></i></a>
+
+</p>
+
+
+
+
+<div id="disqus_thread"></div>
+<script>/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-mathemedicine-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

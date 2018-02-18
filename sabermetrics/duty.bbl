@@ -1,0 +1,133 @@
+\begin{thebibliography}{10}
+
+\bibitem{albert1997introduction}
+Jim Albert.
+\newblock An introduction to sabermetrics.
+\newblock {\em Bowling Green State University (http://www-math. bgsu. edu/\~{}
+  albert/papers/saber. html)}, 1997.
+
+\bibitem{WARRyuonline}
+Fangraph.
+\newblock Hyun-jin ryu statistics.
+\newblock
+  \url{http://www.fangraphs.com/statss.aspx?playerid=14444\&position=P}.
+
+\bibitem{janssens2008genome}
+A~Cecile~JW Janssens and Cornelia~M van Duijn.
+\newblock Genome-based prediction of common diseases: advances and prospects.
+\newblock {\em Human molecular genetics}, 17(R2):R166--R173, 2008.
+
+\bibitem{lichtman2003ultimate}
+M~Lichtman.
+\newblock Ultimate zone rating.
+\newblock {\em The Baseball Think Factory}, 2003.
+
+\bibitem{piette2012estimating}
+James Piette and Shane~T Jensen.
+\newblock Estimating fielding ability in baseball players over time.
+\newblock {\em Journal of Quantitative Analysis in Sports}, 8(3), 2012.
+
+\bibitem{UZRsaber}
+BelichickEinstein.
+\newblock Sabermetrics: A science (uzr and uzr/150).
+\newblock
+  \url{http://www.fannation.com/blogs/post/621965-sabermetrics-a-science-uzr-and-uzr150}.
+
+\bibitem{UZRfig}
+Justin Bopp.
+\newblock Introducing uzr targetview - graph of the day.
+\newblock
+  \url{http://www.beyondtheboxscore.com/2009/10/6/1069692/introducing-uzr-targetview-graph}.
+
+\bibitem{UBRsaber}
+M~Lichtman.
+\newblock Ultimate base running primer.
+\newblock \url{http://www.fangraphs.com/blogs/ultimate-base-running-primer/}.
+
+\bibitem{UBRfig}
+Steve Kinsella.
+\newblock Indians look to improve baserunning in 2013.
+\newblock
+  \url{http://wahoosonfirst.com/2013/03/13/indians-look-to-improve-baserunning-in-2013/}.
+
+\bibitem{position_adjust}
+Dave Cameron.
+\newblock Win values explained: Part three.
+\newblock
+  \url{http://www.fangraphs.com/blogs/explaining-win-values-part-three/}.
+
+\bibitem{replace_graham}
+Graham MacAree.
+\newblock Replacement level.
+\newblock \url{http://www.fangraphs.com/library/misc/war/replacement-level/}.
+
+\bibitem{replace_dave}
+Dave Cameron.
+\newblock Unifying replacement level.
+\newblock \url{http://www.fangraphs.com/blogs/unifying-replacement-level/}.
+
+\bibitem{replace_dave2}
+Dave Cameron.
+\newblock Win values explained: Part four.
+\newblock \url{http://www.fangraphs.com/blogs/win-values-explained-part-four/}.
+
+\bibitem{WARpitcher}
+Fangraph.
+\newblock War for pitchers.
+\newblock \url{http://www.fangraphs.com/library/war/calculating-war-pitchers/}.
+
+\bibitem{FIP}
+Fangraph.
+\newblock Fip.
+\newblock \url{http://www.fangraphs.com/library/pitching/fip/}.
+
+\bibitem{replace_pitch}
+Dave Cameron.
+\newblock Pitcher win values explained: Part three.
+\newblock
+  \url{http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-three/}.
+
+\bibitem{runenv_pitch}
+Dave Cameron.
+\newblock Pitcher win values explained: Part four.
+\newblock
+  \url{http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-four/}.
+
+\bibitem{winconversion}
+Dave Cameron.
+\newblock Pitcher win values explained: Part five.
+\newblock
+  \url{http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-five/}.
+
+\bibitem{Li_tango}
+Tom~M. Tango.
+\newblock Crucial situations.
+\newblock \url{http://www.hardballtimes.com/main/article/crucial-situations/}.
+
+\bibitem{effLI}
+Sky Kalkman.
+\newblock Bullpen chaining and reliever war.
+\newblock
+  \url{http://www.beyondtheboxscore.com/2009/4/29/856308/bullpen-chaining-and-reliever-war}.
+
+\bibitem{life_upen}
+Lyle H.~Ungar Dean P.~Foster, Choong Tze~Chua.
+\newblock How long will you live?
+\newblock \url{http://gosset.wharton.upenn.edu/mortality/}.
+
+\bibitem{de2012prediction}
+Gustavo de~los Campos, Yann~C Klimentidis, Ana~I Vazquez, and David~B Allison.
+\newblock Prediction of expected years of life using whole-genome markers.
+\newblock {\em PloS one}, 7(7):e40964, 2012.
+
+\bibitem{camposbglr}
+Gustavo de~los Campos and Paulino~Perez Rodriguez.
+\newblock {\em BGLR: Bayesian Generalized Linear Regression}, 2013.
+\newblock R package version 1.0.2.
+
+\bibitem{phillips1998qaly}
+Ceri Phillips and Guy Thompson.
+\newblock {\em What is a QALY?}, volume~1.
+\newblock Hayward Medical Communications, 1998.
+
+\end{thebibliography}

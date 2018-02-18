@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>괴델의 불완전성 정리</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-86134798-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Jinseob's Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="probability_likelihood.html">Likelihood</a>
+    </li>
+    <li>
+      <a href="Normal_distribution.html">Normal Distribution</a>
+    </li>
+    <li>
+      <a href="WAR.html">야구에서의 통계학: WAR</a>
+    </li>
+    <li>
+      <a href="hypothesis.html">가설검정의 심리학</a>
+    </li>
+    <li>
+      <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Mathematics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="godel.html">괴델의 불완전성 정리</a>
+    </li>
+    <li>
+      <a href="propose.html">조건부 확률로 알아보는 프로포즈 전략</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    ML
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="deep_learning.html">딥러닝의 역사</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Lecture
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="rbasic.html">R을 이용한 데이터 매니지먼트 기초</a>
+    </li>
+    <li>
+      <a href="rbasic_plan_smc.html">R 의학통계 강의계획: 삼성서울병원</a>
+    </li>
+    <li>
+      <a href="r_smc_1.html">R 의학통계: 삼성서울병원(1)- 기초 문법 및 Table 1</a>
+    </li>
+    <li>
+      <a href="gam_korea.html">GAM: 고려대학교 의과대학</a>
+    </li>
+    <li>
+      <a href="PopGene.html">Population Genetics Index: 유전체역학 2017</a>
+    </li>
+    <li>
+      <a href="2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html">리눅스 서버와 깃허브(github) 쉽게 사용하기</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization1.html">GWAS visualization (1): Summary table</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization2.html">GWAS visualization (2): Interactive plot</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization3.html">GWAS visualization (3): Automation</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mathemedicine/mathemedicine.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style>
+   p {line-height: 2.5em;}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">괴델의 불완전성 정리</h1>
+
+</div>
+
+
+<div class="section level2">
+<h2>서론</h2>
+<p>괴델의 불완전성 정리에 대한 많은 책들이 시중에 출판되어 있다. 허나 대부분이 역사와 증명의 의미에 치중되어 있고 실제 증명의 아이디어를 설명한 책은 거의 없으며, 있다고 하더라도 외국 서적을 번역하면서 난해한 표현이 많이 나와 이해하기가 어렵다. 이에 본 글에서는 불완전성 정리 증명의 핵심적인 아이디어를 크게 <strong>수학(mathematics)과 메타수학(meta-mathematics)</strong>, <strong>괴델수(Gödel number)</strong>, <strong>메타수학의 수학화</strong>의 3가지로 나누어 설명하겠다. 본 글이 불완전성정리의 아름다움을 느끼는 데 도움이 되길 바란다.</p>
+</div>
+<div id="mathematics-meta-mathematics" class="section level2">
+<h2>수학(mathematics)과 메타수학(meta-mathematics)</h2>
+<p>보통 불완전성 정리에 대한 책들에서는 간략하게 증명의 개요만 언급하는데 그것은 아래와 같다. <span class="math display">\[G: G는 \:증명불가능하다.\]</span></p>
+<p>만약 <span class="math inline">\(G\)</span>가 거짓이라면 <span class="math inline">\(G\)</span>는 증명가능하므로 참이된다. 이는 <span class="math inline">\(G\)</span>가 거짓이라는 데 모순이다. 따라서 <span class="math inline">\(G\)</span>는 참인데 <span class="math inline">\(G\)</span>의 내용은 <span class="math inline">\(G\)</span>가 증명불가능하다는 것이므로 결국 <span class="math inline">\(G\)</span>는 참이지만 증명불가능한 명제라는 것이다. 이 설명을 보고 고개를 끄덕 인 후 증명이 끝난 것 아닌가? 라는 생각을 할 수도 있을 것이다. 그러나 명제 내부에 명제 자신을 언급한 순환논리부분을 해결하지 않으면 안되고 사실 불완전성정리의 핵심부분도 이 부분이며 수학의 명제와 메타수학의 명제를 구분하는 것이 이해의 시작이 된다.</p>
+<div id="----" class="section level3">
+<h3>수학 명제와 메타수학 명제의 차이점</h3>
+<p>아주 간단한 수학 명제 하나를 살펴보자. <span class="math display">\[1+1=2\]</span></p>
+<p>이 표현은 수학에 속한 표현이다. 이제 다음 명제를 살펴보면 <span class="math display">\[``1+1=2&quot;는 \:수학\: 명제이다.\]</span></p>
+<p>이 진술은 앞에 나온 수학명제에 대해 무엇인가를 주장하고 있으며 따라서 수학이 아니라 메타수학의 명제라고 할 수 있다. 비슷하게 <strong><span class="math inline">\(x\)</span>는 변수이다</strong>, <span class="math inline">\(``x=1&quot;\)</span><strong>은 방정식이다</strong> 들도 수학 명제가 아니라 메타수학의 명제이다. 수학과 메타수학을 구별하는 것은 몇 번을 강조해도 지나치지 않은데 이 구별에 소홀한 것이 수많은 역설이 만들어지는 이유이기 때문이다. 이제 다시 처음 식을 살펴보면 <strong><span class="math inline">\(G\)</span>는 증명불가능하다</strong> 는 명제는 수학의 명제가 아니라 메타수학의 명제가 되고 따라서 수학에서 쓰는 증명방법(귀류법)을 그대로 써서 대충 주장하면 안되는 것이다. 괴델은 이 문제를 해결하기 위해 괴델수라는 독창적인 아이디어를 구사하여 메타수학의 명제를 수학의 명제로 바꾸었는데 괴델수부터 차근차근 알아보도록 하자.</p>
+</div>
+</div>
+<div id="godel-number" class="section level2">
+<h2>괴델수(Gödel number)</h2>
+<p>괴델수는 모든 기호, 변수, 명제, 명제묶음(증명)들에 유일한 숫자를 부여하는 것인데 몇가지 예를 들어보면 다음과 같다.</p>
+<table>
+<caption>상항기호</caption>
+<thead>
+<tr class="header">
+<th align="right">기호</th>
+<th align="center">괴델수</th>
+<th align="center">의미</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right"><span class="math inline">\(\sim\)</span></td>
+<td align="center">1</td>
+<td align="center">아니다</td>
+</tr>
+<tr class="even">
+<td align="right"><span class="math inline">\(\vee\)</span></td>
+<td align="center">2</td>
+<td align="center">또는</td>
+</tr>
+<tr class="odd">
+<td align="right"><span class="math inline">\(\supset\)</span></td>
+<td align="center">3</td>
+<td align="center"><span class="math inline">\(\cdots\)</span>라면 <span class="math inline">\(\cdots\)</span>다</td>
+</tr>
+<tr class="even">
+<td align="right"><span class="math inline">\(\exists\)</span></td>
+<td align="center">4</td>
+<td align="center"><span class="math inline">\(\cdots\)</span>이 존재한다</td>
+</tr>
+<tr class="odd">
+<td align="right"><span class="math inline">\(=\)</span></td>
+<td align="center">5</td>
+<td align="center">같다</td>
+</tr>
+<tr class="even">
+<td align="right">0</td>
+<td align="center">6</td>
+<td align="center">영(0)</td>
+</tr>
+<tr class="odd">
+<td align="right">s</td>
+<td align="center">7</td>
+<td align="center">바로 다음 수</td>
+</tr>
+<tr class="even">
+<td align="right">(</td>
+<td align="center">8</td>
+<td align="center">왼쪽 괄호</td>
+</tr>
+<tr class="odd">
+<td align="right">)</td>
+<td align="center">9</td>
+<td align="center">오른쪽 괄호</td>
+</tr>
+<tr class="even">
+<td align="right">,</td>
+<td align="center">10</td>
+<td align="center">쉼표</td>
+</tr>
+<tr class="odd">
+<td align="right"><span class="math inline">\(+\)</span></td>
+<td align="center">11</td>
+<td align="center">더하기</td>
+</tr>
+<tr class="even">
+<td align="right"><span class="math inline">\(\times\)</span></td>
+<td align="center">12</td>
+<td align="center">곱하기</td>
+</tr>
+</tbody>
+</table>
+<p>위의 표에 나와있는 기호들을 <strong>상항기호</strong>라고 하며, 이와 대응되는 개념은 <strong>변항(variable)기호</strong>인데 숫자 변항, 문장 변항, 술어 변항으로 나눌 수 있다. 숫자 변항에는 12보다 큰 소수, 문장 변항에는 12보다 큰 소수의 제곱수, 술어변항에는 12보다 큰 소수의 세제곱수를 부여하게 되며 예는 아래의 표와 같다.</p>
+<table>
+<caption>변항기호</caption>
+<thead>
+<tr class="header">
+<th align="right"></th>
+<th align="center">변항</th>
+<th align="center">괴델수</th>
+<th align="center">대입 예</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">숫자변항</td>
+<td align="center"><span class="math inline">\(x\)</span></td>
+<td align="center">13</td>
+<td align="center">0</td>
+</tr>
+<tr class="even">
+<td align="right"></td>
+<td align="center"><span class="math inline">\(y\)</span></td>
+<td align="center">17</td>
+<td align="center"><span class="math inline">\(s0\)</span></td>
+</tr>
+<tr class="odd">
+<td align="right"></td>
+<td align="center"><span class="math inline">\(z\)</span></td>
+<td align="center">19</td>
+<td align="center"><span class="math inline">\(y\)</span></td>
+</tr>
+<tr class="even">
+<td align="right">문장변항</td>
+<td align="center"><span class="math inline">\(p\)</span></td>
+<td align="center"><span class="math inline">\(13^2\)</span></td>
+<td align="center"><span class="math inline">\(0=0\)</span></td>
+</tr>
+<tr class="odd">
+<td align="right"></td>
+<td align="center"><span class="math inline">\(q\)</span></td>
+<td align="center"><span class="math inline">\(17^2\)</span></td>
+<td align="center">(<span class="math inline">\(\exists\)</span> x)(<span class="math inline">\(x=sy\)</span>): <span class="math inline">\(y\)</span>의 다음 수 <span class="math inline">\(x\)</span>가 존재한다.</td>
+</tr>
+<tr class="even">
+<td align="right"></td>
+<td align="center"><span class="math inline">\(r\)</span></td>
+<td align="center"><span class="math inline">\(19^2\)</span></td>
+<td align="center"><span class="math inline">\(p\supset q\)</span></td>
+</tr>
+<tr class="odd">
+<td align="right">술어변항</td>
+<td align="center"><span class="math inline">\(P\)</span></td>
+<td align="center"><span class="math inline">\(13^3\)</span></td>
+<td align="center"><span class="math inline">\(13\)</span>은 소수이다.</td>
+</tr>
+<tr class="even">
+<td align="right"></td>
+<td align="center"><span class="math inline">\(Q\)</span></td>
+<td align="center"><span class="math inline">\(17^3\)</span></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td align="right"></td>
+<td align="center"><span class="math inline">\(R\)</span></td>
+<td align="center"><span class="math inline">\(19^3\)</span></td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+<p>이제 문장 (<span class="math inline">\(\exists x\)</span>)(<span class="math inline">\(x=sy\)</span>) 를 살펴보자. 이것은 <span class="math inline">\(y\)</span> 다음 수가 존재한다고 읽으며, 기본기호 하나하나의 괴델수를 살펴보면 8, 4, 13, 9, 8, 13, 5, 7, 17, 9이고 문장 전체의 괴델수는 다음과 같이 소수를 이용하여 표현한다. <span class="math display">\[2^8 \times 3^4 \times 5^{13} \times 7^9 \times 11^8 \times 13^{13} \times 17^5 \times 19^7 \times 23^{17} \times 29^9\]</span></p>
+<p>마찬가지로 증명에 대해서도 괴델수를 부여할 수 있는데 예를들어 증명이 두 서술로 되어 있고 각 서술의 괴델수가 <span class="math inline">\(m\)</span>과 <span class="math inline">\(n\)</span>이라면 증명의 괴델수는 <span class="math inline">\(2^m \times 3^n\)</span> 으로 표현한다. 이런식으로 모든 수학적 표현에 대해서 겹치지 않고 유일하게 괴델수를 부여할 수 있다. 한가지 예를 더 들면 괴델수 243,000,000은 <span class="math inline">\(2^6 \times 3^5 \times 5^6\)</span>으로 소인수분해 되며 지수부분인 6,5,6은 각각 0, <span class="math inline">\(=\)</span>, 0에 대응되므로 결국 <strong><span class="math inline">\(0=0\)</span></strong>이라는 수학명제를 나타내게 된다.</p>
+</div>
+<div id="-" class="section level2">
+<h2>메타수학의 수학화</h2>
+<p>괴델은 괴델수를 이용하여 메타수학의 명제를 수학의 명제로 바꾸는 데 성공하였는데 간단한 예를 들어보겠다. <span class="math inline">\(``\sim(0=0)&quot;\)</span> 는 <strong>0은 0이 아니다</strong> 라는 단순한 수학 명제인 반면 <strong>수학 명제 <span class="math inline">\(``\sim(0=0)&quot;\)</span>의 첫 번째 기호는 틸드(<span class="math inline">\(\sim\)</span>)이다.</strong>는 수학명제가 아니라 메타수학의 명제이다. 그런데 이 메타수학의 명제는 적당한 과정을 거치면 수학명제로 바뀌게 되는데, 편의상 <span class="math inline">\(``\sim(0=0)&quot;\)</span>의 괴델수를 <span class="math inline">\(a\)</span>라고 하고 위의 상항기호 표에서 <span class="math inline">\(``\sim&quot;\)</span>의 괴델수가 1임을 기억하자. 그렇다면 첫 번째 기호가 <span class="math inline">\(``\sim&quot;\)</span>이라는 것은 곧 <span class="math inline">\(a\)</span>를 소인수분해했을 때 제일 작은 소수인 2의 지수가 1임을 의미하게 되고 메타수학의 명제는 <strong><span class="math inline">\(2\)</span>는 <span class="math inline">\(a\)</span>의 인수이지만 <span class="math inline">\(2^2\)</span>은 <span class="math inline">\(a\)</span>의 인수가 아니다.</strong>와 같이 수학명제로 바뀌게 된다. 기호로 표현하기 위해 표현을 바꾸면 <strong><span class="math inline">\(y=z\times 2\)</span>인 <span class="math inline">\(z\)</span>가 존재하고, <span class="math inline">\(y=z\times 2 \times 2\)</span>인 <span class="math inline">\(z\)</span>는 존재하지 않는다.</strong> 가 되며 실제로 이를 기호로 표현하면 다음과 같다.</p>
+<p><span class="math display">\[(\exists z) (sss\cdots sss0=z\times ss0) \cdot \sim(\exists z) (sss\cdots sss0=z\times (ss0 \times ss0)) 
+\]</span> (<span class="math inline">\(sss\cdots sss0\)</span>에서 <span class="math inline">\(s\)</span>는 정확히 <span class="math inline">\(a\)</span>번 나타난다.) 이와 비슷한 방법으로 모든 메타수학의 명제를 괴델수를 이용하여 수학의 명제로 바꿀 수 있다.</p>
+</div>
+<div id="-" class="section level2">
+<h2>불완전성 정리</h2>
+<p>이제 불완전성 정리를 천천히 이해해보자. <strong>Dem</strong>과 <strong>Sub/sub</strong>의 개념을 정의한 후 증명의 핵심 아이디어로 들어가 보겠다.</p>
+<div id="dem" class="section level3">
+<h3>Dem</h3>
+<p><strong>Dem</strong>은 증명을 뜻하는 demonstration의 약자로 <strong>Dem</strong>(<span class="math inline">\(x\)</span>, <span class="math inline">\(z\)</span>)은 <strong>괴델수 <span class="math inline">\(x\)</span>를 가진 문장묶음이 괴델수 <span class="math inline">\(z\)</span>를 가진 명제의 증명이다.</strong>의 축약표현으로 정의한다. 예를 들어 피타고라스 정리 증명의 괴델수가 <span class="math inline">\(m\)</span>이고 피타고라스 정리의 괴델수가 <span class="math inline">\(n\)</span>이라면 Dem(<span class="math inline">\(m\)</span>, <span class="math inline">\(n\)</span>)이라고 쓸 수 있는 것이다.</p>
+</div>
+<div id="subsub" class="section level3">
+<h3>Sub/sub</h3>
+<p>Sub은 치환 혹은 대입을 의미하며 소문자로 표현한 <strong>sub</strong>(<span class="math inline">\(x\)</span>,17,<span class="math inline">\(x\)</span>)는 <strong>괴델수 <span class="math inline">\(x\)</span>를 가진 명제에 등장하는 변수 <span class="math inline">\(y\)</span>들에 전부 숫자 <span class="math inline">\(x\)</span>를 대입해서 만들어진 명제의 괴델수</strong>로 정의한다(17은 <span class="math inline">\(y\)</span>의 괴델수임을 기억하자). 한 편, <span class="math inline">\(s\)</span>를 대문자로 표시한 <strong>Sub</strong>(<span class="math inline">\(x\)</span>,17,<span class="math inline">\(x\)</span>)는 <strong>괴델수가 아닌 명제 그 자체로 정의</strong>한다. 이해를 돕기 위해 <span class="math inline">\(2^8 \times 3^4 \times 5^{13} \times 7^9 \times 11^8 \times 13^{13} \times 17^5 \times 19^7 \times 23^{17} \times 29^9\)</span>를 다시 살펴보겠다. (<span class="math inline">\(\exists x\)</span>)(<span class="math inline">\(x=sy\)</span>)는 앞서 설명했듯이 <span class="math inline">\(y\)</span> 다음 수가 존재한다고 읽을 수 있으며 괴델수를 <span class="math inline">\(k\)</span>라 하면 <span class="math inline">\(k=2^8 \times 3^4 \times 5^{13} \times 7^9 \times 11^8 \times 13^{13} \times 17^5 \times 19^7 \times 23^{17} \times 29^9\)</span>가 된다. 이제 <span class="math inline">\(y\)</span>대신 <span class="math inline">\(k\)</span>를 대입한다면 수정된 명제는 (<span class="math inline">\(\exists x\)</span>)(<span class="math inline">\(x=sss \cdots sss0\)</span>)이 되고(<span class="math inline">\(s\)</span>는 <span class="math inline">\(k+1\)</span>번 연속됨) <span class="math inline">\(s\)</span>의 괴델수가 7임을 고려하면 <span class="math inline">\(k\)</span>를 대입한 명제의 괴델수는 <span class="math inline">\(y\)</span>부분에 해당되는 <span class="math inline">\(23^{17}\)</span>부터 <span class="math inline">\(s\)</span>로 바뀌어 아래의 식과 같이 된다.</p>
+<p><span class="math display">\[2^8 \times 3^4 \times 5^{13} \times 7^9 \times 11^8 \times 13^{13} \times 17^5 \times 19^7 \times 23^{7} \times 29^7 \times 31^7 \times 37^7 \times \cdots (P_{k+10})^9\]</span> (<span class="math inline">\(P_{k+10}\)</span>: <span class="math inline">\(k+10\)</span>번 째 소수)</p>
+<p>얼핏 보기에 명제의 괴델수를 명제 그 자체에 대입한다는 것이 순환논리같은 느낌을 주는데 이것이 바로 괴델의 핵심적인 아이디어 중 하나이다. 이제부터 본격적인 증명의 내용으로 들어가기로 하자.</p>
+</div>
+<div id="--1" class="section level3">
+<h3>불완전성 정리</h3>
+<p>불완전성 정리의 증명은 <strong>괴델수 <span class="math inline">\(z\)</span>를 가진 명제는 증명불가능하다</strong>라는 메타수학의 명제를 수학의 명제로 바꾼 후, 이 명제의 특별한 경우가 증명될 수 없다는 것을 보이는것으로 이루어진다. 이제 다음의 명제를 살펴보자.</p>
+<p><span class="math display">\[\sim(\exists x)\text{Dem}(x,\text{Sub}(y, 17, y))\]</span></p>
+<p>위 명제는 <strong>Sub(<span class="math inline">\(y\)</span> ,17, <span class="math inline">\(y\)</span>) 의 증명은 존재하지 않는다, 즉 증명불가능하다는 의미를 가지는 메타수학의 명제</strong>이며, 앞서 설명했듯이 괴델수를 이용하면 수학의 명제로 바꿀 수 있고 수학 명제는 괴델수를 갖게 된다. 해당되는 괴델수를 <span class="math inline">\(n\)</span>이라 한 다음 이 명제의 <span class="math inline">\(y\)</span>를 <span class="math inline">\(n\)</span>으로 바꾼 명제 <span class="math inline">\(G\)</span>를 살펴보자.</p>
+<p><span class="math display">\[\text{G}: \sim(\exists x)\text{Dem}(x,\text{Sub}(n, 17, n))\]</span></p>
+<p>명제 <span class="math inline">\(G\)</span>가 바로 우리가 찾는 명제인데 이것의 메타수학적 의미를 살펴보면 <strong>괴델수 sub(<span class="math inline">\(n\)</span>, 17, <span class="math inline">\(n\)</span>)을 가진 명제는 증명할 수 없다</strong>이다. 이 메타수학 명제와 대응되는 수학명제의 괴델수를 <span class="math inline">\(g\)</span>라고 하고 <span class="math inline">\(g\)</span>는 어떤 숫자일지 생각해보자. 놀랍게도 <span class="math inline">\(g=\text{sub}(n, 17, n)\)</span>임을 알 수 있다. <strong><span class="math inline">\(G\)</span>는 괴델수 <span class="math inline">\(n\)</span>을 가진 명제에서 <span class="math inline">\(y\)</span>에 숫자 <span class="math inline">\(n\)</span>을 대입하여 만든 명제이므로, 이것의 괴델수 <span class="math inline">\(g\)</span>는 정확히 sub(<span class="math inline">\(n\)</span>, 17, <span class="math inline">\(n\)</span>)의 정의와 일치하게 된다</strong>. 이제 <span class="math inline">\(G\)</span> 의미를 다시 살펴보면 <strong>괴델 수 <span class="math inline">\(g\)</span>를 가진 명제는 증명불가능하다.</strong>이고 즉, <span class="math inline">\(G\)</span>는 증명불가능하다는 의미가 된다. 이제 맨 처음으로 돌아가자. <span class="math inline">\(G\)</span>에 대응되는 수학명제는 참이지만 증명불가능한 명제가 되어 불완전성의 정리가 증명된다.</p>
+</div>
+</div>
+<div class="section level2">
+<h2>마치며</h2>
+<p>필자는 고등학생때부터 괴델의 불완전성정리를 이해해보려고 괴델의 논문원본도 찾아보고 여러 교양서적을 많이 읽어보았었다. 그러나 논문을 다 보는것은 이해하기가 어렵고 교양서적은 겉핥기식으로만 나와있어서 최근까지도 증명의 핵심을 이해하지 못했었는데 출판사 승산에서 나온 ``괴델의 증명“을 읽으면서 한층 이해수준을 올릴 수 있었다. 이 책은 외국서적을 번역한 것으로 번역하면서 생소한 단어와 표현들이 많이나와 읽기가 어려운 부분이 있어 이번기회에 잘 풀어서 설명해볼 목적으로 글을 쓰게 되었다. 본 글이 논문과 교양서적 사이에서 가교 역할을 하여 불완전성 정리를 이해하는데 도움이 되길 기대한다.</p>
+</div>
+
+<p>Copyright &copy;2016 <a href="mailto:secondmath85@gmail.com">Jinseob Kim</a>&nbsp;&nbsp;
+
+<a href="https://www.facebook.com/secondmath"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i> </a> &nbsp;
+
+<a href="https://www.linkedin.com/in/jinseob-kim-%EA%B9%80%EC%A7%84%EC%84%AD-456550a5?trk=hp-identity-name"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a>&nbsp;
+
+<a href="https://github.com/mathemedicine/mathemedicine.github.io"><i class="fa fa-github fa-lg" aria-hidden="true"></i></a>
+
+</p>
+
+
+
+
+<div id="disqus_thread"></div>
+<script>/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-mathemedicine-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

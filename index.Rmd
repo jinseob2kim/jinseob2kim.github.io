@@ -1,0 +1,91 @@
+---
+title: "Jinseob's Matholic"
+output: 
+  html_document: 
+    toc: no
+---
+
+
+## 업데이트{.tabset}
+
+
+### 2018
+* 2월 9일
+    + 리눅스 서버와 깃허브(github) 쉽게 사용하기
+    + GWAS visualization (1): Summary table
+    + GWAS visualization (2): Interactive plot
+    + GWAS visualization (3): Automation
+
+```{r,echo=F,message=F,cache=T,fig.align="center",fig.width=30, fig.height=27}
+library(ggplot2)
+logistic.map <- function(r, x, N, M){
+  ## r: bifurcation parameter
+  ## x: initial value
+  ## N: number of iteration
+  ## M: number of iteration points to be returned
+  z <- 1:N
+  z[1] <- x
+  for(i in c(1:(N-1))){
+    z[i+1] <- r *z[i]  * (1 - z[i])
+  }
+  ## Return the last M iterations 
+  z[c((N-M):N)]
+}
+
+## Set scanning range for bifurcation parameter r
+my.r <- seq(2.5, 4, by=0.003)
+Orbit <- sapply(my.r, logistic.map,  x=0.1, N=1000, M=300)
+##   user  system elapsed (on a 2.4GHz Core2Duo)
+##   2.910   0.018   2.919 
+
+Orbit <- as.vector(Orbit)
+r <- sort(rep(my.r, 301))
+d=data.frame(Orbit,r)
+
+ggplot(d,aes(r,Orbit))+geom_point()+xlab("")+ylab("")
+```
+
+### 2017
+* 11월 22일
+    + Population Genetics Index: 유전체역학 2017
+
+
+* 8월 26일
+    + GAM: 고려대학교 의과대학
+
+
+### 2016
+* 12월 9일
+    + *R* 의학통계 강의계획: 삼성서울병원
+* 12월 15일
+    + *R* 의학통계: 삼성서울병원(1)
+
+
+* 11월 30일
+    + *R*을 이용한 데이터 매니지먼트 기초
+
+
+* 10월 31일
+    + 메인페이지 그림 추가: Logistic Map
+    
+* 10월 26일
+    + 가설검정의 심리학, 건강지표: DALY, QALY
+    
+* 10월 24일
+    + 조건부 확률로 알아보는 프로포즈 전략
+    + Google Analytics 적용, SNS 주소 추가. 
+
+* 10월 22일
+    + 야구에서의 통계학: WAR
+
+* 10월 21일
+    + ML 탭 추가, 딥러닝의 역사
+    + 홈페이지 디자인 변경: Home 탭 삭제, 배경색과 목차 표현방법 변경.
+ 
+* 10월 20일
+    + Mathematics 탭 추가, 괴델의 불완전성 정리.
+    + 댓글기능 추가.
+
+
+  
+

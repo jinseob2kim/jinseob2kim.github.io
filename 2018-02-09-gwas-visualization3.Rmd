@@ -1,0 +1,107 @@
+---
+title: "GWAS visualization (3): Automation"
+date: '2018-02-09'
+editor_options: 
+  chunk_output_type: console
+output: 
+  html_document: 
+    fig_height: 6
+    fig_width: 6
+    code_folding: show
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,cache=F)
+```
+
+마지막으로 GWAS 분석결과를 입력하면 자동으로 (1) (2)의 결과를 나타내는 것을 실습하겠다. 
+
+## Setting
+### Packages & directory
+```{r}
+library(knitr);library(data.table);library(glue);library(DT);library(ggplot2);library(manhattanly)
+dir.name="/home/secondmath/Dropbox/example"
+
+```
+
+
+### Load Gene info
+
+(1)에서와 같이 미리 다운받은 glist-hg18파일을 이용한다. 
+```{r}
+glist_hg18=fread(glue("{dir.name}/glist-hg18"))
+setnames(glist_hg18, paste("V",1:4,sep=""),c("chr","start","end","symbol"))
+setkey(glist_hg18,chr,start,end)
+```
+
+
+## Make function
+
+### Summary table
+먼저 GWAS결과를 토대로 gene정보가 추가된 summary table을 얻는 함수이다.
+```{r}
+## Result: Addgene 
+MakeAddgene=function(res.assoc , list.gene=glist_hg18){
+  res.gwas = fread(res.assoc)[TEST=="ADD"]
+  res.gwas[,":="(chr=as.character(CHR), start=BP, end=BP)]
+  out = foverlaps(res.gwas, list.gene ,by.x=c("chr","start","end"), type="within", mult="first")
+  return(out[,c(5:13,4)])
+}
+```
+
+
+### QQ/Manhattan/Volcano plot
+
+다음은 summary table을 바탕으로 3가지 plot을 저장하는 함수이다. 
+```{r}
+## Figure
+MakeFig=function(res.addgene, cut.interest=5e-5){
+  SNP.interest = res.addgene[P<=cut.interest,SNP]
+  effect_var=ifelse("BETA" %in% names(res.addgene),"BETA","OR")
+  effect_line=ifelse("BETA" %in% names(res.addgene), 10, 2)
+  
+  qq= qqly(res.addgene, snp = "SNP",p="P",gene="symbol", highlight =SNP.interest, annotation1="CHR", annotation2="BP")
+  man= manhattanly(res.addgene, snp = "SNP",p="P", chr = "CHR", bp = "BP", gene="symbol",highlight = SNP.interest ,annotation1="BP",annotation2=effect_var)
+
+  z=volcanor(res.addgene, p = "P",effect_size = effect_var,snp="SNP",gene="symbol",annotation1="BP",annotation2="CHR")
+  names(z$data)[1]= effect_var
+  vol=volcanoly(z, highlight = SNP.interest, effect_size_line = c(-effect_line,effect_line), genomewideline = -log10(5e-08))
+  return(list(qq,man,vol))
+}
+
+```
+
+## Run
+디렉토리에 들어있는 **.assoc.** 파일들에 대해 전부 summary table과 그림을 그려보겠다.
+
+### 파일 목록
+
+Linear(TG)와 Logistic(high_tg)의 2개 결과가 있다. 
+
+```{r}
+assoc.file=dir(dir.name,pattern=".assoc.")
+  
+assoc.file
+```
+
+
+### 실행
+
+**htmltools** 패키지를 이용해 object들을 전부 저장한 후 한번에 보여줘야 한다. 실습 편의상 SNP은 랜덤으로 5000개만 뽑아서 보겠다.
+
+```{r}
+set.seed(5385)
+i=1
+l <- htmltools::tagList()
+for (fname in assoc.file){
+  gres = MakeAddgene(glue("{dir.name}/{fname}"), glist_hg18)[sample(.N,5000)]
+  l[[i]]   <- datatable(gres,caption=glue("Result with gene: {fname}"),rownames=F)
+  f=MakeFig(gres, cut.interest = 5e-5)
+  l[[i+1]] <- f[[1]]
+  l[[i+2]] <- f[[2]]
+  l[[i+3]] <- f[[3]]
+  i <- i+4
+}
+
+l
+```

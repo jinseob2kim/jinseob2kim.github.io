@@ -1,0 +1,168 @@
+---
+title: 'Generalized Additive Model: 고려대학교 의과대학'
+subtitle: 'R: mgcv 패키지 실습'
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=T,warning=F)
+library(knitr);library(HEAT);library(mgcv);library(epiDisplay)
+data(mort)
+```
+
+## 시작하기 전에
+본 강의록은 **GAM** 이론은 생략한다. 이론은 https://www.slideshare.net/secondmath/generalized-additive-model 을 참고하기 바란다. 
+
+
+## Example data: Korea airpolution
+```{r,eval=F}
+#install.packages("HEAT")
+library(HEAT)
+data(mort)
+head(mort)
+```
+
+```{r,echo=F}
+kable(head(mort))
+```
+
+### Descriptive(Seoul): ts class
+```{r}
+sl = subset(mort,ccode==11)
+sl.ts = ts(sl, start=c(2000,1), frequency = 365.25)
+plot(sl.ts[,c("nonacc","meanpm10","meanso2","meanno2","meantemp")],main="Description")
+
+plot(decompose(sl.ts[,"nonacc"],type="multiplicative"))
+
+```
+
+### ACF: Autocorrelation Function
+```{r}
+acf(sl$nonacc,main="Seoul: nonacc",lag.max=10)
+pacf(sl$nonacc,main="Seoul: nonacc",lag.max=10)
+
+
+```
+
+
+### 서울시 인구수: For offset 
+다음 자료를 참고하여 서울의 2000~2007년의 인구수 정보를 얻었다. 
+
+https://www.google.co.kr/publicdata/explore?ds=z5567oe244g0ot_&ctype=c&strail=false&bcs=d&nselm=s&met_y=population&scale_y=lin&ind_y=false&ifdim=city_proper:area:410&tunit=Y&pit=1188399600000&hl=en&dl=en&ind=false&icfg
+
+```{r,eval=F}
+pop_seoul=data.frame(yy=2000:2007,pop=c(9895220, 9880180, 9865190, 9850200, 9835200, 9820170, 10020120, 10025670))
+pop_seoul
+```
+
+
+```{r,echo=F}
+pop_seoul=data.frame(yy=2000:2007,pop=c(9895220, 9880180, 9865190, 9850200, 9835200, 9820170, 10020120, 10025670))
+kable(pop_seoul,caption="Population number 2000-2007: Seoul")
+```
+
+### 계절성 변수: sin, cos
+```{r}
+sl$season1=sin(1:nrow(sl)/365.25*2*pi)
+sl$season2=cos(1:nrow(sl)/365.25*2*pi)
+
+par(mfrow=c(2,1))
+plot(sl$season1,main="sin")
+plot(sl$season2,main="cos")
+
+```
+
+### Scatterplot
+```{r}
+library(ggplot2)
+ggplot(sl,aes(meanpm10,nonacc))+geom_point()+stat_smooth(method="loess",span=0.5)
+ggplot(sl,aes(meanso2,nonacc))+geom_point()+stat_smooth(method="loess",span=0.5)
+```
+
+
+
+## GLM
+```{r,eval=FALSE}
+library(epiDisplay)
+m1=glm(nonacc~meanpm10 + meanso2 + meanno2 + meanco + meantemp + meanhumi+ meanpress+ season1+season2, family=poisson, data=sl)
+
+res1=idr.display(m1,crude.p.value = T)
+res1
+```
+
+```{r,echo=F}
+m1=glm(nonacc~meanpm10 + meanso2 + meanno2 + meanco + meantemp + meanhumi+ meanpress+ season1+season2, family=poisson, data=sl)
+res1=idr.display(m1,crude.p.value = T)
+tbres=res1$table[rownames(res1$table)!="",]
+kable(tbres,caption = res1$first.line)
+kable(res1$last.lines)
+```
+
+
+### Offset: Population number
+
+```{r,eval=F}
+sl_pop=merge(sl,pop_seoul,by="yy") 
+head(sl_pop)
+```
+
+```{r,echo=F}
+sl_pop=merge(sl,pop_seoul,by="yy") 
+kable(head(sl_pop))
+```
+
+
+```{r,eval=F}
+m2=glm(nonacc~offset(log(pop))+meanpm10 + meanso2 + meanno2 + meanco + meantemp + meanhumi+ meanpress+ season1+season2, family=poisson, data=sl_pop)
+res2=idr.display(m2,crude.p.value = T)
+res2
+````
+
+```{r,echo=F}
+m2=glm(nonacc~offset(log(pop))+meanpm10 + meanso2 + meanno2 + meanco + meantemp + meanhumi+ meanpress+ season1+season2, family=poisson, data=sl_pop)
+res2=idr.display(m2,crude.p.value = T)
+tbres=res2$table[rownames(res2$table)!="",]
+kable(tbres,caption = paste(res2$first.line,": Offset as Log(pop)",sep=""))
+kable(res2$last.lines)
+```
+
+### Quasi-poisson
+Overdispersion Problem: 포아송분포 가정에서는 평균=분산이 성립한다. 그러나 실제로 이런 경우는 많지 않다. 
+
+```{r}
+mean(sl_pop$nonacc)
+var(sl_pop$nonacc)
+```
+
+이 때, 평균=$\alpha\times$분산 이 성립하는 $\alpha$를 추가하여 이를 해결한다. 이 결과 $\beta$값들은 포아송분포일 때와 동일하나 $p$-value가 바뀐다. 또한 모형평가하는 $AIC$같은 지표를 구할 수 없다. 
+
+
+```{r}
+m3=glm(nonacc~offset(log(pop))+meanpm10 + meanso2 + meanno2 + meanco + meantemp + meanhumi+ meanpress+ season1+season2, family=quasipoisson, data=sl_pop)
+
+summary(m3)
+summary(m2) ## 비교
+```
+
+
+## GAM
+```{r}
+m4=gam(nonacc~offset(log(pop))+s(meanpm10) + s(meanso2) + s(meanno2) + s(meanco) + s(meantemp) + s(meanhumi)+ s(meanpress)+ season1+season2, family=poisson, data=sl_pop)
+
+summary(m4)$edf ## Effective Degree of Freedom
+AIC(m4)         ## AIC
+
+par(mfrow=c(2,4))
+plot(m4)
+```
+
+### Quasipoisson
+```{r}
+m5=gam(nonacc~offset(log(pop))+s(meanpm10) + s(meanso2) + s(meanno2) + s(meanco) + s(meantemp) + s(meanhumi)+ s(meanpress)+ season1+season2, family=quasipoisson, data=sl_pop)
+
+summary(m5)$edf ## Effective Degree of Freedom
+AIC(m5)         ## No AIC
+
+par(mfrow=c(2,4))
+plot(m5)
+```
+

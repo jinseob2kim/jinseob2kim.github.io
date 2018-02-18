@@ -1,0 +1,452 @@
+---
+title: '*R*을 이용한 데이터 매니지먼트 기초'
+subtitle: '국민건강보험공단 영유아검진 표본코호트 DB를 이용하여'
+---
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(cache=T)
+```
+
+# 시작하기 전에
+본 강의는 *R*과 *Rstudio* 의 설치과정은 생략한다. 혹시 설치를 하지 못하였다면 <http://www.r-project.org/> 와 <http://www.rstudio.com/> 를 참조하여 설치하길 바란다. *R*에 대한 전반적인 도움말은 **help.start()** 명령어를 활용하면 되고 함수 별 도움말을 보려면 **help(which)** 와 같이 실행하면 된다.
+
+## 본 강의의 목표
+*R*의 이용능력을 대략적으로 다음과 같이 분류할 수 있다.
+
+1. 데이터 정리는 excel로 미리 다 해놓고 통계만 *R*로 수행.
+2. 데이터 정리와 통계분석.
+3. *R*로 그림을 그린다.
+4. 논문에 들어갈 테이블과 그림을 *R*에서..
+5. 논문 시작부터 끝까지 *R*로만..
+6. **추가!! for문 대신 apply문을 써서 실행시간을 단축시키고 더 나아가 병렬처리를 할 수 있다** 
+
+본 강의에서는 기본적인 **데이터 정리를 *R*에서 수행**하는 것을 첫번째 목표로 할 것이며 **Table 1** 를 간단히 작성하는 법, 기본적인 **그림** 그리는 방법을 추가적으로 학습할 것이다.
+
+
+# *R* 기초연산 : 벡터(vector) 
+*R* 의 기본 연산 단위는 벡터이며 `x=c(1,2,3)` 이라고 쓰면 1,2,3 으로 이루어진 길이 3인 벡터를 `x`에 저장하는 것이다. 기타 연산은 직접 실습으로 알아보자.
+```{r}
+x=c(1,2,3,4,5,6)            ## vector of variable
+y=c(7,8,9,10,11,12)
+x+y              
+x*y
+sqrt(x)
+sum(x)
+sum(x>=4)   ## No sum, number
+diff(x) 
+mean(x)
+sd(x)
+max(x)
+max(x,y)
+length(x)
+
+x[2]
+x[-2]  
+x[1:3]
+x[c(1,3,4,5,6)]
+x[c(1,2,3)]
+```
+
+
+## 벡터만들기
+이번에는 벡터를 생성하는 다양한 방법들을 예시를 통해 배워보도록 한다.
+```{r}
+## Sequence
+v1=seq(-5,5,by=.2); v1 
+## Repeat 
+v2=rep(1,3); v2
+v3=rep(c(1,2,3),2); v3              ## Repeat for vector
+v4=rep(c(1,2,3),each = 2); v4       ## Repeat for vector : each
+```
+
+
+## for, if, else, ifelse 문 
+마찬가지로 예시를 통해 배워보자.
+
+```{r}
+## for loop
+for (i in 1:3){
+  print(i)
+}
+
+i=0
+for (j in c(1,2,4,5,6)){
+  i=i+j
+}
+i
+
+## if 
+x=5
+if (x >=3 ){
+  x=x+3
+}
+x
+
+x=5
+if (x >=10){
+  print("High")
+} else if (x >=5){
+  print("Medium")
+} else {
+  print("Low")
+}                                ## if, else if 주의: 반드시 } 와 같은 줄에 위치하도록.
+ 
+
+## ifelse
+x=5
+y=ifelse(x==5,"OK","Suck")       ## ifelse(조건,참일때,거짓일때)
+y
+```
+
+
+##함수 만들기 
+기초수준에서는 함수를 만들어 쓸일이 거의 없을 것이다. 그러나 평균, 분산 등을 구할 때 결측치가 있으면 *R*은 `NA`를 출력하는 문제점이 있어 이를 해결하기 위해서라도 기본적인 함수 만드는 법은 알고 있는 것이 좋다. 예제를 통해 살펴보자.
+
+```{r}
+x=c(1:10,12,13,NA,NA,15,17)               ## 결측치가 포함되어 있다면..
+mean(x)
+mean0=function(x){
+  mean(x,na.rm=T)
+}                                         ## x에 대한 함수이며 mean함수에 na.rm 옵션을 TRUE로 해두었다. default는 F
+
+mean0=function(x){mean(x,na.rm=T)}        ## 한줄에 쓸 수도 있다. 
+mean0(x)
+```
+
+하나 이상의 변수를 포함한 함수도 다음과 같이 만들 수 있다.
+
+```{r}
+twomean=function(x1,x2){
+  a=(x1+x2)/2
+  a
+}
+twomean(4,6)
+```
+
+## Apply 문 : apply, sapply, lapply
+*R*은 벡터 기반의 연산을 지원하므로 이를 이용하면 여러가지 계산을 간단히 할 수 있다. 예제로 살펴보자. 
+```{r}
+mat=matrix(1:20,nrow=4,byrow=T)   ## 4행 5열, byrow=T : 행부터 채운다. 
+mat
+apply(mat,1,mean)                 ## 1: 행- 행별로 평균
+apply(mat,2,mean)                 ## 2: 열- 열별로 평균
+sapply(1:nrow(mat),function(x){mean(mat[x,])})       
+sapply(1:ncol(mat),function(x){mean(mat[,x])})
+lapply(1:nrow(mat),function(x){mean(mat[x,])})             ## Return list type
+unlist(lapply(1:nrow(mat),function(x){mean(mat[x,])}))     ## Same to sapply
+```
+
+한편 `for`문의 과도한 사용은 분석의 속도를 저하시키는 가장 큰 요인 중 하나인데 간단한 예를 통해 문제점을 살펴보자. 
+```{r}
+## for 문을 이용한 합구하는 함수 만들기 
+sum_f=function(x){
+  out=0
+  for (i in 1:x){
+    out=out+i
+    }
+  return(out)
+}
+system.time(sum_f(10^6))                  ## system.time - 시간 잰다.
+system.time(sum(as.numeric(1:10^6)))      ## 내장 sum 함수- 더할 것이 많으면 as.numeric을 넣어줘야 한다. 
+```
+
+따라서 for문을 최대한 덜 쓰고 벡터연산을 활용하는 것이 실행시간을 줄이는 핵심이며, Apply 문의 적극적인 사용으로 이를 해결할 수 있다. 더 나아가서 멀티코어를 활요한 병렬처리 명령어를 이용함으로서 더욱 시간을 줄일 수 있는데 1초동안 가만히 있는 `Sys.sleep(1)` 함수를 가지고 예를 들어보겠다. 단, 병렬처리는 가급적 `Mac/Linux` 환경에서 수행하는 것을 추천하는데 `mclapply`라는 함수로 그냥 `sapply`, `lapply` 쓰듯이 똑같이 쓸 수 있는 장점이 있다. Window 환경에서는 이보다는 복잡한 과정을 거쳐야 한다. 
+
+```{r}
+for (i in 1:8){Sys.sleep(1)}
+system.time(for (i in 1:8){Sys.sleep(1)})             ## 걸리는 시간 : 8초 정도
+system.time(sapply(1:8,function(x){Sys.sleep(1)}))    ## 약간 덜?
+
+library(parallel)                                     ## for 병렬 처리 
+mclapply(1:8,function(x){Sys.sleep(1)})              ## Only for MAc/Linux : Not for window - 코어 하나만 이용한다.
+
+## For windows
+num_cores <- detectCores()                            ## Number of Cores
+cl <- makeCluster(num_cores)                          ## Cluster 만들기
+parSapply(cl,1:8,function(x){Sys.sleep(1)})
+system.time(parSapply(cl,1:8,function(x){Sys.sleep(1)}))  ## 1초
+
+#clusterEvalQ(cl, {library(survival)})                ## parSapply 안의 함수안에 특정 패키지의 명령어가 있다면 그 패키지 미리 지정. 
+#clusterExport(cl,c("run_feature","event_time"))      ## 자체 만든 함수나 객체를 쓴다면 미리 지정 
+stopCluster(cl)                                       ## 종료 
+```
+
+# 데이터 불러와서 작업하기
+이제부터는 실제 데이터를 읽어서 그 데이터를 매니징 하는 방법을 배워보도록 하겠다. 
+
+## 데이터 불러오기, 저장하기
+데이터를 불러오기 전에 미리 디렉토리를 지정하면 그 다음부터는 편하게 읽고 쓸 수 있다.
+```{r}
+getwd()                                                   ## 현재 디렉토리 
+setwd("/home/secondmath/Dropbox/consult/practice")        ## 디렉토리 설정 
+getwd()
+```
+여기서 주의해야 할 점은 폴더간의 구분을  / 로 해야 한다는 점이다. *R* 은 유닉스 기반의 언어이기 때문이다. 이제 실습 데이터를 읽어보도록 하자. 가급적이면 데이터포맷은 `csv`로 통일하는 것을 추천한다. 콤마로 분리된 가장 간단 한 형태의 파일로서 용량도 작고 어떤 소프트웨어에서도 읽을 수 있다는 장점이 있다. 물론 *R*에서 SPSS, SAS, Excel파일을 읽을 수도 있지만 본 실습에서는 생략하도록 하겠다.
+
+```{r}
+setwd("/home/secondmath/Dropbox/consult/practice") 
+a=read.csv("i_all.csv")                             ## 첫번째 행은 변수명으로 자동 인식
+a=read.table("i_all.csv", sep=",", header=T)        ## 구분자와 첫번째 행 인식여부를 직접
+head(a)                                             ## 처음 6행 보기
+```
+
+저장도 `csv`로 하는 것을 추천하며 실습도 이것만 하겠다.
+
+```{r}
+write.csv(a,"i_all_write.csv")
+write.csv(a,"i_all_write.csv",quote=F,row.names=F)   ## 문자형변수의 ''빼기, 행번호 삭제 
+```
+
+## 읽은 데이터 살펴보기 
+이제부터는 본격적으로 읽은 데이터를 살펴보도록 하겠다. 실습데이터는 2008-2014년의 영유아 건강검진 자료이며 자세 한 설명은 다른 문서를 참조하길 바란다. 
+
+```{r}
+head(a)               ## 처음 6행
+```
+
+*R*은 결측치를 `NA` 로 표시한다.
+
+```{r}
+tail(a)               ## 마지막 6행
+names(a)              ## 변수명
+a$E_BMI[1:10]         ## BMI변수의 처음 10개 행만..                  
+dim(a)                ## 행갯수, 열갯수
+nrow(a)               ## 행
+ncol(a)               ## 열 
+class(a)              ## 클라스. 일단 data.frame이라는 정도만 알고 넘어가자.
+str(a)                ## 데이터 구조 살펴보기 
+summary(a)            ## 대략적인 요약.
+```
+
+
+```{r,eval=FALSE}
+a$E_BMI
+a[,"E_BMI"]
+a[,11]
+
+#a[1:7]                       ## 이러면 안된다. ","로 행인지 열인지 구분을 해 줘야.
+a[,1:7]                       ## 1열부터 7열까지.
+a[,c(1,2,3,4,5,6,7)]
+a[,seq(1,7)]
+a[,c("PERSON_ID","EXMD_BZ_YYYY","YKIHO_GUBUN_CD","E_HGHT","E_HGHT_PCT","E_HGHT_JDG","E_WGHT")]  ## 변수명으로도 가능 
+a[,names(a)[1:7]]                                                                               ## Same
+```
+
+```{r}
+length(a$E_BMI)
+a[2,11]  ## 2행 11열
+a[2,]   ## 11행
+```
+
+```{r}
+mean(a$E_BMI)                          ## 결측치 없을 때만..
+mean(a$E_BMI,na.rm=T)                  ## 결측치 빼고
+round(mean(a$E_BMI,na.rm=T),2)         ## 반올림 
+mean(a[,11],na.rm=T)
+sd(a$E_BMI,na.rm=T)                    ## 표준편차
+var(a$E_BMI,na.rm=T)                   ## 분산
+median(a$E_BMI,na.rm=T)                ## 중간값
+IQR(a$E_BMI,na.rm=T)                   ## 25%-75% range
+quantile(a$E_BMI, na.rm=T)             ## quantile
+max(a$E_BMI,na.rm=T)                   ## Max
+min(a$E_BMI,na.rm=T)                   ## Min
+```
+
+
+## 결측치 관련 실습 
+한편, 실습 데이터는 08년-14년의 데이터를 전부 합친 것이기 때문에 특정년도에만 있는 변수들이 많다. 즉, 어떤 년도에는 전부 NA인 변수도 있다는 뜻이다(예: 08-10년은 BMI가 없다). 이를 확인해 보자. 그룹별로 살펴보는 것은 `tapply` 또는 `aggregate` 함수를 이용할 수 있다. 
+
+```{r}
+tapply(a$E_BMI,a$EXMD_BZ_YYYY,mean)                                              ## 변수, 그룹변수, 함수 
+tapply(a$E_BMI,a$EXMD_BZ_YYYY,function(x){mean(x,na.rm=T)})                      ## NA 고려. 
+aggregate(a$E_BMI,by=list(a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)})          ## aggregate 이용   
+aggregate(a$E_BMI,by=list(a$number,a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)}) ## 그룹 동시에 지정가능
+aggregate(a[,c("E_BMI","E_WGHT","E_HGHT")],by=list(a$number,a$EXMD_BZ_YYYY),function(x){mean(x,na.rm=T)}) 
+## 여러 변수 가능 
+```
+
+간단한 실습을 위해 변수목록을 줄이자. 
+
+```{r}
+subvar=c(1:2,36,4,7,10,17:31)                   ## 변수번호   
+subvar
+b=a[,subvar]                                    ## 해당 변수만..
+head(b)
+subvar=names(a)[c(1:2,36,4,7,10,17:31)]         ## 변수명으로 해도 똑같다. 
+subvar
+b=a[,subvar]
+```
+
+이제부터는 `b` 데이터셋으로 실습을 진행하겠다. 결측치 현황을 살펴보면 
+
+```{r}
+summary(b)
+```
+
+원활한 실습읋 위해 결측치가 없는 데이터셋을 만든 후 계속 실습을 진행하려 한다. 결측치가 없는 행이 어떤 행인지를 알아보려면
+
+```{r}
+dim(b)
+nona=complete.cases(b)                       ## 결측치 없으면 T, 있으면 F
+table(nona)
+c=b[nona,]                                   ## 결측치 없는 데이터 생성.
+c=na.omit(b)                                 ## na.omit 함수를 이용하면 더 편하다.
+dim(c)
+```
+
+## 다양한 조건문 활용 
+이번에는 연속형 변수인 `BMI`변수를 예시로 우리가 원하는 조건에 해당하는 정보를 뽑아내는 것을 연습해 보겠다. 
+
+```{r}
+mean(c$E_BMI)
+cut= c$E_BMI >=16                                   ## TRUE of FALSE
+table(cut)                         
+rows=which(c$E_BMI >= 16)                           ## row numbers
+head(rows)                               
+values=c$E_BMI[c$E_BMI>=16]                         ## Values
+head(values)
+length(values)
+BMI_HGHT_and=(c$E_BMI>=16 & c$E_HGHT>=100)          ## and
+BMI_HGHT_or=(c$E_BMI>=16 | c$E_HGHT>=100)           ## or
+table(BMI_HGHT_and)
+table(BMI_HGHT_or)
+```
+
+이번에는 년도 변수인 `EXMD_BZ_YYYY` 를 예로 실습을 해 보자.
+```{r}
+y2011 = c$EXMD_BZ_YYYY==2011
+table(y2011)
+y2011_2012 = (c$EXMD_BZ_YYYY == 2011 | c$EXMD_BZ_YYYY == 2012)
+y2011_2012 = c$EXMD_BZ_YYYY %in% c(2011,2012)                       ## Same 
+table(y2011_2012)
+class(c$EXMD_BZ_YYYY)                                               ## continuous or categorial
+summary(c$EXMD_BZ_YYYY)                                             ## continuous
+c$EXMD_BZ_YYYY=as.factor(c$EXMD_BZ_YYYY)                            ## continuous -> categorial
+summary(c$EXMD_BZ_YYYY)
+kk=as.numeric(c$EXMD_BZ_YYYY)                                       ## NONONONO
+summary(kk)
+c$EXMD_BZ_YYYY=as.numeric(as.character(c$EXMD_BZ_YYYY))             ## OK
+summary(c$EXMD_BZ_YYYY)
+```
+
+## 데이터 불러온 후 가장 먼저 해야할 것!!!!!!
+사실 가장 앞에 나와야 할 내용인데 `class`의 개념이 나와야 해서 이제야 언급하게 되었다. 데이터를 받으면 가장 먼저 해야할 것은 연속형, 범주형 변수를 설정해 주는 것이다. **Feamle**, **Male** 등 이미 변수가 범주로 되어 있다면 상관이 없겠지만, 그렇지 않고 0,1로 되어있을 때는 숫자형으로 되어있는게 default이기 때문이다. 데이터셋 `c`로 연습해보자. 년도, 차수,키, 몸무게, BMI와 접종횟수를 연속변수로 보고 나머지는 범주형으로 보는 것으로 하자.
+```{r}
+conti_var=c(2:6,8,seq(11,21,2))                                 ## 키, 몸무게, BMI, freq variable
+cat_var= which(!(1:ncol(c) %in% conti_var))                     ## !: Not
+cat_var
+
+for (vn in conti_var){
+  c[,vn]=as.numeric(c[,vn])
+}
+
+for (vn in cat_var){
+  c[,vn]=as.factor(c[,vn])
+}
+
+summary(c)
+```
+
+## 새로운 변수 만들기 
+지금까지 배운 것을 토대로 간단히 새로운 변수를 만들 수 있다. 
+```{r}
+c$BMI_cat=0                             ## 0으로 된 변수만들고
+c$BMI_cat[c$E_BMI>=16]=1                ## 16이상인 것만 1로 바꾼다.
+table(c$BMI_cat)
+c$BMI_cat= c$E_BMI>=16                  ## 방법 2: TRUE of FALSE 
+table(c$BMI_cat)
+c$BMI_cat= ifelse(c$E_BMI>=16,"1","0")  ## 방법 3: ifelse문 이용
+table(c$BMI_cat)
+```
+
+## Sort
+정렬에는 `order`함수가 사용된다. 
+```{r}
+ord=order(c$E_BMI)         ## 작은순서대로 Rank  
+head(c$E_BMI[ord])        
+ord2=order(-c$E_BMI)       ## 큰순서대로 Rank
+tail(c$E_BMI[ord2])
+d=c[ord,]       ## 콤마 앞에 즉, 행에 순서변수를 넣는다. 
+head(d)
+```
+
+## Subset
+특정 조건을 만족하는 부분 데이터셋을 만드는 것은 지금까지 배웠던 것을 응용할 수도 있고 `subset`이라는 함수를 쓸 수도 있다. 
+```{r}
+d=c[c$EXMD_BZ_YYYY %in% 2013:2014,]       ## 행에 조건 써준다. 
+d=subset(c, EXMD_BZ_YYYY %in% 2013:2014)  ## 문법이 간단하여 이것을 주로 쓴다. 
+```
+
+## Merge
+Merge는 `merge`함수를 이용한다. 실습을 위해 데이터셋 `c`를 두 개의 데이터셋으로 나눈 후 합쳐보겠다.
+```{r}
+d=c[,1:6]                 ## 기본정보 + 연속형변수 
+e=c[,c(1:3,7:21)]         ## 기본정보 + 범주형변수 
+c=merge(d,e,by=c("PERSON_ID","EXMD_BZ_YYYY","number"), all=F)  ##all=T로 하면 안겹치는 것도 NA포함해서 만듦.
+```
+
+# Table 1 만들기 
+이제부터는 실전에서 기술통계량 즉, 테이블 1을 간단히 만드는 방법을 연습해 보겠다. `moonBook, ztable`패키지를 미리 설치하자. 
+
+```{r,results="asis"}
+#install.packages(c("moonbook","ztable"))
+library(moonBook);library(ztable)
+options(ztable.type="html")
+tb1=mytable(EXMD_BZ_YYYY ~ E_HGHT+E_WGHT+E_BMI +Q_PREM+Q_BTH_WGHT+Q_VCC_BCG_YN, data=c, digits=2)  ## 그룹변수 ~ 설명변수 
+ztable(tb1)
+                               
+```
+
+
+# R Plot 
+*R*의 큰 장점 중 하나는 수려한 그래픽이다. 본 실습에서 많은 부분은 할 수 없지만 기본적인 그림, 여러 그림 동시에 그리기 등 옵션들, 상관관계 그림을 알아보도록 하겠다. 
+
+```{r}
+hist(c$E_BMI,main="Histogram: BMI",xlab="BMI")
+hist(c$E_BMI,main="Histogram: BMI",xlab="BMI",breaks=10,freq=F)
+boxplot(c$E_BMI,main="Boxplot: BMI",ylab="BMI")
+boxplot(E_BMI~EXMD_BZ_YYYY,data=c, main="BMI per year", ylab="BMI")
+plot(c$E_BMI,c$E_HGHT, xlab="BMI", ylab="Height")
+plot(c[,4:6])                                       
+```
+
+## 여러 그림 하나에 그리기. 
+
+```{r}
+par(mfrow=c(2,2))                    ## 2*2 그림 (상 -> 하), mfcol: 좌 -> 우 
+hist(c[,4])
+hist(c[,5])
+hist(c[,6])
+hist(c[,3])
+```
+
+## lattice 패키지 이용
+```{r}
+library(lattice)
+xyplot(E_BMI~E_HGHT|EXMD_BZ_YYYY,data=c, main="Plot per year")
+```
+
+## 상관관계 분석 
+```{r,warning=F}
+library(Hmisc)
+rcorr(as.matrix(c[,4:6]))
+rcorr(as.matrix(c[,4:6]),type="spearman")
+
+##intstall.packages("PerformanceAnalytics")
+library(PerformanceAnalytics)
+chart.Correlation(c[,4:6],pch="+",main="Correlation plot")            ## histogram=F, method="spearman" 옵션가능 
+```
+
+## 그림 저장 
+```{r}
+pdf("fig1.pdf",h=7,w=10)  ## h: height, w: width(inch)
+hist(c[,4])
+dev.off()
+
+png("fig1.png",h=480,w=640)  ## h: height, w: width(pixel)
+hist(c[,4])
+dev.off()
+```
+
+
+**수고하셨습니다!! 질문은 secondmath85@gmail 로 주시면 감사하겠습니다**
+

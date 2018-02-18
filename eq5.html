@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+
+<title>5차방정식은 근의 공식이 없다</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-86134798-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Jinseob's Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="probability_likelihood.html">Likelihood</a>
+    </li>
+    <li>
+      <a href="Normal_distribution.html">Normal Distribution</a>
+    </li>
+    <li>
+      <a href="WAR.html">야구에서의 통계학: WAR</a>
+    </li>
+    <li>
+      <a href="hypothesis.html">가설검정의 심리학</a>
+    </li>
+    <li>
+      <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Mathematics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="godel.html">괴델의 불완전성 정리</a>
+    </li>
+    <li>
+      <a href="propose.html">조건부 확률로 알아보는 프로포즈 전략</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    ML
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="deep_learning.html">딥러닝의 역사</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Lecture
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="rbasic.html">R을 이용한 데이터 매니지먼트 기초</a>
+    </li>
+    <li>
+      <a href="rbasic_plan_smc.html">R 의학통계 강의계획: 삼성서울병원</a>
+    </li>
+    <li>
+      <a href="r_smc_1.html">R 의학통계: 삼성서울병원(1)- 기초 문법 및 Table 1</a>
+    </li>
+    <li>
+      <a href="gam_korea.html">GAM: 고려대학교 의과대학</a>
+    </li>
+    <li>
+      <a href="PopGene.html">Population Genetics Index: 유전체역학 2017</a>
+    </li>
+    <li>
+      <a href="2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html">리눅스 서버와 깃허브(github) 쉽게 사용하기</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization1.html">GWAS visualization (1): Summary table</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization2.html">GWAS visualization (2): Interactive plot</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization3.html">GWAS visualization (3): Automation</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/mathemedicine/mathemedicine.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style>
+   p {line-height: 2.5em;}
+</style>
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">5차방정식은 근의 공식이 없다</h1>
+
+</div>
+
+
+<div id="--" class="section level2">
+<h2>근의공식이 존재한다는 의미</h2>
+<ol style="list-style-type: decimal">
+<li><p>근들이 유리수의 거듭제곱근 체확장의 수로 표현된다.</p></li>
+<li><p>표현되는 방법이 식의 종류와 상관없이 유일.</p></li>
+</ol>
+<blockquote>
+<p>유리계수 5차방정식 중 근이 거듭제곱근 체확장으로 표현될 수 없는 경우가 존재함을 보인다.</p>
+</blockquote>
+</div>
+<div id="-" class="section level2">
+<h2>갈루아군과 가해군</h2>
+<ol style="list-style-type: decimal">
+<li><p>해당 군의 부분군으로 이루어진 조성열이 존재.</p></li>
+<li><p>군의 열에 나오는 모든 부분군이 <strong>가환</strong></p></li>
+</ol>
+<p>일 때 해당 군을 가해군이라 한다.</p>
+<blockquote>
+<p>근들이 거듭제곱근 체확장으로 표현된다면, 이에 대응하는 갈루아 군 <span class="math inline">\(G(K/F)\)</span>는 가해군임을 보인다.</p>
+</blockquote>
+</div>
+<div id="-s_5" class="section level2">
+<h2>대칭군 <span class="math inline">\(S_5\)</span></h2>
+<p>다음을 만족하는 유리계수 5차방정식이 존재한다.</p>
+<blockquote>
+<p>근들로 만들어진 거듭제곱근 체확장에 대응하는 갈루아 군 <span class="math inline">\(G(K/F)\)</span>이 <span class="math inline">\(S_5\)</span>와 동형이다.</p>
+</blockquote>
+</div>
+<div id="s_5--." class="section level2">
+<h2><span class="math inline">\(S_5\)</span>은 가해군이 아니다.</h2>
+<ol style="list-style-type: decimal">
+<li><p><span class="math inline">\(A_5\)</span>는 단순군이다. 따라서 <span class="math inline">\(A_5\)</span>의 비자명 부분군은 없다.</p></li>
+<li><p><span class="math inline">\(A_5\)</span>는 비가환군이다. (1 2 3)(2 3 4) <span class="math inline">\(\neq\)</span> (2 3 4) (1 2 3) 이기 때문이다.</p></li>
+</ol>
+<blockquote>
+<p><span class="math inline">\(I \subset A_5 \subset S_5\)</span> 가 <span class="math inline">\(S_5\)</span>의 유일한 조성열이고 <span class="math inline">\(A_5\)</span>는 비가환이므로 <span class="math inline">\(S_5\)</span>는 가해군이 아니다.</p>
+</blockquote>
+</div>
+<div class="section level2">
+<h2>결론</h2>
+<p>다음과 같은 5차방정식이 존재한다.</p>
+<blockquote>
+<p>근들로 만들어진 거듭제곱근 체확장에 대응하는 갈루아 군이 가해군이 아니다.</p>
+</blockquote>
+<p>따라서 이 5차방정식의 근들은 거듭제곱근 체확장으로 표현할 수 없다. 이는 근의 공식이 존재하지 않는다는 결론으로 이어진다.</p>
+</div>
+
+<p>Copyright &copy;2016 <a href="mailto:secondmath85@gmail.com">Jinseob Kim</a>&nbsp;&nbsp;
+
+<a href="https://www.facebook.com/secondmath"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i> </a> &nbsp;
+
+<a href="https://www.linkedin.com/in/jinseob-kim-%EA%B9%80%EC%A7%84%EC%84%AD-456550a5?trk=hp-identity-name"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a>&nbsp;
+
+<a href="https://github.com/mathemedicine/mathemedicine.github.io"><i class="fa fa-github fa-lg" aria-hidden="true"></i></a>
+
+</p>
+
+
+
+
+<div id="disqus_thread"></div>
+<script>/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//http-mathemedicine-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
