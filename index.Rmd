@@ -12,6 +12,7 @@ output:
 ### 2018
 * 2월 18일
     + 홈페이지 주소 변경 (mathemedicine $\rightarrow$ jinseob2kim)
+    + 기존 댓글 지워짐
 
 * 2월 9일
     + 리눅스 서버와 깃허브(github) 쉽게 사용하기
