@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+
+<meta charset="utf-8" />
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<meta name="generator" content="pandoc" />
+
+
+
+<meta name="date" content="2018-03-13" />
+
+<title>Advanced R (1): data.table &amp; tableone</title>
+
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/cosmo.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/jqueryui-1.11.4/jquery-ui.min.js"></script>
+<link href="site_libs/tocify-1.9.1/jquery.tocify.css" rel="stylesheet" />
+<script src="site_libs/tocify-1.9.1/jquery.tocify.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<script src="site_libs/navigation-1.1/codefolding.js"></script>
+<link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-114370844-1', 'auto');
+  ga('require', 'linkid');
+  ga('send', 'pageview');
+</script>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+<link rel="stylesheet" href="styles.css" type="text/css" />
+
+</head>
+
+<body>
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+  height: auto;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+
+<div class="container-fluid main-container">
+
+<!-- tabsets -->
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+</script>
+
+<!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+
+
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
+</script>
+
+<style type="text/css">
+
+#TOC {
+  margin: 25px 0px 20px 0px;
+}
+@media (max-width: 768px) {
+#TOC {
+  position: relative;
+  width: 100%;
+}
+}
+
+
+.toc-content {
+  padding-left: 30px;
+  padding-right: 40px;
+}
+
+div.main-container {
+  max-width: 1200px;
+}
+
+div.tocify {
+  width: 20%;
+  max-width: 260px;
+  max-height: 85%;
+}
+
+@media (min-width: 768px) and (max-width: 991px) {
+  div.tocify {
+    width: 25%;
+  }
+}
+
+@media (max-width: 767px) {
+  div.tocify {
+    width: 100%;
+    max-width: none;
+  }
+}
+
+.tocify ul, .tocify li {
+  line-height: 20px;
+}
+
+.tocify-subheader .tocify-item {
+  font-size: 0.90em;
+  padding-left: 25px;
+  text-indent: 0;
+}
+
+.tocify .list-group-item {
+  border-radius: 0px;
+}
+
+.tocify-subheader {
+  display: inline;
+}
+.tocify-subheader .tocify-item {
+  font-size: 0.95em;
+}
+
+</style>
+
+<!-- setup 3col/9col grid for toc_float and main content  -->
+<div class="row-fluid">
+<div class="col-xs-12 col-sm-4 col-md-3">
+<div id="TOC" class="tocify">
+</div>
+</div>
+
+<div class="toc-content col-xs-12 col-sm-8 col-md-9">
+
+
+
+
+<div class="navbar navbar-inverse  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">Jinseob's Home</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Statistics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="probability_likelihood.html">Likelihood</a>
+    </li>
+    <li>
+      <a href="Normal_distribution.html">Normal Distribution</a>
+    </li>
+    <li>
+      <a href="WAR.html">야구에서의 통계학: WAR</a>
+    </li>
+    <li>
+      <a href="hypothesis.html">가설검정의 심리학</a>
+    </li>
+    <li>
+      <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    Mathematics
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="godel.html">괴델의 불완전성 정리</a>
+    </li>
+    <li>
+      <a href="propose.html">조건부 확률로 알아보는 프로포즈 전략</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    ML
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="deep_learning.html">딥러닝의 역사</a>
+    </li>
+  </ul>
+</li>
+<li class="dropdown">
+  <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
+    R Lecture
+     
+    <span class="caret"></span>
+  </a>
+  <ul class="dropdown-menu" role="menu">
+    <li>
+      <a href="rbasic.html">R을 이용한 데이터 매니지먼트 기초</a>
+    </li>
+    <li>
+      <a href="rbasic_plan_smc.html">R 의학통계 강의계획: 삼성서울병원</a>
+    </li>
+    <li>
+      <a href="r_smc_1.html">R 의학통계: 삼성서울병원(1)- 기초 문법 및 Table 1</a>
+    </li>
+    <li>
+      <a href="gam_korea.html">GAM: 고려대학교 의과대학</a>
+    </li>
+    <li>
+      <a href="PopGene.html">Population Genetics Index: 유전체역학 2017</a>
+    </li>
+    <li>
+      <a href="2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html">리눅스 서버와 깃허브(github) 쉽게 사용하기</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization1.html">GWAS visualization (1): Summary table</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization2.html">GWAS visualization (2): Interactive plot</a>
+    </li>
+    <li>
+      <a href="2018-02-09-gwas-visualization3.html">GWAS visualization (3): Automation</a>
+    </li>
+    <li>
+      <a href="radv1.html">Advanced R (1): data.table &amp; tableone</a>
+    </li>
+  </ul>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        <li>
+  <a href="https://github.com/jinseob2kim/jinseob2kim.github.io">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+<style>
+   p {line-height: 2.5em;}
+</style>
+
+<div class="fluid-row" id="header">
+
+<div class="btn-group pull-right">
+<button type="button" class="btn btn-default btn-xs dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu" style="min-width: 50px;">
+<li><a id="rmd-show-all-code" href="#">Show All Code</a></li>
+<li><a id="rmd-hide-all-code" href="#">Hide All Code</a></li>
+</ul>
+</div>
+
+
+
+<h1 class="title toc-ignore">Advanced R (1): data.table &amp; tableone</h1>
+<h4 class="date"><em>2018-03-13</em></h4>
+
+</div>
+
+
+<div id="data.table" class="section level1">
+<h1>data.table</h1>
+<div id="load-write-data-fread-fwrite" class="section level2 tabset">
+<h2>Load &amp; write data: fread &amp; fwrite</h2>
+<div id="code" class="section level3">
+<h3>Code</h3>
+<pre class="r"><code>library(rbenchmark);library(knitr)
+#install.packages(&quot;data.table&quot;)
+library(data.table)
+setwd(&quot;/home/secondmath/Dropbox/myarticle/MOR_heri&quot;)
+
+df = read.table(&quot;prac.phe&quot;,header=T)
+dt = fread(&quot;prac.phe&quot;,header=T)
+#dt = data.table(df)
+dt</code></pre>
+<pre><code>##            FID         ID sex age DXA_total_tscore FBS tCholesterol HDL
+##    1: R1F001PR R1D1I00001   0  NA               NA  NA           NA  NA
+##    2: R1F001PR R1D1I00002   1  NA               NA  NA           NA  NA
+##    3: R1F002PR R1D1I00004   0  NA               NA  NA           NA  NA
+##    4: R1F006PR R1D1I00012   0  NA               NA  NA           NA  NA
+##    5: R1F007PR R1D1I00015   0  NA               NA  NA           NA  NA
+##   ---                                                                  
+## 3457: R4F200PR R4E1I09631   1  59             -3.8  96          236  52
+## 3458: R4F315PR R4E1I13271   1  50              0.6 106          233  50
+## 3459: X1F330PR X1E1I13751   1  51             -0.8  85          153  46
+## 3460: X1X330PR X1E1I13761   1  46             -1.0  89          220  62
+## 3461: X1F342PR X1E1I14140   0  34             -1.2  96          199  52
+##       LDL  TG Height Weight SittingHt Waist   Hip headcircum armspan   BMI
+##    1:  NA  NA     NA     NA        NA    NA    NA         NA      NA    NA
+##    2:  NA  NA     NA     NA        NA    NA    NA         NA      NA    NA
+##    3:  NA  NA     NA     NA        NA    NA    NA         NA      NA    NA
+##    4:  NA  NA     NA     NA        NA    NA    NA         NA      NA    NA
+##    5:  NA  NA     NA     NA        NA    NA    NA         NA      NA    NA
+##   ---                                                                     
+## 3457: 149 171  149.5   54.0      83.6  74.5  93.4       53.4   142.5 24.16
+## 3458: 170  95  152.8   61.4      85.6  88.2  94.8       52.8   151.4 26.29
+## 3459:  93  79  151.6   54.4      84.1  77.1  95.4       54.4   150.5 23.67
+## 3460: 142  70  152.7   45.2      83.0  66.9  86.0       52.5   153.1 19.38
+## 3461: 133 165  169.5   80.5      92.1  90.1 101.0       57.8   168.8 28.01
+##       SBP DBP  birth    gweek   MET total_kcal  PY FTND smoke alcohol
+##    1:  NA  NA     NA       NA    NA         NA  NA   NA    NA      NA
+##    2:  NA  NA     NA       NA    NA         NA  NA   NA    NA      NA
+##    3:  NA  NA     NA       NA    NA         NA  NA   NA    NA      NA
+##    4:  NA  NA     NA       NA    NA         NA  NA   NA    NA      NA
+##    5:  NA  NA     NA       NA    NA         NA  NA   NA    NA      NA
+##   ---                                                                
+## 3457: 166  96 471018 11.75125  5364   2514.242 0.0   NA     1       3
+## 3458: 120  80 561205       NA  3072   1779.503 0.0   NA     1       1
+## 3459: 104  68 550901       NA  4468   1729.046 0.0   NA     1       1
+## 3460: 110  64 610708  6.91250 53892   1089.507 0.0   NA     1       3
+## 3461: 111  64 721118       NA   807   1863.503 0.6    0     3       1
+##       hyperTG
+##    1:      NA
+##    2:      NA
+##    3:      NA
+##    4:      NA
+##    5:      NA
+##   ---        
+## 3457:       0
+## 3458:       0
+## 3459:       0
+## 3460:       0
+## 3461:       0</code></pre>
+</div>
+<div id="benchmark" class="section level3">
+<h3>Benchmark</h3>
+<pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/myarticle/MOR_heri&quot;)
+kable(
+  benchmark(
+    df = read.table(&quot;prac.phe&quot;,header=T),
+    dt = fread(&quot;prac.phe&quot;,header=T)
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">df</td>
+<td align="right">100</td>
+<td align="right">3.565</td>
+<td align="right">4.76</td>
+<td align="right">3.543</td>
+<td align="right">0.020</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">dt</td>
+<td align="right">100</td>
+<td align="right">0.749</td>
+<td align="right">1.00</td>
+<td align="right">0.738</td>
+<td align="right">0.012</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="kkk" class="section level2">
+<h2>kkk</h2>
+<pre class="r"><code>kable(
+  benchmark(
+    lapply.df = lapply(3:ncol(df), function(x){ mean(df[, x], na.rm = T)}),
+    lapply.dt = dt[, lapply(.SD, function(x){ mean(x, na.rm = T)}), .SDcols = 3:ncol(dt)]
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">lapply.df</td>
+<td align="right">100</td>
+<td align="right">0.121</td>
+<td align="right">1.000</td>
+<td align="right">0.120</td>
+<td align="right">0.000</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">lapply.dt</td>
+<td align="right">100</td>
+<td align="right">0.216</td>
+<td align="right">1.785</td>
+<td align="right">0.216</td>
+<td align="right">0.001</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+<pre class="r"><code>kable(
+  benchmark(
+    mapply.df = mapply(function(x,y){ mean(subset(df, sex==y)[, x], na.rm = T)}, x=3:29, y=unique(df$sex)),
+    lappby2.dt = dt[, lapply(.SD, function(x){ mean(x, na.rm = T)}), .SDcols = 3:ncol(dt)]
+  )
+)</code></pre>
+<pre><code>## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter
+
+## Warning in mapply(function(x, y) {: longer argument not a multiple of
+## length of shorter</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2</td>
+<td align="left">lappby2.dt</td>
+<td align="right">100</td>
+<td align="right">0.211</td>
+<td align="right">1.000</td>
+<td align="right">0.212</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="left">mapply.df</td>
+<td align="right">100</td>
+<td align="right">2.465</td>
+<td align="right">11.682</td>
+<td align="right">2.465</td>
+<td align="right">0</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="tableone" class="section level1">
+<h1>tableone</h1>
+<pre class="r"><code>#install.packages(&quot;tableone&quot;)
+library(tableone)
+dt[,hyperTG := as.numeric(TG&gt;=200)]
+dt[,sex:= ifelse(sex==0,&quot;Male&quot;,&quot;Female&quot;)]
+setnames(dt,c(&quot;sex&quot;,&quot;age&quot;),c(&quot;Sex&quot;,&quot;Age&quot;))
+
+dt.tg = na.omit(dt, c(&quot;ID&quot;,&quot;Sex&quot;,&quot;Age&quot;,&quot;BMI&quot;,&quot;Waist&quot;,&quot;Hip&quot;,&quot;TG&quot;,&quot;hyperTG&quot;))
+
+tb1= CreateTableOne(vars = c(&quot;Age&quot;,&quot;Sex&quot;,&quot;BMI&quot;,&quot;Waist&quot;,&quot;Hip&quot;), strata = c(&quot;hyperTG&quot;),factorVars = &quot;Sex&quot;, data = dt.tg)
+zz=print(tb1 , nonnormal = c(&quot;Hip&quot;),exact = c(&quot;Sex&quot;), smd = TRUE,cramVars = NULL,printToggle=F)
+kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics of 2,731 study population&quot;,col.names=c(&quot;TG &lt; 200&quot;,&quot;TG ≥ 200&quot;,&quot;p&quot;,&quot;test&quot;,&quot;SMD&quot;))</code></pre>
+<table>
+<caption>Descriptive statistics of 2,731 study population</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">TG &lt; 200</th>
+<th align="center">TG ≥ 200</th>
+<th align="center">p</th>
+<th align="center">test</th>
+<th align="center">SMD</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>n</td>
+<td align="center">2406</td>
+<td align="center">325</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>Age (mean (sd))</td>
+<td align="center">43.75 (13.00)</td>
+<td align="center">47.50 (13.23)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.285</td>
+</tr>
+<tr class="odd">
+<td>Sex = Male (%)</td>
+<td align="center">859 (35.7)</td>
+<td align="center">202 (62.2)</td>
+<td align="center">&lt;0.001</td>
+<td align="center">exact</td>
+<td align="center">0.549</td>
+</tr>
+<tr class="even">
+<td>BMI (mean (sd))</td>
+<td align="center">23.36 (3.15)</td>
+<td align="center">25.78 (3.20)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.763</td>
+</tr>
+<tr class="odd">
+<td>Waist (mean (sd))</td>
+<td align="center">79.57 (8.89)</td>
+<td align="center">87.39 (8.10)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.920</td>
+</tr>
+<tr class="even">
+<td>Hip (median [IQR])</td>
+<td align="center">93.80 [90.26, 97.70]</td>
+<td align="center">97.30 [93.00, 100.50]</td>
+<td align="center">&lt;0.001</td>
+<td align="center">nonnorm</td>
+<td align="center">0.533</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<p>Copyright &copy;2016 <a href="mailto:secondmath85@gmail.com">Jinseob Kim</a>&nbsp;&nbsp;
+
+<a href="https://www.facebook.com/secondmath"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i> </a> &nbsp;
+
+<a href="https://www.linkedin.com/in/jinseob-kim-%EA%B9%80%EC%A7%84%EC%84%AD-456550a5?trk=hp-identity-name"><i class="fa fa-linkedin fa-lg" aria-hidden="true"></i></a>&nbsp;
+
+<a href="https://github.com/mathemedicine/mathemedicine.github.io"><i class="fa fa-github fa-lg" aria-hidden="true"></i></a>
+
+</p>
+
+
+
+
+<div id="disqus_thread"></div>
+<script>/**
+*  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+*  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables*/
+/*
+var disqus_config = function () {
+this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+*/
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//https-jinseob2kim-github-io.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+
+
+</div>
+</div>
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.header').parent('thead').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

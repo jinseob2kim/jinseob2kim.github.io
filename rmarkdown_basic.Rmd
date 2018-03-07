@@ -1,0 +1,60 @@
+---
+title: "Advanced R (1): Writing documents with R"
+subtitle: "rmarkdown basic"
+date: '2018-02-09'
+editor_options: 
+  chunk_output_type: console
+output: 
+  html_document: 
+    fig_height: 6
+    fig_width: 6
+    code_folding: show
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,cache=F)
+library(knitr)
+```
+
+
+# Setting
+## Basic
+```yaml
+---
+title: "Untitled"
+output: word_document
+---
+```
+
+## Customization
+```yaml
+---
+title: "Redefine Null Hypothesis"
+subtitle: "new p-value and its applications"
+author: "Jinseob Kim$^{1}$, Joohon Sung$^{1,*}$"
+date: "`r Sys.Date()`"
+output:
+  html_document:
+    fig_height: 6
+    fig_width: 9
+    highlight: textmate
+    theme: cosmo
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+    code_folding: hide
+    dev: jpeg
+  word_document:
+    fig_height: 6
+    fig_width: 9
+    reference_docx: /home/secondmath/Dropbox/Survival_new/doc_ref.docx
+  pdf_document:
+    fig_height: 6
+    fig_width: 9
+header-includes: \usepackage{kotex} \usepackage[doublespacing]{setspace}  \usepackage{multirow}
+csl: /home/secondmath/Dropbox/myarticle/bibtex_style/nature.csl
+bibliography: NewHypoTest.bib
+---
+```

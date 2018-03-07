@@ -46,6 +46,9 @@ navbar:
       href: 2018-02-09-gwas-visualization2.html
     - text: 'GWAS visualization (3): Automation'
       href: 2018-02-09-gwas-visualization3.html
+    - text: "Advanced R (1): data.table & tableone"
+      href: radv1.html
+      
   right:
   - icon: fa-github fa-lg
     href: https://github.com/jinseob2kim/jinseob2kim.github.io

@@ -1,0 +1,82 @@
+---
+title: "Advanced R (1): data.table & tableone"
+date: "2018-03-13"
+editor_options: 
+  chunk_output_type: console
+output: 
+  html_document: 
+    fig_height: 6
+    fig_width: 6
+    code_folding: show
+---
+
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE,cache=T)
+library(knitr)
+```
+
+
+# data.table
+
+## Load & write data: fread & fwrite{.tabset}
+
+### Code
+```{r}
+library(rbenchmark);library(knitr)
+#install.packages("data.table")
+library(data.table)
+setwd("/home/secondmath/Dropbox/myarticle/MOR_heri")
+
+df = read.table("prac.phe",header=T)
+dt = fread("prac.phe",header=T)
+#dt = data.table(df)
+dt
+```
+
+### Benchmark
+```{r}
+setwd("/home/secondmath/Dropbox/myarticle/MOR_heri")
+kable(
+  benchmark(
+    df = read.table("prac.phe",header=T),
+    dt = fread("prac.phe",header=T)
+  )
+)
+```
+
+## kkk
+```{r}
+kable(
+  benchmark(
+    lapply.df = lapply(3:ncol(df), function(x){ mean(df[, x], na.rm = T)}),
+    lapply.dt = dt[, lapply(.SD, function(x){ mean(x, na.rm = T)}), .SDcols = 3:ncol(dt)]
+  )
+)
+
+kable(
+  benchmark(
+    mapply.df = mapply(function(x,y){ mean(subset(df, sex==y)[, x], na.rm = T)}, x=3:29, y=unique(df$sex)),
+    lappby2.dt = dt[, lapply(.SD, function(x){ mean(x, na.rm = T)}), .SDcols = 3:ncol(dt)]
+  )
+)
+```
+
+
+
+
+# tableone
+
+```{r}
+#install.packages("tableone")
+library(tableone)
+dt[,hyperTG := as.numeric(TG>=200)]
+dt[,sex:= ifelse(sex==0,"Male","Female")]
+setnames(dt,c("sex","age"),c("Sex","Age"))
+
+dt.tg = na.omit(dt, c("ID","Sex","Age","BMI","Waist","Hip","TG","hyperTG"))
+
+tb1= CreateTableOne(vars = c("Age","Sex","BMI","Waist","Hip"), strata = c("hyperTG"),factorVars = "Sex", data = dt.tg)
+zz=print(tb1 , nonnormal = c("Hip"),exact = c("Sex"), smd = TRUE,cramVars = NULL,printToggle=F)
+kable(zz,align="c",caption="Descriptive statistics of 2,731 study population",col.names=c("TG < 200","TG ≥ 200","p","test","SMD"))
+```
