@@ -1,82 +1,292 @@
 ---
-title: "Advanced R (1): data.table & tableone"
+title: "Advanced R (1): data.table 패키지 소개 & Table 만들기"
 date: "2018-03-13"
 editor_options: 
   chunk_output_type: console
 output: 
   html_document: 
+    code_folding: show
     fig_height: 6
     fig_width: 6
-    code_folding: show
+    toc_depth: 2
 ---
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,cache=T)
+knitr::opts_chunk$set(echo = TRUE,cache=T, message=F, warning=F)
 library(knitr)
 ```
 
 
 # data.table
 
-## Load & write data: fread & fwrite{.tabset}
+## **Load** data: fread{.tabset}
+
+**fread** 함수로 이용하면 구분자 (comma, tab, ...)에 상관없이 빠르게 데이터를 읽을 수 있다. GWAS result 파일을 읽는 것을 비교해 보자. 
+
+
+만약 데이터를 빨리 읽는 것만 활용하겠다면 fread를 활용해서 읽은 후 다시 원래의 **data.frame**형태로 바꿔 사용하면 된다.
 
 ### Code
-```{r}
+```{r,cache=F}
 library(rbenchmark);library(knitr)
 #install.packages("data.table")
 library(data.table)
-setwd("/home/secondmath/Dropbox/myarticle/MOR_heri")
+```
 
-df = read.table("prac.phe",header=T)
-dt = fread("prac.phe",header=T)
+```{r}
+setwd("/home/secondmath/Dropbox/example")
+df = read.table("LinearTG.assoc.linear",header=T)
+dt = fread("LinearTG.assoc.linear",header=T)
+class(df)
+class(dt)
 #dt = data.table(df)
+#df = data.frame(dt)
 dt
 ```
 
 ### Benchmark
 ```{r}
-setwd("/home/secondmath/Dropbox/myarticle/MOR_heri")
+setwd("/home/secondmath/Dropbox/example")
 kable(
   benchmark(
-    df = read.table("prac.phe",header=T),
-    dt = fread("prac.phe",header=T)
+    df = read.table("LinearTG.assoc.linear",header=T),
+    dt = fread("LinearTG.assoc.linear",header=T), replications =1
   )
 )
 ```
 
-## kkk
+## **Save** data: fwrite{.tabset}
+**fwrite** 함수를 활용하여 빠르게 데이터를 저장할 수 있다. 
+
+### Code
+```{r}
+write.csv(dt, "aa.csv",row.names=F)
+fwrite(dt, "aa.csv")
+```
+
+### Benchmark
 ```{r}
 kable(
   benchmark(
-    lapply.df = lapply(3:ncol(df), function(x){ mean(df[, x], na.rm = T)}),
-    lapply.dt = dt[, lapply(.SD, function(x){ mean(x, na.rm = T)}), .SDcols = 3:ncol(dt)]
-  )
-)
-
-kable(
-  benchmark(
-    mapply.df = mapply(function(x,y){ mean(subset(df, sex==y)[, x], na.rm = T)}, x=3:29, y=unique(df$sex)),
-    lappby2.dt = dt[, lapply(.SD, function(x){ mean(x, na.rm = T)}), .SDcols = 3:ncol(dt)]
+    writecsv = write.csv(dt, "aa.csv",row.names=F),
+    fwrite = fwrite(dt, "aa.csv"), replications =1
   )
 )
 ```
 
+## **Row** opreation
+
+**data.table** 의 기본 문법은  **DT[i, j, by]** 형태이다. https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf  의 cheetsheet를 참고하면 좋다.
+
+![data.table 문법](http://2.bp.blogspot.com/-L-DIRIa6pi4/WAdcNIhzCfI/AAAAAAAAFiE/RN9-bFU6rZAIfZpAbY9v8pLFRpoTHbQxACLcB/s1600/Data%2BTable%2BSyntax.png)
+
+```{r}
+dt[TEST== "ADD"]
+dt[TEST== "ADD", ] ## same
+dt[TEST== "ADD" & P<=5e-8]
+
+res = dt[TEST=="ADD"]
+res[P<=5e-8 & BP %in% 116660000:116670000]
+```
 
 
+## **Column** & **By** opreation
+
+### Basic
+```{r}
+res[, "SNP"]  ## data.table class
+res[, .(SNP)] ## same
+```
+
+```{r,eval=F}
+res[, SNP] ## vector
+```
+
+```{r}
+res[, c("SNP","P")]
+res[, .(SNP, P)]
+res[, c(3, 9)]
+```
+
+주의!!
+```{r}
+vars= c("SNP","P")
+vars = c(3,9)
+```
+
+```{r, eval=F}
+res[, vars] # error
+```
+
+```{r}
+res[, vars, with=F]
+res[, .SD, .SDcols = vars]
+```
+
+
+### Function
+이번에는 phenotype data를 예로 들겠다. 편의상 몇가지 변수를 빼고 결측치가 없는 데이터를 이용하겠다.
+
+```{r}
+ph = fread("/home/secondmath/Dropbox/myarticle/MOR_heri/prac.phe")
+ph
+
+remove_var = c("birth","gweek","MET","total_kcal","FTND", "hyperTG")
+
+ph = ph[, .SD, .SDcols = -remove_var]
+ph = na.omit(ph)  ## No NA
+dim(ph)
+
+ph[, mean(LDL)]
+ph[, .(meanLDL= mean(LDL), meanHDL= mean(HDL))]
+ph[, lapply(.SD, mean), .SDcols= -c(1,2)]
+```
+
+
+**By** 문을 이용하여 그룹별로 함수를 적용할 수 있다.
+```{r}
+ph[, lapply(.SD, mean), .SDcols= -c(1,2), by= sex]
+ph[, lapply(.SD, mean), .SDcols= -c(1,2), by= .(sex, smoke)]
+```
+
+**R**의 기본 옵션인 **tapply**나 **aggregate**함수와 비교해보자.
+```{r}
+phf = data.frame(ph)
+## base
+tapply(phf$LDL, phf$sex, mean)
+aggregate(phf[,-c(1,2)], by= list(sex=phf$sex, smoke=phf$smoke), mean)
+```
+
+## Merge
+data.table에서 merge의 
+
+https://rstudio-pubs-static.s3.amazonaws.com/52230_5ae0d25125b544caab32f75f0360e775.html 를 참고하기 바란다.
+
+```{r}
+res
+setkey(res, CHR,SNP,BP)
+
+res_logit = fread("/home/secondmath/Dropbox/example/LogisticTG.assoc.logistic")[TEST=="ADD"]
+setkey(res_logit, CHR,SNP,BP)
+
+res[res_logit]
+res_logit[res]
+merge(res, res_logit, all=T)
+```
+
+
+## Fast overlap search
+
+data.table 패키지의 **foverlaps**함수를 이용해서
+
+1. glist_hg18의 gene, chromosome, start, end 정보와 
+
+
+2. GWAS 결과의 chromosome, BP정보
+
+
+를 합치면 SNP에 해당하는 gene을 매칭할 수 있다. 
+
+```{r}
+glist_hg18 = fread("/home/secondmath/Dropbox/example/glist-hg18")
+names(glist_hg18) = c("chr","start","end","gene")
+setkey(glist_hg18,chr,start,end)
+kable(head(glist_hg18))
+  
+## GWAS result: make new variable for foverlaps - chr, start, end 
+res[,":="(chr=as.character(CHR), start=BP, end=BP)]
+
+## Run 
+addgene = foverlaps(res, glist_hg18, by.x=c("chr","start","end"), type="within", mult="first")
+
+## See
+kable(head(addgene), align="c")
+```
+
+기타: https://jangorecki.github.io/blog/2015-12-11/Solve-common-R-problems-efficiently-with-data.table.html
+
+## Reshape data: **melt**, **dcast**
+
+
+# Using multicore
+
+## **mclapply**
+```{r}
+library(parallel)
+
+
+```
+
+## **mcmapply**
+```{r}
+
+
+```
 
 # tableone
 
-```{r}
+```{r,cache=F}
 #install.packages("tableone")
 library(tableone)
-dt[,hyperTG := as.numeric(TG>=200)]
-dt[,sex:= ifelse(sex==0,"Male","Female")]
-setnames(dt,c("sex","age"),c("Sex","Age"))
+ph[,hyperTG := as.numeric(TG>=200)]
+ph[,sex:= ifelse(sex==0,"Male","Female")]
+setnames(ph,c("sex","age"),c("Sex","Age"))
 
-dt.tg = na.omit(dt, c("ID","Sex","Age","BMI","Waist","Hip","TG","hyperTG"))
+tb1= CreateTableOne(vars = names(ph)[-c(1,2,24)], strata = c("hyperTG"),factorVars = c("Sex","smoke","alcohol"), data = ph, includeNA = T)
+zz=print(tb1 , nonnormal = c("PY"), exact = c("Sex"), smd = TRUE, cramVars = NULL, printToggle=T)
 
-tb1= CreateTableOne(vars = c("Age","Sex","BMI","Waist","Hip"), strata = c("hyperTG"),factorVars = "Sex", data = dt.tg)
-zz=print(tb1 , nonnormal = c("Hip"),exact = c("Sex"), smd = TRUE,cramVars = NULL,printToggle=F)
-kable(zz,align="c",caption="Descriptive statistics of 2,731 study population",col.names=c("TG < 200","TG ≥ 200","p","test","SMD"))
+## Export table
+kable(zz,align="c",caption="Descriptive statistics by TG",col.names=c("TG < 200","TG ≥ 200","p","test","SMD"))
+```
+
+
+# Regression result{.tabset}
+
+## Linear regression
+```{r,cache=F}
+library(epiDisplay)
+factorVars= c("Sex","smoke","alcohol")
+ph[, (factorVars) := lapply(.SD, as.factor), .SDcols= factorVars]
+
+
+m1 = lm(LDL~ Age +Sex + BMI + smoke + alcohol , data=ph)
+
+tb.m1 = regress.display(m1, crude=T, crude.p.value = T)
+tb.m1
+### Export table
+kable(tb.m1$table[rownames(tb.m1$table) != "",], align="c", caption = tb.m1$last.lines)
+```
+
+## Logistic regression
+```{r}
+m2 = glm(hyperTG~ Age +Sex + BMI + smoke + alcohol , data=ph, family=binomial)
+
+tb.m2 = logistic.display(m2, crude=T, crude.p.value = T)
+tb.m2
+### Export table
+kable(tb.m2$table[rownames(tb.m2$table) != "",], align="c", caption = tb.m2$last.lines)
+```
+
+
+## Poisson regression: 사망 데이터
+```{r}
+library(HEAT);data(mort)
+m3 = glm(nonacc~meantemp+ meanso2 + meanhumi, data= mort, family= poisson)
+
+tb.m3 = idr.display(m3, crude=T, crude.p.value = T )
+tb.m3
+### Export table
+kable(tb.m3$table[rownames(tb.m3$table) != "",], align="c", caption = tb.m3$last.lines)
+```
+
+## Cox: 생존분석
+```{r}
+library(survival);data(bladder)
+m4 = coxph(Surv(stop, event) ~ rx + size + number, data=bladder)
+
+tb.m4 = cox.display(m4, crude=T, crude.p.value = T )
+tb.m4
+### Export table
+kable(tb.m4$table[rownames(tb.m4$table) != "",], align="c", caption = tb.m4$last.lines)
 ```

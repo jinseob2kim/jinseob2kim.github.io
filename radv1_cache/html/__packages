@@ -3,3 +3,9 @@ knitr
 rbenchmark
 data.table
 tableone
+foreign
+survival
+MASS
+nnet
+epiDisplay
+HEAT

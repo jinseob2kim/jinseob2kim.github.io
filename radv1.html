@@ -12,7 +12,7 @@
 
 <meta name="date" content="2018-03-13" />
 
-<title>Advanced R (1): data.table &amp; tableone</title>
+<title>Advanced R (1): data.table 패키지 소개 &amp; Table 만들기</title>
 
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1" />
@@ -198,7 +198,7 @@ $(document).ready(function ()  {
 
     // establish options
     var options = {
-      selectors: "h1,h2,h3",
+      selectors: "h1,h2",
       theme: "bootstrap3",
       context: '.toc-content',
       hashGenerator: function (text) {
@@ -421,7 +421,7 @@ div.tocify {
 
 
 
-<h1 class="title toc-ignore">Advanced R (1): data.table &amp; tableone</h1>
+<h1 class="title toc-ignore">Advanced R (1): data.table 패키지 소개 &amp; Table 만들기</h1>
 <h4 class="date"><em>2018-03-13</em></h4>
 
 </div>
@@ -429,19 +429,310 @@ div.tocify {
 
 <div id="data.table" class="section level1">
 <h1>data.table</h1>
-<div id="load-write-data-fread-fwrite" class="section level2 tabset">
-<h2>Load &amp; write data: fread &amp; fwrite</h2>
+<div id="load-data-fread" class="section level2 tabset">
+<h2><strong>Load</strong> data: fread</h2>
+<p><strong>fread</strong> 함수로 이용하면 구분자 (comma, tab, …)에 상관없이 빠르게 데이터를 읽을 수 있다. GWAS result 파일을 읽는 것을 비교해 보자.</p>
+<p>만약 데이터를 빨리 읽는 것만 활용하겠다면 fread를 활용해서 읽은 후 다시 원래의 <strong>data.frame</strong>형태로 바꿔 사용하면 된다.</p>
 <div id="code" class="section level3">
 <h3>Code</h3>
 <pre class="r"><code>library(rbenchmark);library(knitr)
 #install.packages(&quot;data.table&quot;)
-library(data.table)
-setwd(&quot;/home/secondmath/Dropbox/myarticle/MOR_heri&quot;)
-
-df = read.table(&quot;prac.phe&quot;,header=T)
-dt = fread(&quot;prac.phe&quot;,header=T)
-#dt = data.table(df)
+library(data.table)</code></pre>
+<pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/example&quot;)
+df = read.table(&quot;LinearTG.assoc.linear&quot;,header=T)
+dt = fread(&quot;LinearTG.assoc.linear&quot;,header=T)
+class(df)</code></pre>
+<pre><code>## [1] &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>class(dt)</code></pre>
+<pre><code>## [1] &quot;data.table&quot; &quot;data.frame&quot;</code></pre>
+<pre class="r"><code>#dt = data.table(df)
+#df = data.frame(dt)
 dt</code></pre>
+<pre><code>##         CHR        SNP       BP A1 TEST NMISS    BETA    STAT         P
+##      1:   1 rs12565286   721290  C  ADD  1735 -12.760 -0.7056 4.805e-01
+##      2:   1 rs12565286   721290  C  sex  1735 -16.150 -2.5230 1.174e-02
+##      3:   1 rs12565286   721290  C  age  1735  -2.942 -6.0530 1.740e-09
+##      4:   1  rs3094315   752566  G  ADD  1787   6.444  1.0340 3.012e-01
+##      5:   1  rs3094315   752566  G  sex  1787 -16.210 -2.5840 9.851e-03
+##     ---                                                                
+## 417071:  22  rs2238837 51212875  C  sex  1787 -16.240 -2.5890 9.702e-03
+## 417072:  22  rs2238837 51212875  C  age  1787  -3.021 -6.3360 2.973e-10
+## 417073:  22 rs28729663 51219006  A  ADD  1787   1.031  0.1677 8.668e-01
+## 417074:  22 rs28729663 51219006  A  sex  1787 -16.250 -2.5880 9.722e-03
+## 417075:  22 rs28729663 51219006  A  age  1787  -3.030 -6.3500 2.718e-10</code></pre>
+</div>
+<div id="benchmark" class="section level3">
+<h3>Benchmark</h3>
+<pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/example&quot;)
+kable(
+  benchmark(
+    df = read.table(&quot;LinearTG.assoc.linear&quot;,header=T),
+    dt = fread(&quot;LinearTG.assoc.linear&quot;,header=T), replications =1
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">df</td>
+<td align="right">1</td>
+<td align="right">4.084</td>
+<td align="right">12.338</td>
+<td align="right">4.072</td>
+<td align="right">0.012</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td align="left">dt</td>
+<td align="right">1</td>
+<td align="right">0.331</td>
+<td align="right">1.000</td>
+<td align="right">0.331</td>
+<td align="right">0.000</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="save-data-fwrite" class="section level2 tabset">
+<h2><strong>Save</strong> data: fwrite</h2>
+<p><strong>fwrite</strong> 함수를 활용하여 빠르게 데이터를 저장할 수 있다.</p>
+<div id="code-1" class="section level3">
+<h3>Code</h3>
+<pre class="r"><code>write.csv(dt, &quot;aa.csv&quot;,row.names=F)
+fwrite(dt, &quot;aa.csv&quot;)</code></pre>
+</div>
+<div id="benchmark-1" class="section level3">
+<h3>Benchmark</h3>
+<pre class="r"><code>kable(
+  benchmark(
+    writecsv = write.csv(dt, &quot;aa.csv&quot;,row.names=F),
+    fwrite = fwrite(dt, &quot;aa.csv&quot;), replications =1
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th></th>
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2</td>
+<td align="left">fwrite</td>
+<td align="right">1</td>
+<td align="right">0.087</td>
+<td align="right">1.000</td>
+<td align="right">0.440</td>
+<td align="right">0.020</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="left">writecsv</td>
+<td align="right">1</td>
+<td align="right">2.799</td>
+<td align="right">32.172</td>
+<td align="right">2.769</td>
+<td align="right">0.028</td>
+<td align="right">0</td>
+<td align="right">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="row-opreation" class="section level2">
+<h2><strong>Row</strong> opreation</h2>
+<p><strong>data.table</strong> 의 기본 문법은 <strong>DT[i, j, by]</strong> 형태이다. <a href="https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf" class="uri">https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf</a> 의 cheetsheet를 참고하면 좋다.</p>
+<div class="figure">
+<img src="http://2.bp.blogspot.com/-L-DIRIa6pi4/WAdcNIhzCfI/AAAAAAAAFiE/RN9-bFU6rZAIfZpAbY9v8pLFRpoTHbQxACLcB/s1600/Data%2BTable%2BSyntax.png" alt="data.table 문법" />
+<p class="caption">data.table 문법</p>
+</div>
+<pre class="r"><code>dt[TEST== &quot;ADD&quot;]</code></pre>
+<pre><code>##         CHR        SNP       BP A1 TEST NMISS    BETA    STAT      P
+##      1:   1 rs12565286   721290  C  ADD  1735 -12.760 -0.7056 0.4805
+##      2:   1  rs3094315   752566  G  ADD  1787   6.444  1.0340 0.3012
+##      3:   1 rs11240777   798959  A  ADD  1787  -2.710 -0.6138 0.5394
+##      4:   1  rs3748597   888659  T  ADD  1787  11.550  1.2200 0.2228
+##      5:   1  rs2341354   918573  A  ADD  1787  -3.398 -0.5769 0.5641
+##     ---                                                             
+## 139021:  22  rs9628187 51156666  T  ADD  1787  23.430  1.2820 0.1999
+## 139022:  22   rs715586 51163138  T  ADD  1787   2.206  0.2466 0.8053
+## 139023:  22  rs3810648 51175626  G  ADD  1787  -8.414 -0.5470 0.5845
+## 139024:  22  rs2238837 51212875  C  ADD  1787   7.657  1.6130 0.1070
+## 139025:  22 rs28729663 51219006  A  ADD  1787   1.031  0.1677 0.8668</code></pre>
+<pre class="r"><code>dt[TEST== &quot;ADD&quot;, ] ## same</code></pre>
+<pre><code>##         CHR        SNP       BP A1 TEST NMISS    BETA    STAT      P
+##      1:   1 rs12565286   721290  C  ADD  1735 -12.760 -0.7056 0.4805
+##      2:   1  rs3094315   752566  G  ADD  1787   6.444  1.0340 0.3012
+##      3:   1 rs11240777   798959  A  ADD  1787  -2.710 -0.6138 0.5394
+##      4:   1  rs3748597   888659  T  ADD  1787  11.550  1.2200 0.2228
+##      5:   1  rs2341354   918573  A  ADD  1787  -3.398 -0.5769 0.5641
+##     ---                                                             
+## 139021:  22  rs9628187 51156666  T  ADD  1787  23.430  1.2820 0.1999
+## 139022:  22   rs715586 51163138  T  ADD  1787   2.206  0.2466 0.8053
+## 139023:  22  rs3810648 51175626  G  ADD  1787  -8.414 -0.5470 0.5845
+## 139024:  22  rs2238837 51212875  C  ADD  1787   7.657  1.6130 0.1070
+## 139025:  22 rs28729663 51219006  A  ADD  1787   1.031  0.1677 0.8668</code></pre>
+<pre class="r"><code>dt[TEST== &quot;ADD&quot; &amp; P&lt;=5e-8]</code></pre>
+<pre><code>##     CHR        SNP        BP A1 TEST NMISS  BETA  STAT         P
+##  1:  11  rs1974718 116606766  G  ADD  1743 29.44 5.659 1.780e-08
+##  2:  11  rs1558860 116607368  A  ADD  1743 29.44 5.659 1.780e-08
+##  3:  11  rs1558861 116607437  C  ADD  1758 29.30 5.665 1.717e-08
+##  4:  11  rs9326246 116611733  C  ADD  1774 29.58 5.742 1.100e-08
+##  5:  11   rs180349 116611827  A  ADD  1774 29.30 5.694 1.446e-08
+##  6:  11  rs6589564 116624153  C  ADD  1736 29.56 5.657 1.796e-08
+##  7:  11   rs180326 116624703  G  ADD  1758 30.13 5.784 8.640e-09
+##  8:  11  rs7930786 116624727  C  ADD  1758 30.42 5.832 6.523e-09
+##  9:  11  rs3825041 116631707  T  ADD  1753 30.66 5.868 5.265e-09
+## 10:  11 rs10790162 116639104  A  ADD  1773 31.38 6.054 1.725e-09
+## 11:  11  rs6589565 116640237  A  ADD  1773 31.38 6.054 1.725e-09
+## 12:  11  rs2160669 116647607  C  ADD  1779 30.79 5.981 2.677e-09
+## 13:  11   rs964184 116648917  G  ADD  1779 30.79 5.981 2.677e-09
+## 14:  11  rs6589566 116652423  G  ADD  1787 30.92 6.023 2.077e-09
+## 15:  11  rs7483863 116652491  A  ADD  1782 30.97 6.022 2.094e-09
+## 16:  11  rs2075290 116653296  C  ADD  1710 30.64 5.833 6.496e-09
+## 17:  11 rs10750096 116656788  C  ADD  1777 31.30 6.074 1.524e-09
+## 18:  11  rs2266788 116660686  G  ADD  1777 30.72 5.972 2.830e-09
+## 19:  11  rs2072560 116661826  T  ADD  1735 30.67 5.842 6.147e-09
+## 20:  11  rs7123666 116667083  A  ADD  1753 35.18 5.688 1.504e-08</code></pre>
+<pre class="r"><code>res = dt[TEST==&quot;ADD&quot;]
+res[P&lt;=5e-8 &amp; BP %in% 116660000:116670000]</code></pre>
+<pre><code>##    CHR       SNP        BP A1 TEST NMISS  BETA  STAT         P
+## 1:  11 rs2266788 116660686  G  ADD  1777 30.72 5.972 2.830e-09
+## 2:  11 rs2072560 116661826  T  ADD  1735 30.67 5.842 6.147e-09
+## 3:  11 rs7123666 116667083  A  ADD  1753 35.18 5.688 1.504e-08</code></pre>
+</div>
+<div id="column-by-opreation" class="section level2">
+<h2><strong>Column</strong> &amp; <strong>By</strong> opreation</h2>
+<div id="basic" class="section level3">
+<h3>Basic</h3>
+<pre class="r"><code>res[, &quot;SNP&quot;]  ## data.table class</code></pre>
+<pre><code>##                SNP
+##      1: rs12565286
+##      2:  rs3094315
+##      3: rs11240777
+##      4:  rs3748597
+##      5:  rs2341354
+##     ---           
+## 139021:  rs9628187
+## 139022:   rs715586
+## 139023:  rs3810648
+## 139024:  rs2238837
+## 139025: rs28729663</code></pre>
+<pre class="r"><code>res[, .(SNP)] ## same</code></pre>
+<pre><code>##                SNP
+##      1: rs12565286
+##      2:  rs3094315
+##      3: rs11240777
+##      4:  rs3748597
+##      5:  rs2341354
+##     ---           
+## 139021:  rs9628187
+## 139022:   rs715586
+## 139023:  rs3810648
+## 139024:  rs2238837
+## 139025: rs28729663</code></pre>
+<pre class="r"><code>res[, SNP] ## vector</code></pre>
+<pre class="r"><code>res[, c(&quot;SNP&quot;,&quot;P&quot;)]</code></pre>
+<pre><code>##                SNP      P
+##      1: rs12565286 0.4805
+##      2:  rs3094315 0.3012
+##      3: rs11240777 0.5394
+##      4:  rs3748597 0.2228
+##      5:  rs2341354 0.5641
+##     ---                  
+## 139021:  rs9628187 0.1999
+## 139022:   rs715586 0.8053
+## 139023:  rs3810648 0.5845
+## 139024:  rs2238837 0.1070
+## 139025: rs28729663 0.8668</code></pre>
+<pre class="r"><code>res[, .(SNP, P)]</code></pre>
+<pre><code>##                SNP      P
+##      1: rs12565286 0.4805
+##      2:  rs3094315 0.3012
+##      3: rs11240777 0.5394
+##      4:  rs3748597 0.2228
+##      5:  rs2341354 0.5641
+##     ---                  
+## 139021:  rs9628187 0.1999
+## 139022:   rs715586 0.8053
+## 139023:  rs3810648 0.5845
+## 139024:  rs2238837 0.1070
+## 139025: rs28729663 0.8668</code></pre>
+<pre class="r"><code>res[, c(3, 9)]</code></pre>
+<pre><code>##               BP      P
+##      1:   721290 0.4805
+##      2:   752566 0.3012
+##      3:   798959 0.5394
+##      4:   888659 0.2228
+##      5:   918573 0.5641
+##     ---                
+## 139021: 51156666 0.1999
+## 139022: 51163138 0.8053
+## 139023: 51175626 0.5845
+## 139024: 51212875 0.1070
+## 139025: 51219006 0.8668</code></pre>
+<p>주의!!</p>
+<pre class="r"><code>vars= c(&quot;SNP&quot;,&quot;P&quot;)
+vars = c(3,9)</code></pre>
+<pre class="r"><code>res[, vars] # error</code></pre>
+<pre class="r"><code>res[, vars, with=F]</code></pre>
+<pre><code>##               BP      P
+##      1:   721290 0.4805
+##      2:   752566 0.3012
+##      3:   798959 0.5394
+##      4:   888659 0.2228
+##      5:   918573 0.5641
+##     ---                
+## 139021: 51156666 0.1999
+## 139022: 51163138 0.8053
+## 139023: 51175626 0.5845
+## 139024: 51212875 0.1070
+## 139025: 51219006 0.8668</code></pre>
+<pre class="r"><code>res[, .SD, .SDcols = vars]</code></pre>
+<pre><code>##               BP      P
+##      1:   721290 0.4805
+##      2:   752566 0.3012
+##      3:   798959 0.5394
+##      4:   888659 0.2228
+##      5:   918573 0.5641
+##     ---                
+## 139021: 51156666 0.1999
+## 139022: 51163138 0.8053
+## 139023: 51175626 0.5845
+## 139024: 51212875 0.1070
+## 139025: 51219006 0.8668</code></pre>
+</div>
+<div id="function" class="section level3">
+<h3>Function</h3>
+<p>이번에는 phenotype data를 예로 들겠다. 편의상 몇가지 변수를 빼고 결측치가 없는 데이터를 이용하겠다.</p>
+<pre class="r"><code>ph = fread(&quot;/home/secondmath/Dropbox/myarticle/MOR_heri/prac.phe&quot;)
+ph</code></pre>
 <pre><code>##            FID         ID sex age DXA_total_tscore FBS tCholesterol HDL
 ##    1: R1F001PR R1D1I00001   0  NA               NA  NA           NA  NA
 ##    2: R1F001PR R1D1I00002   1  NA               NA  NA           NA  NA
@@ -490,462 +781,470 @@ dt</code></pre>
 ## 3459:       0
 ## 3460:       0
 ## 3461:       0</code></pre>
+<pre class="r"><code>remove_var = c(&quot;birth&quot;,&quot;gweek&quot;,&quot;MET&quot;,&quot;total_kcal&quot;,&quot;FTND&quot;, &quot;hyperTG&quot;)
+
+ph = ph[, .SD, .SDcols = -remove_var]
+ph = na.omit(ph)  ## No NA
+dim(ph)</code></pre>
+<pre><code>## [1] 2557   23</code></pre>
+<pre class="r"><code>ph[, mean(LDL)]</code></pre>
+<pre><code>## [1] 110.3039</code></pre>
+<pre class="r"><code>ph[, .(meanLDL= mean(LDL), meanHDL= mean(HDL))]</code></pre>
+<pre><code>##     meanLDL  meanHDL
+## 1: 110.3039 50.10598</code></pre>
+<pre class="r"><code>ph[, lapply(.SD, mean), .SDcols= -c(1,2)]</code></pre>
+<pre><code>##          sex      age DXA_total_tscore      FBS tCholesterol      HDL
+## 1: 0.6280798 44.18146       -0.3423543 93.37818     189.3191 50.10598
+##         LDL       TG   Height   Weight SittingHt    Waist      Hip
+## 1: 110.3039 113.9167 161.4231 61.79902  88.12542 80.32036 94.43993
+##    headcircum  armspan      BMI      SBP      DBP       PY    smoke
+## 1:    55.3335 160.6058 23.61381 117.4282 74.18107 5.533496 1.518185
+##     alcohol
+## 1: 2.309347</code></pre>
+<p><strong>By</strong> 문을 이용하여 그룹별로 함수를 적용할 수 있다.</p>
+<pre class="r"><code>ph[, lapply(.SD, mean), .SDcols= -c(1,2), by= sex]</code></pre>
+<pre><code>##    sex      age DXA_total_tscore      FBS tCholesterol      HDL      LDL
+## 1:   1 44.02304       -0.3808219 91.32939     188.4290 52.25156 108.8107
+## 2:   0 44.44900       -0.2773922 96.83807     190.8223 46.48265 112.8254
+##           TG   Height   Weight SittingHt    Waist      Hip headcircum
+## 1:  98.67621 156.7147 56.88004  85.80654 77.83384 93.54150   54.51441
+## 2: 139.65405 169.3744 70.10594  92.04143 84.51945 95.95715   56.71672
+##     armspan      BMI      SBP      DBP         PY    smoke  alcohol
+## 1: 155.5486 23.16408 114.9004 72.68057  0.4871887 1.126401 2.116438
+## 2: 169.1462 24.37329 121.6972 76.71504 14.0554416 2.179811 2.635121</code></pre>
+<pre class="r"><code>ph[, lapply(.SD, mean), .SDcols= -c(1,2), by= .(sex, smoke)]</code></pre>
+<pre><code>##    sex smoke      age DXA_total_tscore      FBS tCholesterol      HDL
+## 1:   1     1 44.28148       -0.3771717 91.27744     188.7185 51.95152
+## 2:   1     2 39.23077       -0.3692308 87.53846     187.5897 54.12821
+## 3:   0     1 44.61255       -0.1955720 96.21771     185.1550 45.84502
+## 4:   0     2 48.73109       -0.2617647 99.41176     191.2605 46.51261
+## 5:   0     3 42.04299       -0.3359729 95.83258     194.0611 46.85747
+## 6:   1     3 41.62195       -0.4524390 94.07317     183.5854 56.79268
+##         LDL        TG   Height   Weight SittingHt    Waist      Hip
+## 1: 109.3212  98.81616 156.7211 57.02374  85.81680 77.92623 93.64057
+## 2: 106.6667  91.92308 157.6795 54.83333  86.41154 76.29487 93.11026
+## 3: 110.9225 118.34317 169.2718 70.01568  91.75461 84.25554 96.13229
+## 4: 113.4916 133.58403 168.6431 69.82794  91.83340 85.14412 95.58466
+## 5: 113.6335 155.98869 169.8311 70.31097  92.32930 84.34491 96.05034
+## 6: 100.5854  99.35366 156.1396 55.25122  85.33293 76.89268 91.95244
+##    headcircum  armspan      BMI      SBP      DBP        PY  alcohol
+## 1:   54.53182 155.5674 23.22563 115.1279 72.82222  0.000000 2.082155
+## 2:   54.34231 156.3256 22.07718 107.6154 67.23077  5.212179 2.307692
+## 3:   56.57380 169.2284 24.35609 122.4465 76.64207  0.000000 2.428044
+## 4:   56.92101 168.4807 24.46945 123.1597 77.63866 19.128361 2.617647
+## 5:   56.69434 169.4542 24.33206 120.4502 76.26244 19.941572 2.771493
+## 6:   54.28110 154.8396 22.56634 114.2439 72.70732  7.062805 2.646341</code></pre>
+<p><strong>R</strong>의 기본 옵션인 <strong>tapply</strong>나 <strong>aggregate</strong>함수와 비교해보자.</p>
+<pre class="r"><code>phf = data.frame(ph)
+## base
+tapply(phf$LDL, phf$sex, mean)</code></pre>
+<pre><code>##        0        1 
+## 112.8254 108.8107</code></pre>
+<pre class="r"><code>aggregate(phf[,-c(1,2)], by= list(sex=phf$sex, smoke=phf$smoke), mean)</code></pre>
+<pre><code>##   sex smoke sex      age DXA_total_tscore      FBS tCholesterol      HDL
+## 1   0     1   0 44.61255       -0.1955720 96.21771     185.1550 45.84502
+## 2   1     1   1 44.28148       -0.3771717 91.27744     188.7185 51.95152
+## 3   0     2   0 48.73109       -0.2617647 99.41176     191.2605 46.51261
+## 4   1     2   1 39.23077       -0.3692308 87.53846     187.5897 54.12821
+## 5   0     3   0 42.04299       -0.3359729 95.83258     194.0611 46.85747
+## 6   1     3   1 41.62195       -0.4524390 94.07317     183.5854 56.79268
+##        LDL        TG   Height   Weight SittingHt    Waist      Hip
+## 1 110.9225 118.34317 169.2718 70.01568  91.75461 84.25554 96.13229
+## 2 109.3212  98.81616 156.7211 57.02374  85.81680 77.92623 93.64057
+## 3 113.4916 133.58403 168.6431 69.82794  91.83340 85.14412 95.58466
+## 4 106.6667  91.92308 157.6795 54.83333  86.41154 76.29487 93.11026
+## 5 113.6335 155.98869 169.8311 70.31097  92.32930 84.34491 96.05034
+## 6 100.5854  99.35366 156.1396 55.25122  85.33293 76.89268 91.95244
+##   headcircum  armspan      BMI      SBP      DBP        PY smoke  alcohol
+## 1   56.57380 169.2284 24.35609 122.4465 76.64207  0.000000     1 2.428044
+## 2   54.53182 155.5674 23.22563 115.1279 72.82222  0.000000     1 2.082155
+## 3   56.92101 168.4807 24.46945 123.1597 77.63866 19.128361     2 2.617647
+## 4   54.34231 156.3256 22.07718 107.6154 67.23077  5.212179     2 2.307692
+## 5   56.69434 169.4542 24.33206 120.4502 76.26244 19.941572     3 2.771493
+## 6   54.28110 154.8396 22.56634 114.2439 72.70732  7.062805     3 2.646341</code></pre>
 </div>
-<div id="benchmark" class="section level3">
-<h3>Benchmark</h3>
-<pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/myarticle/MOR_heri&quot;)
-kable(
-  benchmark(
-    df = read.table(&quot;prac.phe&quot;,header=T),
-    dt = fread(&quot;prac.phe&quot;,header=T)
-  )
-)</code></pre>
+</div>
+<div id="merge" class="section level2">
+<h2>Merge</h2>
+<p>data.table에서 merge의</p>
+<p><a href="https://rstudio-pubs-static.s3.amazonaws.com/52230_5ae0d25125b544caab32f75f0360e775.html" class="uri">https://rstudio-pubs-static.s3.amazonaws.com/52230_5ae0d25125b544caab32f75f0360e775.html</a> 를 참고하기 바란다.</p>
+<pre class="r"><code>res</code></pre>
+<pre><code>##         CHR        SNP       BP A1 TEST NMISS    BETA    STAT      P
+##      1:   1 rs12565286   721290  C  ADD  1735 -12.760 -0.7056 0.4805
+##      2:   1  rs3094315   752566  G  ADD  1787   6.444  1.0340 0.3012
+##      3:   1 rs11240777   798959  A  ADD  1787  -2.710 -0.6138 0.5394
+##      4:   1  rs3748597   888659  T  ADD  1787  11.550  1.2200 0.2228
+##      5:   1  rs2341354   918573  A  ADD  1787  -3.398 -0.5769 0.5641
+##     ---                                                             
+## 139021:  22  rs9628187 51156666  T  ADD  1787  23.430  1.2820 0.1999
+## 139022:  22   rs715586 51163138  T  ADD  1787   2.206  0.2466 0.8053
+## 139023:  22  rs3810648 51175626  G  ADD  1787  -8.414 -0.5470 0.5845
+## 139024:  22  rs2238837 51212875  C  ADD  1787   7.657  1.6130 0.1070
+## 139025:  22 rs28729663 51219006  A  ADD  1787   1.031  0.1677 0.8668</code></pre>
+<pre class="r"><code>setkey(res, CHR,SNP,BP)
+
+res_logit = fread(&quot;/home/secondmath/Dropbox/example/LogisticTG.assoc.logistic&quot;)[TEST==&quot;ADD&quot;]
+setkey(res_logit, CHR,SNP,BP)
+
+res[res_logit]</code></pre>
+<pre><code>##         CHR       SNP        BP A1 TEST NMISS    BETA    STAT       P i.A1
+##      1:   1 rs1000085  66857915  C  ADD  1787   3.220  0.3273 0.74340    C
+##      2:   1 rs1000283 209894661  A  ADD  1787   3.870  0.5782 0.56320    A
+##      3:   1 rs1000382 175866321  G  ADD  1787   5.734  1.2270 0.22020    G
+##      4:   1 rs1000528 114471189  C  ADD  1787  -5.873 -0.9411 0.34680    C
+##      5:   1 rs1000997  16125961  G  ADD  1787  -4.249 -0.9021 0.36710    G
+##     ---                                                                   
+## 139021:  22  rs986646  22398220  C  ADD  1787  -9.642 -1.5630 0.11830    C
+## 139022:  22 rs9917559  37977305  A  ADD  1787 -14.170 -2.4100 0.01604    A
+## 139023:  22 rs9941927  40209175  G  ADD  1787  -9.527 -0.9209 0.35720    G
+## 139024:  22 rs9941935  22015144  G  ADD  1787  15.980  1.1960 0.23190    G
+## 139025:  22  rs999224  27834500  G  ADD  1787   5.718  1.2460 0.21300    G
+##         i.TEST i.NMISS     OR  i.STAT     i.P
+##      1:    ADD    1787 1.1000  0.5743 0.56570
+##      2:    ADD    1787 0.7977 -1.8800 0.06013
+##      3:    ADD    1787 0.9781 -0.2755 0.78290
+##      4:    ADD    1787 0.9293 -0.6749 0.49970
+##      5:    ADD    1787 0.9210 -1.0120 0.31160
+##     ---                                      
+## 139021:    ADD    1787 0.8858 -1.1270 0.25990
+## 139022:    ADD    1787 0.8992 -1.0390 0.29880
+## 139023:    ADD    1787 0.8237 -1.0640 0.28750
+## 139024:    ADD    1787 0.8293 -0.7683 0.44230
+## 139025:    ADD    1787 1.0540  0.6709 0.50230</code></pre>
+<pre class="r"><code>res_logit[res]</code></pre>
+<pre><code>##         CHR       SNP        BP A1 TEST NMISS     OR    STAT       P i.A1
+##      1:   1 rs1000085  66857915  C  ADD  1787 1.1000  0.5743 0.56570    C
+##      2:   1 rs1000283 209894661  A  ADD  1787 0.7977 -1.8800 0.06013    A
+##      3:   1 rs1000382 175866321  G  ADD  1787 0.9781 -0.2755 0.78290    G
+##      4:   1 rs1000528 114471189  C  ADD  1787 0.9293 -0.6749 0.49970    C
+##      5:   1 rs1000997  16125961  G  ADD  1787 0.9210 -1.0120 0.31160    G
+##     ---                                                                  
+## 139021:  22  rs986646  22398220  C  ADD  1787 0.8858 -1.1270 0.25990    C
+## 139022:  22 rs9917559  37977305  A  ADD  1787 0.8992 -1.0390 0.29880    A
+## 139023:  22 rs9941927  40209175  G  ADD  1787 0.8237 -1.0640 0.28750    G
+## 139024:  22 rs9941935  22015144  G  ADD  1787 0.8293 -0.7683 0.44230    G
+## 139025:  22  rs999224  27834500  G  ADD  1787 1.0540  0.6709 0.50230    G
+##         i.TEST i.NMISS    BETA  i.STAT     i.P
+##      1:    ADD    1787   3.220  0.3273 0.74340
+##      2:    ADD    1787   3.870  0.5782 0.56320
+##      3:    ADD    1787   5.734  1.2270 0.22020
+##      4:    ADD    1787  -5.873 -0.9411 0.34680
+##      5:    ADD    1787  -4.249 -0.9021 0.36710
+##     ---                                       
+## 139021:    ADD    1787  -9.642 -1.5630 0.11830
+## 139022:    ADD    1787 -14.170 -2.4100 0.01604
+## 139023:    ADD    1787  -9.527 -0.9209 0.35720
+## 139024:    ADD    1787  15.980  1.1960 0.23190
+## 139025:    ADD    1787   5.718  1.2460 0.21300</code></pre>
+<pre class="r"><code>merge(res, res_logit, all=T)</code></pre>
+<pre><code>##         CHR       SNP        BP A1.x TEST.x NMISS.x    BETA  STAT.x
+##      1:   1 rs1000085  66857915    C    ADD    1787   3.220  0.3273
+##      2:   1 rs1000283 209894661    A    ADD    1787   3.870  0.5782
+##      3:   1 rs1000382 175866321    G    ADD    1787   5.734  1.2270
+##      4:   1 rs1000528 114471189    C    ADD    1787  -5.873 -0.9411
+##      5:   1 rs1000997  16125961    G    ADD    1787  -4.249 -0.9021
+##     ---                                                            
+## 139021:  22  rs986646  22398220    C    ADD    1787  -9.642 -1.5630
+## 139022:  22 rs9917559  37977305    A    ADD    1787 -14.170 -2.4100
+## 139023:  22 rs9941927  40209175    G    ADD    1787  -9.527 -0.9209
+## 139024:  22 rs9941935  22015144    G    ADD    1787  15.980  1.1960
+## 139025:  22  rs999224  27834500    G    ADD    1787   5.718  1.2460
+##             P.x A1.y TEST.y NMISS.y     OR  STAT.y     P.y
+##      1: 0.74340    C    ADD    1787 1.1000  0.5743 0.56570
+##      2: 0.56320    A    ADD    1787 0.7977 -1.8800 0.06013
+##      3: 0.22020    G    ADD    1787 0.9781 -0.2755 0.78290
+##      4: 0.34680    C    ADD    1787 0.9293 -0.6749 0.49970
+##      5: 0.36710    G    ADD    1787 0.9210 -1.0120 0.31160
+##     ---                                                   
+## 139021: 0.11830    C    ADD    1787 0.8858 -1.1270 0.25990
+## 139022: 0.01604    A    ADD    1787 0.8992 -1.0390 0.29880
+## 139023: 0.35720    G    ADD    1787 0.8237 -1.0640 0.28750
+## 139024: 0.23190    G    ADD    1787 0.8293 -0.7683 0.44230
+## 139025: 0.21300    G    ADD    1787 1.0540  0.6709 0.50230</code></pre>
+</div>
+<div id="fast-overlap-search" class="section level2">
+<h2>Fast overlap search</h2>
+<p>data.table 패키지의 <strong>foverlaps</strong>함수를 이용해서</p>
+<ol style="list-style-type: decimal">
+<li><p>glist_hg18의 gene, chromosome, start, end 정보와</p></li>
+<li><p>GWAS 결과의 chromosome, BP정보</p></li>
+</ol>
+<p>를 합치면 SNP에 해당하는 gene을 매칭할 수 있다.</p>
+<pre class="r"><code>glist_hg18 = fread(&quot;/home/secondmath/Dropbox/example/glist-hg18&quot;)
+names(glist_hg18) = c(&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;,&quot;gene&quot;)
+setkey(glist_hg18,chr,start,end)
+kable(head(glist_hg18))</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">test</th>
-<th align="right">replications</th>
-<th align="right">elapsed</th>
-<th align="right">relative</th>
-<th align="right">user.self</th>
-<th align="right">sys.self</th>
-<th align="right">user.child</th>
-<th align="right">sys.child</th>
+<th align="left">chr</th>
+<th align="right">start</th>
+<th align="right">end</th>
+<th align="left">gene</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">df</td>
-<td align="right">100</td>
-<td align="right">3.565</td>
-<td align="right">4.76</td>
-<td align="right">3.543</td>
-<td align="right">0.020</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="left">1</td>
+<td align="right">58953</td>
+<td align="right">59871</td>
+<td align="left">OR4F5</td>
 </tr>
 <tr class="even">
-<td align="left">dt</td>
-<td align="right">100</td>
-<td align="right">0.749</td>
-<td align="right">1.00</td>
-<td align="right">0.738</td>
-<td align="right">0.012</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="left">1</td>
+<td align="right">357521</td>
+<td align="right">358460</td>
+<td align="left">OR4F16</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">357521</td>
+<td align="right">358460</td>
+<td align="left">OR4F29</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">357521</td>
+<td align="right">358460</td>
+<td align="left">OR4F3</td>
+</tr>
+<tr class="odd">
+<td align="left">1</td>
+<td align="right">610958</td>
+<td align="right">611897</td>
+<td align="left">OR4F16</td>
+</tr>
+<tr class="even">
+<td align="left">1</td>
+<td align="right">610958</td>
+<td align="right">611897</td>
+<td align="left">OR4F29</td>
 </tr>
 </tbody>
 </table>
-</div>
-</div>
-<div id="kkk" class="section level2">
-<h2>kkk</h2>
-<pre class="r"><code>kable(
-  benchmark(
-    lapply.df = lapply(3:ncol(df), function(x){ mean(df[, x], na.rm = T)}),
-    lapply.dt = dt[, lapply(.SD, function(x){ mean(x, na.rm = T)}), .SDcols = 3:ncol(dt)]
-  )
-)</code></pre>
+<pre class="r"><code>## GWAS result: make new variable for foverlaps - chr, start, end 
+res[,&quot;:=&quot;(chr=as.character(CHR), start=BP, end=BP)]
+
+## Run 
+addgene = foverlaps(res, glist_hg18, by.x=c(&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;), type=&quot;within&quot;, mult=&quot;first&quot;)
+
+## See
+kable(head(addgene), align=&quot;c&quot;)</code></pre>
 <table>
 <thead>
 <tr class="header">
-<th align="left">test</th>
-<th align="right">replications</th>
-<th align="right">elapsed</th>
-<th align="right">relative</th>
-<th align="right">user.self</th>
-<th align="right">sys.self</th>
-<th align="right">user.child</th>
-<th align="right">sys.child</th>
+<th align="center">chr</th>
+<th align="center">start</th>
+<th align="center">end</th>
+<th align="center">gene</th>
+<th align="center">CHR</th>
+<th align="center">SNP</th>
+<th align="center">BP</th>
+<th align="center">A1</th>
+<th align="center">TEST</th>
+<th align="center">NMISS</th>
+<th align="center">BETA</th>
+<th align="center">STAT</th>
+<th align="center">P</th>
+<th align="center">i.start</th>
+<th align="center">i.end</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
-<td align="left">lapply.df</td>
-<td align="right">100</td>
-<td align="right">0.121</td>
-<td align="right">1.000</td>
-<td align="right">0.120</td>
-<td align="right">0.000</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="center">1</td>
+<td align="center">66772412</td>
+<td align="center">66983356</td>
+<td align="center">SGIP1</td>
+<td align="center">1</td>
+<td align="center">rs1000085</td>
+<td align="center">66857915</td>
+<td align="center">C</td>
+<td align="center">ADD</td>
+<td align="center">1787</td>
+<td align="center">3.2200</td>
+<td align="center">0.3273</td>
+<td align="center">0.7434</td>
+<td align="center">66857915</td>
+<td align="center">66857915</td>
 </tr>
 <tr class="even">
-<td align="left">lapply.dt</td>
-<td align="right">100</td>
-<td align="right">0.216</td>
-<td align="right">1.785</td>
-<td align="right">0.216</td>
-<td align="right">0.001</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="center">1</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">1</td>
+<td align="center">rs1000283</td>
+<td align="center">209894661</td>
+<td align="center">A</td>
+<td align="center">ADD</td>
+<td align="center">1787</td>
+<td align="center">3.8700</td>
+<td align="center">0.5782</td>
+<td align="center">0.5632</td>
+<td align="center">209894661</td>
+<td align="center">209894661</td>
 </tr>
-</tbody>
-</table>
-<pre class="r"><code>kable(
-  benchmark(
-    mapply.df = mapply(function(x,y){ mean(subset(df, sex==y)[, x], na.rm = T)}, x=3:29, y=unique(df$sex)),
-    lappby2.dt = dt[, lapply(.SD, function(x){ mean(x, na.rm = T)}), .SDcols = 3:ncol(dt)]
-  )
-)</code></pre>
-<pre><code>## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter
-
-## Warning in mapply(function(x, y) {: longer argument not a multiple of
-## length of shorter</code></pre>
-<table>
-<thead>
-<tr class="header">
-<th></th>
-<th align="left">test</th>
-<th align="right">replications</th>
-<th align="right">elapsed</th>
-<th align="right">relative</th>
-<th align="right">user.self</th>
-<th align="right">sys.self</th>
-<th align="right">user.child</th>
-<th align="right">sys.child</th>
-</tr>
-</thead>
-<tbody>
 <tr class="odd">
-<td>2</td>
-<td align="left">lappby2.dt</td>
-<td align="right">100</td>
-<td align="right">0.211</td>
-<td align="right">1.000</td>
-<td align="right">0.212</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="center">1</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">1</td>
+<td align="center">rs1000382</td>
+<td align="center">175866321</td>
+<td align="center">G</td>
+<td align="center">ADD</td>
+<td align="center">1787</td>
+<td align="center">5.7340</td>
+<td align="center">1.2270</td>
+<td align="center">0.2202</td>
+<td align="center">175866321</td>
+<td align="center">175866321</td>
 </tr>
 <tr class="even">
-<td>1</td>
-<td align="left">mapply.df</td>
-<td align="right">100</td>
-<td align="right">2.465</td>
-<td align="right">11.682</td>
-<td align="right">2.465</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
+<td align="center">1</td>
+<td align="center">114433436</td>
+<td align="center">114497995</td>
+<td align="center">SYT6</td>
+<td align="center">1</td>
+<td align="center">rs1000528</td>
+<td align="center">114471189</td>
+<td align="center">C</td>
+<td align="center">ADD</td>
+<td align="center">1787</td>
+<td align="center">-5.8730</td>
+<td align="center">-0.9411</td>
+<td align="center">0.3468</td>
+<td align="center">114471189</td>
+<td align="center">114471189</td>
+</tr>
+<tr class="odd">
+<td align="center">1</td>
+<td align="center">16046945</td>
+<td align="center">16139537</td>
+<td align="center">SPEN</td>
+<td align="center">1</td>
+<td align="center">rs1000997</td>
+<td align="center">16125961</td>
+<td align="center">G</td>
+<td align="center">ADD</td>
+<td align="center">1787</td>
+<td align="center">-4.2490</td>
+<td align="center">-0.9021</td>
+<td align="center">0.3671</td>
+<td align="center">16125961</td>
+<td align="center">16125961</td>
+</tr>
+<tr class="even">
+<td align="center">1</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">NA</td>
+<td align="center">1</td>
+<td align="center">rs1001450</td>
+<td align="center">39050786</td>
+<td align="center">C</td>
+<td align="center">ADD</td>
+<td align="center">1787</td>
+<td align="center">-0.9856</td>
+<td align="center">-0.2140</td>
+<td align="center">0.8306</td>
+<td align="center">39050786</td>
+<td align="center">39050786</td>
 </tr>
 </tbody>
 </table>
+<p>기타: <a href="https://jangorecki.github.io/blog/2015-12-11/Solve-common-R-problems-efficiently-with-data.table.html" class="uri">https://jangorecki.github.io/blog/2015-12-11/Solve-common-R-problems-efficiently-with-data.table.html</a></p>
+</div>
+<div id="reshape-data-melt-dcast" class="section level2">
+<h2>Reshape data: <strong>melt</strong>, <strong>dcast</strong></h2>
+</div>
+</div>
+<div id="using-multicore" class="section level1">
+<h1>Using multicore</h1>
+<div id="mclapply" class="section level2">
+<h2><strong>mclapply</strong></h2>
+<pre class="r"><code>library(parallel)</code></pre>
+</div>
+<div id="mcmapply" class="section level2">
+<h2><strong>mcmapply</strong></h2>
 </div>
 </div>
 <div id="tableone" class="section level1">
 <h1>tableone</h1>
 <pre class="r"><code>#install.packages(&quot;tableone&quot;)
 library(tableone)
-dt[,hyperTG := as.numeric(TG&gt;=200)]
-dt[,sex:= ifelse(sex==0,&quot;Male&quot;,&quot;Female&quot;)]
-setnames(dt,c(&quot;sex&quot;,&quot;age&quot;),c(&quot;Sex&quot;,&quot;Age&quot;))
+ph[,hyperTG := as.numeric(TG&gt;=200)]
+ph[,sex:= ifelse(sex==0,&quot;Male&quot;,&quot;Female&quot;)]
+setnames(ph,c(&quot;sex&quot;,&quot;age&quot;),c(&quot;Sex&quot;,&quot;Age&quot;))
 
-dt.tg = na.omit(dt, c(&quot;ID&quot;,&quot;Sex&quot;,&quot;Age&quot;,&quot;BMI&quot;,&quot;Waist&quot;,&quot;Hip&quot;,&quot;TG&quot;,&quot;hyperTG&quot;))
-
-tb1= CreateTableOne(vars = c(&quot;Age&quot;,&quot;Sex&quot;,&quot;BMI&quot;,&quot;Waist&quot;,&quot;Hip&quot;), strata = c(&quot;hyperTG&quot;),factorVars = &quot;Sex&quot;, data = dt.tg)
-zz=print(tb1 , nonnormal = c(&quot;Hip&quot;),exact = c(&quot;Sex&quot;), smd = TRUE,cramVars = NULL,printToggle=F)
-kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics of 2,731 study population&quot;,col.names=c(&quot;TG &lt; 200&quot;,&quot;TG ≥ 200&quot;,&quot;p&quot;,&quot;test&quot;,&quot;SMD&quot;))</code></pre>
+tb1= CreateTableOne(vars = names(ph)[-c(1,2,24)], strata = c(&quot;hyperTG&quot;),factorVars = c(&quot;Sex&quot;,&quot;smoke&quot;,&quot;alcohol&quot;), data = ph, includeNA = T)
+zz=print(tb1 , nonnormal = c(&quot;PY&quot;), exact = c(&quot;Sex&quot;), smd = TRUE, cramVars = NULL, printToggle=T)</code></pre>
+<pre><code>##                               Stratified by hyperTG
+##                                0                   1                   
+##   n                              2260                 297              
+##   Sex = Male (%)                  771 (34.1)          180 (60.6)       
+##   Age (mean (sd))               43.75 (12.99)       47.47 (13.31)      
+##   DXA_total_tscore (mean (sd))  -0.31 (1.31)        -0.56 (1.26)       
+##   FBS (mean (sd))               92.19 (15.51)      102.39 (28.89)      
+##   tCholesterol (mean (sd))     187.42 (34.51)      203.81 (37.69)      
+##   HDL (mean (sd))               51.23 (12.49)       41.58 (9.05)       
+##   LDL (mean (sd))              110.15 (29.86)      111.44 (33.06)      
+##   TG (mean (sd))                92.20 (40.49)      279.13 (90.12)      
+##   Height (mean (sd))           161.06 (8.43)       164.19 (8.51)       
+##   Weight (mean (sd))            60.77 (10.67)       69.67 (11.49)      
+##   SittingHt (mean (sd))         87.91 (4.69)        89.77 (4.54)       
+##   Waist (mean (sd))             79.44 (8.90)        87.03 (7.74)       
+##   Hip (mean (sd))               94.10 (5.68)        97.04 (5.72)       
+##   headcircum (mean (sd))        55.27 (3.58)        55.82 (1.85)       
+##   armspan (mean (sd))          160.29 (9.30)       163.04 (9.44)       
+##   BMI (mean (sd))               23.34 (3.16)        25.71 (3.03)       
+##   SBP (mean (sd))              116.25 (16.45)      126.42 (17.15)      
+##   DBP (mean (sd))               73.51 (10.49)       79.27 (11.76)      
+##   PY (median [IQR])              0.00 [0.00, 2.50]   3.75 [0.00, 18.00]
+##   smoke (%)                                                            
+##      1                           1621 (71.7)          135 (45.5)       
+##      2                            234 (10.4)           43 (14.5)       
+##      3                            405 (17.9)          119 (40.1)       
+##   alcohol (%)                                                          
+##      1                            685 (30.3)           76 (25.6)       
+##      2                            228 (10.1)           16 ( 5.4)       
+##      3                           1347 (59.6)          205 (69.0)       
+##                               Stratified by hyperTG
+##                                p      test    SMD   
+##   n                                                 
+##   Sex = Male (%)               &lt;0.001 exact    0.550
+##   Age (mean (sd))              &lt;0.001          0.283
+##   DXA_total_tscore (mean (sd))  0.002          0.196
+##   FBS (mean (sd))              &lt;0.001          0.440
+##   tCholesterol (mean (sd))     &lt;0.001          0.454
+##   HDL (mean (sd))              &lt;0.001          0.884
+##   LDL (mean (sd))               0.490          0.041
+##   TG (mean (sd))               &lt;0.001          2.676
+##   Height (mean (sd))           &lt;0.001          0.370
+##   Weight (mean (sd))           &lt;0.001          0.802
+##   SittingHt (mean (sd))        &lt;0.001          0.404
+##   Waist (mean (sd))            &lt;0.001          0.910
+##   Hip (mean (sd))              &lt;0.001          0.516
+##   headcircum (mean (sd))        0.009          0.195
+##   armspan (mean (sd))          &lt;0.001          0.294
+##   BMI (mean (sd))              &lt;0.001          0.766
+##   SBP (mean (sd))              &lt;0.001          0.605
+##   DBP (mean (sd))              &lt;0.001          0.516
+##   PY (median [IQR])            &lt;0.001 nonnorm  0.393
+##   smoke (%)                    &lt;0.001          0.570
+##      1                                              
+##      2                                              
+##      3                                              
+##   alcohol (%)                   0.003          0.226
+##      1                                              
+##      2                                              
+##      3</code></pre>
+<pre class="r"><code>## Export table
+kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics by TG&quot;,col.names=c(&quot;TG &lt; 200&quot;,&quot;TG ≥ 200&quot;,&quot;p&quot;,&quot;test&quot;,&quot;SMD&quot;))</code></pre>
 <table>
-<caption>Descriptive statistics of 2,731 study population</caption>
+<caption>Descriptive statistics by TG</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -959,54 +1258,634 @@ kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics of 2,731 study
 <tbody>
 <tr class="odd">
 <td>n</td>
-<td align="center">2406</td>
-<td align="center">325</td>
+<td align="center">2260</td>
+<td align="center">297</td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td>Age (mean (sd))</td>
-<td align="center">43.75 (13.00)</td>
-<td align="center">47.50 (13.23)</td>
-<td align="center">&lt;0.001</td>
-<td align="center"></td>
-<td align="center">0.285</td>
-</tr>
-<tr class="odd">
 <td>Sex = Male (%)</td>
-<td align="center">859 (35.7)</td>
-<td align="center">202 (62.2)</td>
+<td align="center">771 (34.1)</td>
+<td align="center">180 (60.6)</td>
 <td align="center">&lt;0.001</td>
 <td align="center">exact</td>
-<td align="center">0.549</td>
+<td align="center">0.550</td>
 </tr>
-<tr class="even">
-<td>BMI (mean (sd))</td>
-<td align="center">23.36 (3.15)</td>
-<td align="center">25.78 (3.20)</td>
+<tr class="odd">
+<td>Age (mean (sd))</td>
+<td align="center">43.75 (12.99)</td>
+<td align="center">47.47 (13.31)</td>
 <td align="center">&lt;0.001</td>
 <td align="center"></td>
-<td align="center">0.763</td>
+<td align="center">0.283</td>
+</tr>
+<tr class="even">
+<td>DXA_total_tscore (mean (sd))</td>
+<td align="center">-0.31 (1.31)</td>
+<td align="center">-0.56 (1.26)</td>
+<td align="center">0.002</td>
+<td align="center"></td>
+<td align="center">0.196</td>
+</tr>
+<tr class="odd">
+<td>FBS (mean (sd))</td>
+<td align="center">92.19 (15.51)</td>
+<td align="center">102.39 (28.89)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.440</td>
+</tr>
+<tr class="even">
+<td>tCholesterol (mean (sd))</td>
+<td align="center">187.42 (34.51)</td>
+<td align="center">203.81 (37.69)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.454</td>
+</tr>
+<tr class="odd">
+<td>HDL (mean (sd))</td>
+<td align="center">51.23 (12.49)</td>
+<td align="center">41.58 (9.05)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.884</td>
+</tr>
+<tr class="even">
+<td>LDL (mean (sd))</td>
+<td align="center">110.15 (29.86)</td>
+<td align="center">111.44 (33.06)</td>
+<td align="center">0.490</td>
+<td align="center"></td>
+<td align="center">0.041</td>
+</tr>
+<tr class="odd">
+<td>TG (mean (sd))</td>
+<td align="center">92.20 (40.49)</td>
+<td align="center">279.13 (90.12)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">2.676</td>
+</tr>
+<tr class="even">
+<td>Height (mean (sd))</td>
+<td align="center">161.06 (8.43)</td>
+<td align="center">164.19 (8.51)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.370</td>
+</tr>
+<tr class="odd">
+<td>Weight (mean (sd))</td>
+<td align="center">60.77 (10.67)</td>
+<td align="center">69.67 (11.49)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.802</td>
+</tr>
+<tr class="even">
+<td>SittingHt (mean (sd))</td>
+<td align="center">87.91 (4.69)</td>
+<td align="center">89.77 (4.54)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.404</td>
 </tr>
 <tr class="odd">
 <td>Waist (mean (sd))</td>
-<td align="center">79.57 (8.89)</td>
-<td align="center">87.39 (8.10)</td>
+<td align="center">79.44 (8.90)</td>
+<td align="center">87.03 (7.74)</td>
 <td align="center">&lt;0.001</td>
 <td align="center"></td>
-<td align="center">0.920</td>
+<td align="center">0.910</td>
 </tr>
 <tr class="even">
-<td>Hip (median [IQR])</td>
-<td align="center">93.80 [90.26, 97.70]</td>
-<td align="center">97.30 [93.00, 100.50]</td>
+<td>Hip (mean (sd))</td>
+<td align="center">94.10 (5.68)</td>
+<td align="center">97.04 (5.72)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.516</td>
+</tr>
+<tr class="odd">
+<td>headcircum (mean (sd))</td>
+<td align="center">55.27 (3.58)</td>
+<td align="center">55.82 (1.85)</td>
+<td align="center">0.009</td>
+<td align="center"></td>
+<td align="center">0.195</td>
+</tr>
+<tr class="even">
+<td>armspan (mean (sd))</td>
+<td align="center">160.29 (9.30)</td>
+<td align="center">163.04 (9.44)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.294</td>
+</tr>
+<tr class="odd">
+<td>BMI (mean (sd))</td>
+<td align="center">23.34 (3.16)</td>
+<td align="center">25.71 (3.03)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.766</td>
+</tr>
+<tr class="even">
+<td>SBP (mean (sd))</td>
+<td align="center">116.25 (16.45)</td>
+<td align="center">126.42 (17.15)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.605</td>
+</tr>
+<tr class="odd">
+<td>DBP (mean (sd))</td>
+<td align="center">73.51 (10.49)</td>
+<td align="center">79.27 (11.76)</td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.516</td>
+</tr>
+<tr class="even">
+<td>PY (median [IQR])</td>
+<td align="center">0.00 [0.00, 2.50]</td>
+<td align="center">3.75 [0.00, 18.00]</td>
 <td align="center">&lt;0.001</td>
 <td align="center">nonnorm</td>
-<td align="center">0.533</td>
+<td align="center">0.393</td>
+</tr>
+<tr class="odd">
+<td>smoke (%)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">&lt;0.001</td>
+<td align="center"></td>
+<td align="center">0.570</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="center">1621 (71.7)</td>
+<td align="center">135 (45.5)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="center">234 (10.4)</td>
+<td align="center">43 (14.5)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="center">405 (17.9)</td>
+<td align="center">119 (40.1)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>alcohol (%)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.003</td>
+<td align="center"></td>
+<td align="center">0.226</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td align="center">685 (30.3)</td>
+<td align="center">76 (25.6)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="center">228 (10.1)</td>
+<td align="center">16 ( 5.4)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="center">1347 (59.6)</td>
+<td align="center">205 (69.0)</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
 </tr>
 </tbody>
 </table>
+</div>
+<div id="regression-result" class="section level1 tabset">
+<h1>Regression result</h1>
+<div id="linear-regression" class="section level2">
+<h2>Linear regression</h2>
+<pre class="r"><code>library(epiDisplay)
+factorVars= c(&quot;Sex&quot;,&quot;smoke&quot;,&quot;alcohol&quot;)
+ph[, (factorVars) := lapply(.SD, as.factor), .SDcols= factorVars]
+
+
+m1 = lm(LDL~ Age +Sex + BMI + smoke + alcohol , data=ph)
+
+tb.m1 = regress.display(m1, crude=T, crude.p.value = T)
+tb.m1</code></pre>
+<pre><code>## Linear regression predicting LDL
+##  
+##                     crude coeff.(95%CI)  crude P value
+## Age (cont. var.)    0.58 (0.49,0.66)     &lt; 0.001      
+##                                                       
+## Sex: Male vs Female 4.01 (1.59,6.44)     0.001        
+##                                                       
+## BMI (cont. var.)    2.3 (1.95,2.66)      &lt; 0.001      
+##                                                       
+## smoke: ref.=1                                         
+##    2                2.96 (-0.87,6.8)     0.13         
+##    3                2.02 (-0.93,4.97)    0.179        
+##                                                       
+## alcohol: ref.=1                                       
+##    2                -5.35 (-9.7,-1.01)   0.016        
+##    3                -6.46 (-9.07,-3.85)  &lt; 0.001      
+##                                                       
+##                     adj. coeff.(95%CI)   P(t-test) P(F-test)
+## Age (cont. var.)    0.45 (0.36,0.54)     &lt; 0.001   &lt; 0.001  
+##                                                             
+## Sex: Male vs Female 1.84 (-1.32,5)       0.253     0.001    
+##                                                             
+## BMI (cont. var.)    1.84 (1.48,2.2)      &lt; 0.001   &lt; 0.001  
+##                                                             
+## smoke: ref.=1                                      0.675    
+##    2                -0.34 (-4.61,3.93)   0.876              
+##    3                1.56 (-2,5.12)       0.39               
+##                                                             
+## alcohol: ref.=1                                    0.078    
+##    2                -2.05 (-6.26,2.16)   0.34               
+##    3                -3.17 (-5.91,-0.42)  0.024              
+##                                                             
+## No. of observations = 2557</code></pre>
+<pre class="r"><code>### Export table
+kable(tb.m1$table[rownames(tb.m1$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m1$last.lines)</code></pre>
+<table>
+<caption>No. of observations = 2557</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">crude coeff.(95%CI)</th>
+<th align="center">crude P value</th>
+<th align="center">adj. coeff.(95%CI)</th>
+<th align="center">P(t-test)</th>
+<th align="center">P(F-test)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Age (cont. var.)</td>
+<td align="center">0.58 (0.49,0.66)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">0.45 (0.36,0.54)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">&lt; 0.001</td>
+</tr>
+<tr class="even">
+<td>Sex: Male vs Female</td>
+<td align="center">4.01 (1.59,6.44)</td>
+<td align="center">0.001</td>
+<td align="center">1.84 (-1.32,5)</td>
+<td align="center">0.253</td>
+<td align="center">0.001</td>
+</tr>
+<tr class="odd">
+<td>BMI (cont. var.)</td>
+<td align="center">2.3 (1.95,2.66)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">1.84 (1.48,2.2)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">&lt; 0.001</td>
+</tr>
+<tr class="even">
+<td>smoke: ref.=1</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.675</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="center">2.96 (-0.87,6.8)</td>
+<td align="center">0.13</td>
+<td align="center">-0.34 (-4.61,3.93)</td>
+<td align="center">0.876</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="center">2.02 (-0.93,4.97)</td>
+<td align="center">0.179</td>
+<td align="center">1.56 (-2,5.12)</td>
+<td align="center">0.39</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>alcohol: ref.=1</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.078</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">-5.35 (-9.7,-1.01)</td>
+<td align="center">0.016</td>
+<td align="center">-2.05 (-6.26,2.16)</td>
+<td align="center">0.34</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">-6.46 (-9.07,-3.85)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">-3.17 (-5.91,-0.42)</td>
+<td align="center">0.024</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="logistic-regression" class="section level2">
+<h2>Logistic regression</h2>
+<pre class="r"><code>m2 = glm(hyperTG~ Age +Sex + BMI + smoke + alcohol , data=ph, family=binomial)
+
+tb.m2 = logistic.display(m2, crude=T, crude.p.value = T)
+tb.m2</code></pre>
+<pre><code>## 
+## Logistic regression predicting hyperTG 
+##  
+##                     crude OR(95%CI)   crude P value adj. OR(95%CI)   
+## Age (cont. var.)    1.02 (1.01,1.03)  &lt; 0.001       1.02 (1.01,1.03) 
+##                                                                      
+## Sex: Male vs Female 2.97 (2.32,3.81)  &lt; 0.001       1.56 (1.09,2.23) 
+##                                                                      
+## BMI (cont. var.)    1.23 (1.18,1.27)  &lt; 0.001       1.21 (1.16,1.26) 
+##                                                                      
+## smoke: ref.=1                                                        
+##    2                2.21 (1.52,3.19)  &lt; 0.001       1.51 (0.96,2.39) 
+##    3                3.53 (2.69,4.62)  &lt; 0.001       2.64 (1.82,3.85) 
+##                                                                      
+## alcohol: ref.=1                                                      
+##    2                0.63 (0.36,1.11)  0.109         0.59 (0.33,1.07) 
+##    3                1.37 (1.04,1.81)  0.026         1.09 (0.78,1.53) 
+##                                                                      
+##                     P(Wald&#39;s test) P(LR-test)
+## Age (cont. var.)    &lt; 0.001        &lt; 0.001   
+##                                              
+## Sex: Male vs Female 0.016          0.016     
+##                                              
+## BMI (cont. var.)    &lt; 0.001        &lt; 0.001   
+##                                              
+## smoke: ref.=1                      &lt; 0.001   
+##    2                0.077                    
+##    3                &lt; 0.001                  
+##                                              
+## alcohol: ref.=1                    0.07      
+##    2                0.081                    
+##    3                0.596                    
+##                                              
+## Log-likelihood = -804.0519
+## No. of observations = 2557
+## AIC value = 1624.1039</code></pre>
+<pre class="r"><code>### Export table
+kable(tb.m2$table[rownames(tb.m2$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m2$last.lines)</code></pre>
+<table>
+<caption>Log-likelihood = -804.0519 No. of observations = 2557 AIC value = 1624.1039</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">crude OR(95%CI)</th>
+<th align="center">crude P value</th>
+<th align="center">adj. OR(95%CI)</th>
+<th align="center">P(Wald’s test)</th>
+<th align="center">P(LR-test)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Age (cont. var.)</td>
+<td align="center">1.02 (1.01,1.03)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">1.02 (1.01,1.03)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">&lt; 0.001</td>
+</tr>
+<tr class="even">
+<td>Sex: Male vs Female</td>
+<td align="center">2.97 (2.32,3.81)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">1.56 (1.09,2.23)</td>
+<td align="center">0.016</td>
+<td align="center">0.016</td>
+</tr>
+<tr class="odd">
+<td>BMI (cont. var.)</td>
+<td align="center">1.23 (1.18,1.27)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">1.21 (1.16,1.26)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">&lt; 0.001</td>
+</tr>
+<tr class="even">
+<td>smoke: ref.=1</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">&lt; 0.001</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td align="center">2.21 (1.52,3.19)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">1.51 (0.96,2.39)</td>
+<td align="center">0.077</td>
+<td align="center"></td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td align="center">3.53 (2.69,4.62)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">2.64 (1.82,3.85)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>alcohol: ref.=1</td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center"></td>
+<td align="center">0.07</td>
+</tr>
+<tr class="even">
+<td>2</td>
+<td align="center">0.63 (0.36,1.11)</td>
+<td align="center">0.109</td>
+<td align="center">0.59 (0.33,1.07)</td>
+<td align="center">0.081</td>
+<td align="center"></td>
+</tr>
+<tr class="odd">
+<td>3</td>
+<td align="center">1.37 (1.04,1.81)</td>
+<td align="center">0.026</td>
+<td align="center">1.09 (0.78,1.53)</td>
+<td align="center">0.596</td>
+<td align="center"></td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="poisson-regression--" class="section level2">
+<h2>Poisson regression: 사망 데이터</h2>
+<pre class="r"><code>library(HEAT);data(mort)
+m3 = glm(nonacc~meantemp+ meanso2 + meanhumi, data= mort, family= poisson)
+
+tb.m3 = idr.display(m3, crude=T, crude.p.value = T )</code></pre>
+<pre class="r"><code>tb.m3</code></pre>
+<pre><code>## 
+## Poisson regression predicting nonacc 
+##  
+##                       crude IDR(95%CI)        crude P value
+## meantemp (cont. var.) 0.9934 (0.9932,0.9937)  &lt; 0.001      
+##                                                            
+## meanso2 (cont. var.)  1.02 (1.02,1.02)        &lt; 0.001      
+##                                                            
+## meanhumi (cont. var.) 0.9942 (0.9941,0.9944)  &lt; 0.001      
+##                                                            
+##                       adj. IDR(95%CI)         P(Wald&#39;s test) P(LR-test)
+## meantemp (cont. var.) 0.9978 (0.9975,0.9981)  &lt; 0.001        &lt; 0.001   
+##                                                                        
+## meanso2 (cont. var.)  1.0079 (1.007,1.0089)   &lt; 0.001        &lt; 0.001   
+##                                                                        
+## meanhumi (cont. var.) 0.9952 (0.995,0.9953)   &lt; 0.001        &lt; 0.001   
+##                                                                        
+## Log-likelihood = -206421.7862
+## No. of observations = 17361
+## AIC value = 412851.5724</code></pre>
+<pre class="r"><code>### Export table
+kable(tb.m3$table[rownames(tb.m3$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m3$last.lines)</code></pre>
+<table>
+<caption>Log-likelihood = -206421.7862 No. of observations = 17361 AIC value = 412851.5724</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">crude IDR(95%CI)</th>
+<th align="center">crude P value</th>
+<th align="center">adj. IDR(95%CI)</th>
+<th align="center">P(Wald’s test)</th>
+<th align="center">P(LR-test)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>meantemp (cont. var.)</td>
+<td align="center">0.9934 (0.9932,0.9937)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">0.9978 (0.9975,0.9981)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">&lt; 0.001</td>
+</tr>
+<tr class="even">
+<td>meanso2 (cont. var.)</td>
+<td align="center">1.02 (1.02,1.02)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">1.0079 (1.007,1.0089)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">&lt; 0.001</td>
+</tr>
+<tr class="odd">
+<td>meanhumi (cont. var.)</td>
+<td align="center">0.9942 (0.9941,0.9944)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">0.9952 (0.995,0.9953)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">&lt; 0.001</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="cox-" class="section level2">
+<h2>Cox: 생존분석</h2>
+<pre class="r"><code>library(survival);data(bladder)
+m4 = coxph(Surv(stop, event) ~ rx + size + number, data=bladder)
+
+tb.m4 = cox.display(m4, crude=T, crude.p.value = T )</code></pre>
+<pre class="r"><code>tb.m4</code></pre>
+<pre><code>## Cox&#39;s proportional hazard model on time (&#39;stop&#39;) to event (&#39;event&#39;) 
+##  
+##                     crude HR(95%CI)   crude P value adj. HR(95%CI)   
+## rx (cont. var.)     0.64 (0.44,0.94)  0.024         0.58 (0.39,0.86) 
+##                                                                      
+## size (cont. var.)   0.91 (0.79,1.04)  0.182         0.95 (0.83,1.08) 
+##                                                                      
+## number (cont. var.) 1.2 (1.1,1.31)    &lt; 0.001       1.21 (1.11,1.33) 
+##                                                                      
+##                     P(Wald&#39;s test) P(LR-test)
+## rx (cont. var.)     0.007          0.006     
+##                                              
+## size (cont. var.)   0.43           0.421     
+##                                              
+## number (cont. var.) &lt; 0.001        &lt; 0.001   
+##                                              
+## No. of observations =  340</code></pre>
+<pre class="r"><code>### Export table
+kable(tb.m4$table[rownames(tb.m4$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m4$last.lines)</code></pre>
+<table>
+<caption>No. of observations = 340</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th align="center">crude HR(95%CI)</th>
+<th align="center">crude P value</th>
+<th align="center">adj. HR(95%CI)</th>
+<th align="center">P(Wald’s test)</th>
+<th align="center">P(LR-test)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>rx (cont. var.)</td>
+<td align="center">0.64 (0.44,0.94)</td>
+<td align="center">0.024</td>
+<td align="center">0.58 (0.39,0.86)</td>
+<td align="center">0.007</td>
+<td align="center">0.006</td>
+</tr>
+<tr class="even">
+<td>size (cont. var.)</td>
+<td align="center">0.91 (0.79,1.04)</td>
+<td align="center">0.182</td>
+<td align="center">0.95 (0.83,1.08)</td>
+<td align="center">0.43</td>
+<td align="center">0.421</td>
+</tr>
+<tr class="odd">
+<td>number (cont. var.)</td>
+<td align="center">1.2 (1.1,1.31)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">1.21 (1.11,1.33)</td>
+<td align="center">&lt; 0.001</td>
+<td align="center">&lt; 0.001</td>
+</tr>
+</tbody>
+</table>
+</div>
 </div>
 
 <p>Copyright &copy;2016 <a href="mailto:secondmath85@gmail.com">Jinseob Kim</a>&nbsp;&nbsp;
