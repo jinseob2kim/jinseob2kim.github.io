@@ -46,7 +46,7 @@ navbar:
       href: 2018-02-09-gwas-visualization2.html
     - text: 'GWAS visualization (3): Automation'
       href: 2018-02-09-gwas-visualization3.html
-    - text: "Advanced R (1): data.table & tableone"
+    - text: "Advanced R (1): Fast R & Table 만들기"
       href: radv1.html
       
   right:

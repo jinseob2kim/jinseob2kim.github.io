@@ -9,3 +9,14 @@ MASS
 nnet
 epiDisplay
 HEAT
+glue
+DT
+ggplot2
+manhattanly
+bindrcpp
+bitops
+RCurl
+ggiraph
+gdtools
+nlme
+mgcv

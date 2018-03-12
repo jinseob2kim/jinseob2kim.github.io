@@ -11,7 +11,7 @@ output:
 
 ### 2018
 * 3월 13일
-    + Advanced R (1): data.table & tableone
+    + Advanced R (1): Fast R & Table 만들기
 
 * 2월 18일
     + 홈페이지 주소 변경 (mathemedicine $\rightarrow$ jinseob2kim)

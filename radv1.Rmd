@@ -1,5 +1,5 @@
 ---
-title: "Advanced R (1): data.table 패키지 소개 & Table 만들기"
+title: "Advanced R (1): Fast R & Table 만들기"
 date: "2018-03-13"
 editor_options: 
   chunk_output_type: console
@@ -20,12 +20,9 @@ library(knitr)
 
 # data.table
 
-## **Load** data: fread{.tabset}
+## Load & Save data: fread & fwrite {.tabset}
 
-**fread** 함수로 이용하면 구분자 (comma, tab, ...)에 상관없이 빠르게 데이터를 읽을 수 있다. GWAS result 파일을 읽는 것을 비교해 보자. 
-
-
-만약 데이터를 빨리 읽는 것만 활용하겠다면 fread를 활용해서 읽은 후 다시 원래의 **data.frame**형태로 바꿔 사용하면 된다.
+`fread` 함수로 구분자 (comma, tab, ...)에 상관없이 빠르게 데이터를 읽을 수 있으며, `fwrtie`함수로 그것을 빠르게 파일로 저장할 수 있다. GWAS result 파일을 읽고 쓰는 것을 예로 들겠다. `fread`로 파일을 읽으면 그 class는 `data.frame`에 `data.table`이 추가되며 문법이 원래의 `data.frame`과 달라지는 점을 유의하자. 만약 데이터를 빨리 읽는 것만 활용하겠다면 `fread`를 활용해서 읽은 후 다시 원래의 `data.frame`형태로 바꿔 사용하면 된다.
 
 ### Code
 ```{r,cache=F}
@@ -34,66 +31,101 @@ library(rbenchmark);library(knitr)
 library(data.table)
 ```
 
-```{r}
+```{r, cache=F}
+## Load file
 setwd("/home/secondmath/Dropbox/example")
 df = read.table("LinearTG.assoc.linear",header=T)
 dt = fread("LinearTG.assoc.linear",header=T)
+
+## Class
 class(df)
 class(dt)
 #dt = data.table(df)
 #df = data.frame(dt)
+
+## See 
 dt
-```
 
-### Benchmark
-```{r}
-setwd("/home/secondmath/Dropbox/example")
-kable(
-  benchmark(
-    df = read.table("LinearTG.assoc.linear",header=T),
-    dt = fread("LinearTG.assoc.linear",header=T), replications =1
-  )
-)
-```
-
-## **Save** data: fwrite{.tabset}
-**fwrite** 함수를 활용하여 빠르게 데이터를 저장할 수 있다. 
-
-### Code
-```{r}
+## Save file
 write.csv(dt, "aa.csv",row.names=F)
 fwrite(dt, "aa.csv")
 ```
 
 ### Benchmark
 ```{r}
+setwd("/home/secondmath/Dropbox/example")
+
+## Load
+kable(
+  benchmark(
+    df = read.table("LinearTG.assoc.linear",header=T),
+    dt = fread("LinearTG.assoc.linear",header=T), replications =1
+  )
+)
+
+## Save
 kable(
   benchmark(
     writecsv = write.csv(dt, "aa.csv",row.names=F),
     fwrite = fwrite(dt, "aa.csv"), replications =1
   )
 )
+
 ```
 
-## **Row** opreation
 
-**data.table** 의 기본 문법은  **DT[i, j, by]** 형태이다. https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf  의 cheetsheet를 참고하면 좋다.
+
+## **Row** opreation{.tabset}
+
+`data.table` 의 기본 문법은  **DT[i, j, by]** 형태이다. https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf  의 cheetsheet를 참고하면 좋다.
 
 ![data.table 문법](http://2.bp.blogspot.com/-L-DIRIa6pi4/WAdcNIhzCfI/AAAAAAAAFiE/RN9-bFU6rZAIfZpAbY9v8pLFRpoTHbQxACLcB/s1600/Data%2BTable%2BSyntax.png)
 
-```{r}
+### Code
+```{r, cache=F}
 dt[TEST== "ADD"]
-dt[TEST== "ADD", ] ## same
-dt[TEST== "ADD" & P<=5e-8]
+#dt[TEST== "ADD", ] ## same
+kable(
+  dt[(TEST== "ADD") & (P<= 5e-8)]
+  )
 
-res = dt[TEST=="ADD"]
-res[P<=5e-8 & BP %in% 116660000:116670000]
+res = dt[TEST== "ADD"]
+res.df = df[df$TEST== "ADD",]
+
+kable(
+  res[(CHR %in% 1:11) & (P <= 5e-8)]
+  )
+```
+
+미리 `key`들을 지정하면 그것들에 대해 더 빠르게 검색할 수 있다. 
+
+```{r, cache=F}
+# 1 key
+setkey(dt, TEST)
+dt["ADD"]
+
+## 2 keys
+setkey(dt, TEST, CHR)
+dt[ .("ADD", 11)]        
+dt[ .("ADD", 1:11)]
+```
+
+### benchmark
+```{r}
+kable(
+  benchmark(
+  res.df = df[df$TEST=="ADD",],
+  res = dt[TEST=="ADD"], 
+  res.key = dt["ADD"], replications=10
+  )
+)
 ```
 
 
-## **Column** & **By** opreation
+## **Column** & opereation{.tabset}
+열을 선택하는 방법도 기존의 `data.frame`과 비슷하나 몇 가지 차이점이 있다.
 
-### Basic
+### Code
 ```{r}
 res[, "SNP"]  ## data.table class
 res[, .(SNP)] ## same
@@ -115,114 +147,414 @@ vars= c("SNP","P")
 vars = c(3,9)
 ```
 
-```{r, eval=F}
+```{r, error=TRUE}
 res[, vars] # error
 ```
 
+`with = F` 를 뒤에 붙이거나 `.SD`, `.SDcols` 옵션을 사용하자.
 ```{r}
 res[, vars, with=F]
 res[, .SD, .SDcols = vars]
 ```
 
-
-### Function
-이번에는 phenotype data를 예로 들겠다. 편의상 몇가지 변수를 빼고 결측치가 없는 데이터를 이용하겠다.
-
+변수 생성은 `:=` 를 이용한다. 
 ```{r}
+## Make 1 variable
+res[, sigP:= as.numeric(P <=5e-8)]
+
+## Make multiple variables
+res[, ":=" (sigP1= as.numeric(P <=5e-8), sigP2= ifelse(P <=5e-5, 1, 0))]
+```
+
+### Benchmark
+```{r}
+kable(
+  benchmark(
+  col.df = res.df$SNP,
+  col.dt = dt[, "SNP"], replications=10 
+  )
+)
+```
+
+
+## Function{.tabset}
+이번에는 phenotype data를 예로 들겠다.
+
+### Code
+```{r, cache=F}
 ph = fread("/home/secondmath/Dropbox/myarticle/MOR_heri/prac.phe")
-ph
+kable(
+  tail(ph)
+  )
 
-remove_var = c("birth","gweek","MET","total_kcal","FTND", "hyperTG")
+ph[, mean(LDL, na.rm=T)]
+ph[, .(meanLDL= mean(LDL, na.rm=T), meanHDL= mean(HDL, na.rm=T))]
 
-ph = ph[, .SD, .SDcols = -remove_var]
-ph = na.omit(ph)  ## No NA
-dim(ph)
+kable(
+  ph[, lapply(.SD, mean, na.rm=T), .SDcols= -c(1,2)]
+  , digits=2
+)
+```
 
-ph[, mean(LDL)]
-ph[, .(meanLDL= mean(LDL), meanHDL= mean(HDL))]
-ph[, lapply(.SD, mean), .SDcols= -c(1,2)]
+### Benchmark
+data.frame에 내장함수인 `colMeans`을 적용한 것이 가장 좋았다.
+```{r}
+ph.df = data.frame(ph)
+
+kable(
+  benchmark(
+  mean.df = sapply(ph.df[,-c(1,2)], mean, na.rm=T),
+  mean.dt = ph[, lapply(.SD, mean, na.rm=T), .SDcols= -c(1,2)], 
+  colmean.df = colMeans(ph.df[, -c(1,2)], na.rm=T),  
+  colmean.dt = colMeans(ph[, -c(1,2)], na.rm=T), replications = 10 
+  )
+)
 ```
 
 
-**By** 문을 이용하여 그룹별로 함수를 적용할 수 있다.
-```{r}
-ph[, lapply(.SD, mean), .SDcols= -c(1,2), by= sex]
-ph[, lapply(.SD, mean), .SDcols= -c(1,2), by= .(sex, smoke)]
+```{r, eval=F, echo=F}
+#remove_var = c("birth","gweek","MET","total_kcal","FTND", "hyperTG")
+
+#ph = ph[, .SD, .SDcols = -remove_var]
+#ph = na.omit(ph)  ## No NA
+#dim(ph)
 ```
 
-**R**의 기본 옵션인 **tapply**나 **aggregate**함수와 비교해보자.
+
+## **By** operation{.tabset}
+`By` 옵션을 이용하여 그룹별로 함수를 적용할 수 있다.
+
+### Code
 ```{r}
-phf = data.frame(ph)
-## base
-tapply(phf$LDL, phf$sex, mean)
-aggregate(phf[,-c(1,2)], by= list(sex=phf$sex, smoke=phf$smoke), mean)
+kable(
+  ph[, lapply(.SD, mean, na.rm=T), .SDcols= -c(1,2), by= sex],
+  caption = "1 group", digits=2
+)
+
+kable(
+  ph[, lapply(.SD, mean, na.rm=T), .SDcols= -c(1,2), by= .(sex, smoke)],
+  caption= "2 groups", digits=2
+)
 ```
 
-## Merge
-data.table에서 merge의 
-
-https://rstudio-pubs-static.s3.amazonaws.com/52230_5ae0d25125b544caab32f75f0360e775.html 를 참고하기 바란다.
-
+### Benchmark
+`R`의 기본 함수인 `aggregate`와 비교해보자.
 ```{r}
-res
+kable(
+  benchmark(
+  aggregate.df = aggregate(ph.df[,-c(1,2)], by= list(sex=ph.df$sex, smoke=ph.df$smoke), mean, na.rm=T), 
+  by.dt = ph[, lapply(.SD, mean, na.rm=T), .SDcols= -c(1,2), by= .(sex, smoke)], replications = 10 
+  )
+)
+```
+
+## Merge{.tabset}
+`data.table`에서 `key`를 지정하면 빠르고 간단하게 merge를 수행할 수 있다. 자세한 내용은 https://rstudio-pubs-static.s3.amazonaws.com/52230_5ae0d25125b544caab32f75f0360e775.html 를 참고하기 바란다.
+
+
+![Merge in data.table](merge.png)
+
+두 GWAS 결과를 SNP에 따라 merge해 보자.
+
+### Code
+```{r,cache=F}
+## Set key
 setkey(res, CHR,SNP,BP)
 
+## Other GWAS result
 res_logit = fread("/home/secondmath/Dropbox/example/LogisticTG.assoc.logistic")[TEST=="ADD"]
 setkey(res_logit, CHR,SNP,BP)
+```
 
-res[res_logit]
-res_logit[res]
-merge(res, res_logit, all=T)
+![](radv1_fig/inner_join.jpg)
+
+
+```{r}
+kable(
+  head(
+    res[res_logit, nomatch=0]
+  )
+)
+```
+
+![](radv1_fig/left_join.jpg)
+
+```{r}
+## Left: res, Right: res_logit
+kable(
+  head(
+    res_logit[res]
+  )
+)
 ```
 
 
-## Fast overlap search
 
-data.table 패키지의 **foverlaps**함수를 이용해서
-
-1. glist_hg18의 gene, chromosome, start, end 정보와 
-
-
-2. GWAS 결과의 chromosome, BP정보
-
-
-를 합치면 SNP에 해당하는 gene을 매칭할 수 있다. 
+![](radv1_fig/right_join.jpg)
 
 ```{r}
+kable(
+  head(
+    res[res_logit]
+  )
+)
+```
+
+
+![](radv1_fig/outer_join.jpg)
+
+```{r}
+kable(
+  head(
+   merge(res, res_logit, all=T)
+  )
+)
+```
+
+![](radv1_fig/cross_join.jpg)
+
+```{r}
+x = 1:100         ## 1~100
+y = LETTERS       ## A~Z
+z = letters       ## a~z
+
+CJ(num= x, L= y, l= z)
+```
+
+그 외 `rbindlist`를 사용하면 여러 개의 data를 빠르게 위아래로 합칠 수 있다. 
+
+
+### Benchmark
+Inner join을 비교해보겠다.
+
+```{r}
+res_logit.df = data.frame(res_logit)
+kable(
+  benchmark(
+  inner.df = merge(res.df, res_logit.df, by=c("SNP","CHR","BP"), all = F), 
+  inner.dt = res[res_logit], replications = 1 
+  )
+)
+```
+
+Cross join을 비교해보겠다.
+```{r}
+kable(
+  benchmark(
+  expand.grid.df = expand.grid(num= x, L= y, l= z), 
+  cj.dt = CJ(num= x, L= y, l= z), replications = 10 
+  )
+)
+```
+
+
+## foverlaps: Fast overlap joins
+
+`data.table` 패키지의 `foverlaps`함수를 이용해서
+
+1. Large data with small interval: ex) GWAS 결과
+
+
+2. Small data with large interval: ex) GENE 정보
+
+
+를 합칠 수 있다. 일반적인 정보는 https://rdrr.io/cran/data.table/man/foverlaps.html  를 참고하기 바란다.
+
+```{r}
+## Gene info
 glist_hg18 = fread("/home/secondmath/Dropbox/example/glist-hg18")
 names(glist_hg18) = c("chr","start","end","gene")
-setkey(glist_hg18,chr,start,end)
-kable(head(glist_hg18))
-  
+setkey(glist_hg18, chr, start, end)   ## Set keys
+
+kable(
+  head(
+    glist_hg18
+  )
+)
+
+
 ## GWAS result: make new variable for foverlaps - chr, start, end 
-res[,":="(chr=as.character(CHR), start=BP, end=BP)]
+res[, ":=" (chr=as.character(CHR), start=BP, end=BP)]   ## :=  -make variables 
 
 ## Run 
 addgene = foverlaps(res, glist_hg18, by.x=c("chr","start","end"), type="within", mult="first")
 
 ## See
-kable(head(addgene), align="c")
+kable(
+  head(
+    addgene
+  ), 
+  align="c"
+)
 ```
 
-기타: https://jangorecki.github.io/blog/2015-12-11/Solve-common-R-problems-efficiently-with-data.table.html
 
-## Reshape data: **melt**, **dcast**
+## Reshape data: wide-to-long, long-to-wide{.tabset}
+마지막으로 data 형태를 바꾸는 `melt`(wide to long), `dcast`(long to wide) 를 알아보겠다. Phenotype data에서 lipid profile들을 한 column으로 합쳐보자.
+
+### Code
+```{r}
+ph.long = melt(ph,
+               measure.vars =  c("tCholesterol", "HDL", "LDL", "TG"), 
+               id.vars = c("FID","ID","sex","age"),
+               variable.name = "Lipid",
+               value.name = "value",
+               na.rm =F
+)
+
+ph.long
+```
+
+이제 `dcast`함수를 이용해서 다시 lipid profile들을 다른 column으로 나눠보겠다.
+```{r}
+ph.wide = dcast(ph.long, 
+                ID + FID + sex + age ~ Lipid, 
+                value.var = "value"
+)
+                
+ph.wide = dcast(ph.long, ... ~ Lipid, value.var = "value")                           ## ... same
+ph.wide
+```
+
+### Benchmark
+`data.frame`에 `reshape2`패키지의 `melt`, `dcast`함수를 적용한 것과 비교해보겠다.
+
+```{r}
+kable(
+  benchmark(
+  melt.df = melt(ph.df, measure.vars =  c("tCholesterol", "HDL", "LDL", "TG"), id.vars = c("FID","ID","sex","age"), variable.name = "Lipid", value.name = "value", na.rm =F), 
+  melt.dt  = melt(ph, measure.vars =  c("tCholesterol", "HDL", "LDL", "TG"), id.vars = c("FID","ID","sex","age"), variable.name = "Lipid", value.name = "value", na.rm =F), 
+  replications = 10 
+  )
+)
+```
 
 
-# Using multicore
+```{r}
+melt.df = melt(ph.df, measure.vars =  c("tCholesterol", "HDL", "LDL", "TG"), id.vars = c("FID","ID","sex","age"), variable.name = "Lipid", value.name = "value", na.rm =F)
 
-## **mclapply**
+kable(
+  benchmark(
+  dcast.df = dcast(melt.df, ... ~ Lipid, value.var = "value"), 
+  dcast.dt  = dcast(ph.long, ... ~ Lipid, value.var = "value") , 
+  replications = 10 
+  )
+)
+```
+
+
+기타 `data.table`의 장점에 대해서는 https://jangorecki.github.io/blog/2015-12-11/Solve-common-R-problems-efficiently-with-data.table.html  를 참고하기 바란다.
+
+
+
+# Faster for-loop
+```{r, eval=F}
+kable(
+  benchmark(
+    forloop = for(i in 1:8){Sys.sleep(1)},
+    lapply = lapply(1:8,function(x){Sys.sleep(1)}),
+    mclapply = mclapply(1:8,function(x){Sys.sleep(1)}), replications=1
+  )
+)
+
+```
+
+
+```{r}
+CoefExtract = function(y, xs, data=ph){
+  form = as.formula(paste(y, xs, sep="~"))
+  reg.model = lm(form, data)
+  return(summary(reg.model)$coefficients)
+}
+
+kable(
+  CoefExtract("FBS","age+sex")
+)
+```
+
+## 1 loop{.tabset}
+
+### For 
+```{r}
+ybar= c("FBS","tCholesterol","HDL","LDL","TG","SBP","DBP")
+
+
+out=list()
+
+for (y in ybar){
+  out[[length(out)+1]] = CoefExtract(y,"age+sex")
+}
+out
+```
+
+### lapply
+```{r}
+lapply(ybar, CoefExtract, xs="age+sex", data=ph)
+```
+
+### mclapply
 ```{r}
 library(parallel)
-
-
+detectCores()
+mclapply(ybar, CoefExtract, xs="age+sex", data=ph)
 ```
 
-## **mcmapply**
+### Benchmark
 ```{r}
+kable(
+  benchmark(
+    CoefExtract.for = {out=list(); for (y in ybar){out[[length(out)+1]] = CoefExtract(y,"age+sex")}},
+    CoefExtract.lapply = lapply(ybar, CoefExtract, xs="age+sex", data=ph),
+    CoefExtract.mclapply = mclapply(ybar, CoefExtract, xs="age+sex", data=ph), replications= 10
+  )
+)
+```
+
+
+## 2 loops{.tabset}
+
+```{r}
+ybar= c("FBS","tCholesterol","HDL","LDL","TG","SBP","DBP")
+xbar= c("1","age", "age + sex", "age + sex + BMI", "age + sex + BMI + smoke + alcohol ")
+```
+
+### for
+```{r}
+out=list()
+
+for (y in ybar){
+  for (xs in xbar){
+    out[[length(out)+1]] = CoefExtract(y, xs)
+  }
+}
+out
+```
+
+### mapply
+```{r}
+yx.list = CJ(y= ybar, xs= xbar)
+mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.NAMES = F)
+```
+
+### mcmapply
+```{r}
+mcmapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.NAMES = F)
+```
+
+
+### Benchmark
+```{r}
+kable(
+  benchmark(
+    CoefExtract.for2 = {out=list();for (y in ybar){for (xs in xbar){out[[length(out)+1]] = CoefExtract(y, xs)}}},
+    CoefExtract.mapply = mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.NAMES = F),
+    CoefExtract.mcmapply = mcmapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.NAMES = F), replications= 10
+  )
+)
 
 
 ```
+
 
 # tableone
 
