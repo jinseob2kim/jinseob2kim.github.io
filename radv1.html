@@ -430,7 +430,7 @@ div.tocify {
 <div id="data.table" class="section level1">
 <h1>data.table</h1>
 <div id="load-save-data-fread-fwrite" class="section level2 tabset">
-<h2>Load &amp; Save data: fread &amp; fwrite</h2>
+<h2>Load &amp; Save data: <code>fread</code> &amp; <code>fwrite</code></h2>
 <p><code>fread</code> 함수로 구분자 (comma, tab, …)에 상관없이 빠르게 데이터를 읽을 수 있으며, <code>fwrtie</code>함수로 그것을 빠르게 파일로 저장할 수 있다. GWAS result 파일을 읽고 쓰는 것을 예로 들겠다. <code>fread</code>로 파일을 읽으면 그 class는 <code>data.frame</code>에 <code>data.table</code>이 추가되며 문법이 원래의 <code>data.frame</code>과 달라지는 점을 유의하자. 만약 데이터를 빨리 읽는 것만 활용하겠다면 <code>fread</code>를 활용해서 읽은 후 다시 원래의 <code>data.frame</code>형태로 바꿔 사용하면 된다.</p>
 <div id="code" class="section level3">
 <h3>Code</h3>
@@ -1175,8 +1175,8 @@ dt[ .(&quot;ADD&quot;, 11)]        </code></pre>
 </table>
 </div>
 </div>
-<div id="column-opereation" class="section level2 tabset">
-<h2><strong>Column</strong> &amp; opereation</h2>
+<div id="column-by-opereation" class="section level2 tabset">
+<h2><strong>Column</strong> &amp; <code>By</code> opereation</h2>
 <p>열을 선택하는 방법도 기존의 <code>data.frame</code>과 비슷하나 몇 가지 차이점이 있다.</p>
 <div id="code-2" class="section level3">
 <h3>Code</h3>

@@ -20,7 +20,7 @@ library(knitr)
 
 # data.table
 
-## Load & Save data: fread & fwrite {.tabset}
+## Load & Save data: `fread` & `fwrite` {.tabset}
 
 `fread` 함수로 구분자 (comma, tab, ...)에 상관없이 빠르게 데이터를 읽을 수 있으며, `fwrtie`함수로 그것을 빠르게 파일로 저장할 수 있다. GWAS result 파일을 읽고 쓰는 것을 예로 들겠다. `fread`로 파일을 읽으면 그 class는 `data.frame`에 `data.table`이 추가되며 문법이 원래의 `data.frame`과 달라지는 점을 유의하자. 만약 데이터를 빨리 읽는 것만 활용하겠다면 `fread`를 활용해서 읽은 후 다시 원래의 `data.frame`형태로 바꿔 사용하면 된다.
 
@@ -122,7 +122,7 @@ kable(
 ```
 
 
-## **Column** & opereation{.tabset}
+## **Column** & `By` opereation{.tabset}
 열을 선택하는 방법도 기존의 `data.frame`과 비슷하나 몇 가지 차이점이 있다.
 
 ### Code
