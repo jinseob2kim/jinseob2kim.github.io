@@ -20,6 +20,15 @@ library(knitr)
 
 # data.table
 
+**data.table** 패키지는 data step을 빠르고 쉽게 수행하기 위한 패키지로 가장 인기많은 `R`패키지 중 하나이다. (https://www.rdocumentation.org/trends?page1=1&sort1=direct&page2=1&sort2=total&page3=1&page4=1)
+
+* 장점: 매우 빠르다. (`base`, `dplyr` 대비)
+
+![https://csgillespie.github.io/efficientR/data-processing-with-data-table.html](http://csgillespie.github.io/efficientR/_main_files/figure-html/dtplot-1.png)
+
+* 단점: 문법이 헷갈린다. (`dplyr`가 가장 직관적임)
+
+
 ## Load & Save data: `fread` & `fwrite` {.tabset}
 
 `fread` 함수로 구분자 (comma, tab, ...)에 상관없이 빠르게 데이터를 읽을 수 있으며, `fwrtie`함수로 그것을 빠르게 파일로 저장할 수 있다. GWAS result 파일을 읽고 쓰는 것을 예로 들겠다. `fread`로 파일을 읽으면 그 class는 `data.frame`에 `data.table`이 추가되며 문법이 원래의 `data.frame`과 달라지는 점을 유의하자. 만약 데이터를 빨리 읽는 것만 활용하겠다면 `fread`를 활용해서 읽은 후 다시 원래의 `data.frame`형태로 바꿔 사용하면 된다.
@@ -209,15 +218,6 @@ kable(
   colmean.dt = colMeans(ph[, -c(1,2)], na.rm=T), replications = 10 
   )
 )
-```
-
-
-```{r, eval=F, echo=F}
-#remove_var = c("birth","gweek","MET","total_kcal","FTND", "hyperTG")
-
-#ph = ph[, .SD, .SDcols = -remove_var]
-#ph = na.omit(ph)  ## No NA
-#dim(ph)
 ```
 
 
@@ -448,17 +448,10 @@ kable(
 
 
 # Faster for-loop
-```{r, eval=F}
-kable(
-  benchmark(
-    forloop = for(i in 1:8){Sys.sleep(1)},
-    lapply = lapply(1:8,function(x){Sys.sleep(1)}),
-    mclapply = mclapply(1:8,function(x){Sys.sleep(1)}), replications=1
-  )
-)
 
-```
+이번엔 `for` loop과 `lapply`, `mapply` 함수, 그리고 multi-core를 활용한 `mclapply`, `mcmapply`함수를 비교하여 어떤 방법이 가장 빠른지 비교해 보겠다.
 
+다양한 phenotype과 다양한 covariate들의 조합을 회귀분석하여 계수들을 뽑아내는 것을 예로 들겠다. 먼저 아래는 종속변수 `y`와 독립변수 `xs` 를 넣으면 회귀계수를 구해주는 함수이다.
 
 ```{r}
 CoefExtract = function(y, xs, data=ph){
@@ -474,9 +467,15 @@ kable(
 
 ## 1 loop{.tabset}
 
+* Phenotype: DXA_total_tscore, FBS, tCholesterol , HDL, LDL, TG, SBP, DBP
+
+* Covariate : age + sex
+
+8개 조합
+
 ### For 
 ```{r}
-ybar= c("FBS","tCholesterol","HDL","LDL","TG","SBP","DBP")
+ybar= c("DXA_total_tscore", "FBS","tCholesterol","HDL","LDL","TG","SBP","DBP")
 
 
 out=list()
@@ -493,9 +492,18 @@ lapply(ybar, CoefExtract, xs="age+sex", data=ph)
 ```
 
 ### mclapply
+
+`mclapply`는 윈도우에선 지원되지 않는다.
 ```{r}
 library(parallel)
-detectCores()
+
+## Setting core
+ncore = detectCores()
+ncore
+options(mc.cores= ncore)
+options("mc.cores")
+
+
 mclapply(ybar, CoefExtract, xs="age+sex", data=ph)
 ```
 
@@ -513,8 +521,14 @@ kable(
 
 ## 2 loops{.tabset}
 
+* Phenotype: DXA_total_tscore, FBS, tCholesterol , HDL, LDL, TG, SBP, DBP
+
+* Covariate : No, age, age + sex, age + sex + BMI, age + sex + BMI + smoke + alcohol
+
+총 35개 조합.
+
 ```{r}
-ybar= c("FBS","tCholesterol","HDL","LDL","TG","SBP","DBP")
+ybar= c("DXA_total_tscore", "FBS","tCholesterol","HDL","LDL","TG","SBP","DBP")
 xbar= c("1","age", "age + sex", "age + sex + BMI", "age + sex + BMI + smoke + alcohol ")
 ```
 
@@ -555,70 +569,263 @@ kable(
 
 ```
 
+## When we use multi-core?{.tabset}
 
-# tableone
+위의 결과를 요약하면 아래와 같다.
+
+1. 마법은 없다. `for`나 `lapply`, `mapply`나 비슷하다.
+
+
+2. multi-core가 더 느릴 수도 있다.
+    + 간단한 작업을 조금 반복할 때 특히.
+    
+
+그럼 언제 multi-core가 효과적일까? $N$초간 정지하는 `Sys.sleep`함수를 통해 살펴보자.
+
+
+### $N=0.0001$
+```{r}
+N=0.0001
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 10
+  )
+)
+
+```
+
+### $N=0.001$
+```{r}
+N=0.001
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 10
+  )
+)
+
+```
+
+### $N=0.01$
+```{r}
+N=0.01
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 10
+  )
+)
+
+```
+
+### $N=0.1$
+```{r}
+N=0.1
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 10
+  )
+)
+
+```
+
+### $N=1$
+```{r}
+N=1
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 1
+  )
+)
+
+```
+
+
+결론적으로 작업당 0.01초 이상이 걸리면 multi-core의 강점이 드러난다고 할 수 있겠다.
+
+
+
+# Table 1: tableone package{.tabset}
+
+**tableone** 패키지를 이용하면 간단하게 논문에 들어갈 table 1을 만들 수 있다. TG $\ge200$ 을 기준으로 그룹을 나누어 table 1을 만들어보도록 하자. 편의상 몇가지 변수만 뽑아 결측치 없는 데이터를 만든 후 table 1을 만들겠다.
 
 ```{r,cache=F}
 #install.packages("tableone")
 library(tableone)
+
+## Make TG variable
 ph[,hyperTG := as.numeric(TG>=200)]
+
+## Rename sex
 ph[,sex:= ifelse(sex==0,"Male","Female")]
-setnames(ph,c("sex","age"),c("Sex","Age"))
 
-tb1= CreateTableOne(vars = names(ph)[-c(1,2,24)], strata = c("hyperTG"),factorVars = c("Sex","smoke","alcohol"), data = ph, includeNA = T)
-zz=print(tb1 , nonnormal = c("PY"), exact = c("Sex"), smd = TRUE, cramVars = NULL, printToggle=T)
+## Rename : Sex, Age
+setnames(ph, c("sex", "age"), c("Sex", "Age"))
 
-## Export table
-kable(zz,align="c",caption="Descriptive statistics by TG",col.names=c("TG < 200","TG ≥ 200","p","test","SMD"))
+## select var
+vars.tb1 = names(ph)[c(3:20,27,28)]
+vars.tb1
+
+## Na omit
+ph.omit = na.omit(ph, vars)
+```
+
+## Ctrl + C & Ctrl + V  
+
+`CreatTableOne`함수로 테이블을 만든 후 `print`명령어로 세부 옵션을 지정할 수 있다. 주요 옵션은 다음과 같다.
+
+* `CreatTableOne`
+    + **vars**: 테이블에 들어갈 변수들
+    
+    
+    + **strata** : 그룹 변수(여러 개 가능)
+    
+    
+    + **factorVars**: 범주형 변수들
+    
+    
+    + **data**: 데이터
+    
+    
+    + **includeNA**: 범주형변수에서 `NA`를 하나의 범주로 포함할 것인가?
+
+```{r}
+tb1= CreateTableOne(vars = vars.tb1,
+                    strata = "hyperTG", 
+                    factorVars = c("Sex","smoke","alcohol"), 
+                    data = ph.omit, 
+                    includeNA = F
+                    )
+
+tb1
+```
+
+* `print`
+    + **nonnormal**: 비모수통계를 쓸 연속 변수
+    
+    
+    + **exact**: fisher-test를 쓸 범주형 변수
+    
+    
+    + **smd**: standardized mean difference 
+    
+    
+    + **cramVars**: 2범주인 변수에서 2범주를 다 보여줄 변수.
+
+```{r}
+zz= print(tb1, 
+          nonnormal = c("FBS","TG"), 
+          exact = c("Sex", "alcohol"), 
+          smd = TRUE, 
+          cramVars = "Sex", 
+          printToggle=T)
 ```
 
 
-# Regression result{.tabset}
+## Export table
+
+```{r}
+kable(
+  zz,
+  align="c",
+  caption="Descriptive statistics by TG",
+  col.names=c("TG < 200","TG ≥ 200","p","test","SMD")
+)
+```
+
+
+# Regression result: epiDisplay package{.tabset}
+**epiDisplay** 패키지를 이용하면 회귀분석 결과를 보기 좋게 정리할 수 있고 adjust p-value와 crude p-value를 동시에 확인할 수 있다. 명령어는 아래의 4가지이다.
+
+1. `regress.display`: Linear model
+
+
+2. `logistic.display`: Logistic model
+
+
+3. `idr.display`: Poisson regression 
+
+
+4. `cox.display`: Cox proportional hazard model
 
 ## Linear regression
 ```{r,cache=F}
+## Load package
 library(epiDisplay)
-factorVars= c("Sex","smoke","alcohol")
+
+## Pre-setting: factor variable 
+factorVars= c("Sex", "smoke", "alcohol")
 ph[, (factorVars) := lapply(.SD, as.factor), .SDcols= factorVars]
 
-
+## Linear model
 m1 = lm(LDL~ Age +Sex + BMI + smoke + alcohol , data=ph)
 
+## summary table
 tb.m1 = regress.display(m1, crude=T, crude.p.value = T)
 tb.m1
-### Export table
+
+## Export table
 kable(tb.m1$table[rownames(tb.m1$table) != "",], align="c", caption = tb.m1$last.lines)
 ```
 
 ## Logistic regression
 ```{r}
+## Logistic model
 m2 = glm(hyperTG~ Age +Sex + BMI + smoke + alcohol , data=ph, family=binomial)
 
+## summary table
 tb.m2 = logistic.display(m2, crude=T, crude.p.value = T)
 tb.m2
-### Export table
+
+## Export table
 kable(tb.m2$table[rownames(tb.m2$table) != "",], align="c", caption = tb.m2$last.lines)
 ```
 
 
 ## Poisson regression: 사망 데이터
 ```{r}
+## Load example data
 library(HEAT);data(mort)
+
+## Poisson regression
 m3 = glm(nonacc~meantemp+ meanso2 + meanhumi, data= mort, family= poisson)
 
+## Summary table
 tb.m3 = idr.display(m3, crude=T, crude.p.value = T )
 tb.m3
-### Export table
+
+## Export table
 kable(tb.m3$table[rownames(tb.m3$table) != "",], align="c", caption = tb.m3$last.lines)
 ```
 
 ## Cox: 생존분석
 ```{r}
-library(survival);data(bladder)
+## Load package & example data
+library(survival)
+data(bladder)
+
+## Cox model
 m4 = coxph(Surv(stop, event) ~ rx + size + number, data=bladder)
 
+## Summary table
 tb.m4 = cox.display(m4, crude=T, crude.p.value = T )
 tb.m4
-### Export table
+
+## Export table
 kable(tb.m4$table[rownames(tb.m4$table) != "",], align="c", caption = tb.m4$last.lines)
 ```
+
+

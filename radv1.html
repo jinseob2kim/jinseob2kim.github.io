@@ -429,6 +429,17 @@ div.tocify {
 
 <div id="data.table" class="section level1">
 <h1>data.table</h1>
+<p><strong>data.table</strong> 패키지는 data step을 빠르고 쉽게 수행하기 위한 패키지로 가장 인기많은 <code>R</code>패키지 중 하나이다. (<a href="https://www.rdocumentation.org/trends?page1=1&amp;sort1=direct&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1" class="uri">https://www.rdocumentation.org/trends?page1=1&amp;sort1=direct&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1</a>)</p>
+<ul>
+<li>장점: 매우 빠르다. (<code>base</code>, <code>dplyr</code> 대비)</li>
+</ul>
+<div class="figure">
+<img src="http://csgillespie.github.io/efficientR/_main_files/figure-html/dtplot-1.png" alt="https://csgillespie.github.io/efficientR/data-processing-with-data-table.html" />
+<p class="caption"><a href="https://csgillespie.github.io/efficientR/data-processing-with-data-table.html" class="uri">https://csgillespie.github.io/efficientR/data-processing-with-data-table.html</a></p>
+</div>
+<ul>
+<li>단점: 문법이 헷갈린다. (<code>dplyr</code>가 가장 직관적임)</li>
+</ul>
 <div id="load-save-data-fread-fwrite" class="section level2 tabset">
 <h2>Load &amp; Save data: <code>fread</code> &amp; <code>fwrite</code></h2>
 <p><code>fread</code> 함수로 구분자 (comma, tab, …)에 상관없이 빠르게 데이터를 읽을 수 있으며, <code>fwrtie</code>함수로 그것을 빠르게 파일로 저장할 수 있다. GWAS result 파일을 읽고 쓰는 것을 예로 들겠다. <code>fread</code>로 파일을 읽으면 그 class는 <code>data.frame</code>에 <code>data.table</code>이 추가되며 문법이 원래의 <code>data.frame</code>과 달라지는 점을 유의하자. 만약 데이터를 빨리 읽는 것만 활용하겠다면 <code>fread</code>를 활용해서 읽은 후 다시 원래의 <code>data.frame</code>형태로 바꿔 사용하면 된다.</p>
@@ -2115,20 +2126,20 @@ kable(
 <tr class="odd">
 <td align="left">aggregate.df</td>
 <td align="right">10</td>
-<td align="right">0.099</td>
-<td align="right">1.000</td>
-<td align="right">0.098</td>
-<td align="right">0</td>
+<td align="right">0.113</td>
+<td align="right">1.076</td>
+<td align="right">0.105</td>
+<td align="right">0.008</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">by.dt</td>
 <td align="right">10</td>
-<td align="right">0.401</td>
-<td align="right">4.051</td>
-<td align="right">2.676</td>
-<td align="right">0</td>
+<td align="right">0.105</td>
+<td align="right">1.000</td>
+<td align="right">0.687</td>
+<td align="right">0.000</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -2173,9 +2184,6 @@ setkey(res_logit, CHR,SNP,BP)</code></pre>
 <th align="right">BETA</th>
 <th align="right">STAT</th>
 <th align="right">P</th>
-<th align="right">sigP</th>
-<th align="right">sigP1</th>
-<th align="right">sigP2</th>
 <th align="left">i.A1</th>
 <th align="left">i.TEST</th>
 <th align="right">i.NMISS</th>
@@ -2195,9 +2203,6 @@ setkey(res_logit, CHR,SNP,BP)</code></pre>
 <td align="right">3.2200</td>
 <td align="right">0.3273</td>
 <td align="right">0.7434</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2215,9 +2220,6 @@ setkey(res_logit, CHR,SNP,BP)</code></pre>
 <td align="right">3.8700</td>
 <td align="right">0.5782</td>
 <td align="right">0.5632</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">A</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2235,9 +2237,6 @@ setkey(res_logit, CHR,SNP,BP)</code></pre>
 <td align="right">5.7340</td>
 <td align="right">1.2270</td>
 <td align="right">0.2202</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">G</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2255,9 +2254,6 @@ setkey(res_logit, CHR,SNP,BP)</code></pre>
 <td align="right">-5.8730</td>
 <td align="right">-0.9411</td>
 <td align="right">0.3468</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2275,9 +2271,6 @@ setkey(res_logit, CHR,SNP,BP)</code></pre>
 <td align="right">-4.2490</td>
 <td align="right">-0.9021</td>
 <td align="right">0.3671</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">G</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2295,9 +2288,6 @@ setkey(res_logit, CHR,SNP,BP)</code></pre>
 <td align="right">-0.9856</td>
 <td align="right">-0.2140</td>
 <td align="right">0.8306</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2335,9 +2325,6 @@ kable(
 <th align="right">BETA</th>
 <th align="right">i.STAT</th>
 <th align="right">i.P</th>
-<th align="right">sigP</th>
-<th align="right">sigP1</th>
-<th align="right">sigP2</th>
 </tr>
 </thead>
 <tbody>
@@ -2357,9 +2344,6 @@ kable(
 <td align="right">3.2200</td>
 <td align="right">0.3273</td>
 <td align="right">0.7434</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -2377,9 +2361,6 @@ kable(
 <td align="right">3.8700</td>
 <td align="right">0.5782</td>
 <td align="right">0.5632</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
@@ -2397,9 +2378,6 @@ kable(
 <td align="right">5.7340</td>
 <td align="right">1.2270</td>
 <td align="right">0.2202</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -2417,9 +2395,6 @@ kable(
 <td align="right">-5.8730</td>
 <td align="right">-0.9411</td>
 <td align="right">0.3468</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="odd">
 <td align="right">1</td>
@@ -2437,9 +2412,6 @@ kable(
 <td align="right">-4.2490</td>
 <td align="right">-0.9021</td>
 <td align="right">0.3671</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="right">1</td>
@@ -2457,9 +2429,6 @@ kable(
 <td align="right">-0.9856</td>
 <td align="right">-0.2140</td>
 <td align="right">0.8306</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 </tr>
 </tbody>
 </table>
@@ -2484,9 +2453,6 @@ kable(
 <th align="right">BETA</th>
 <th align="right">STAT</th>
 <th align="right">P</th>
-<th align="right">sigP</th>
-<th align="right">sigP1</th>
-<th align="right">sigP2</th>
 <th align="left">i.A1</th>
 <th align="left">i.TEST</th>
 <th align="right">i.NMISS</th>
@@ -2506,9 +2472,6 @@ kable(
 <td align="right">3.2200</td>
 <td align="right">0.3273</td>
 <td align="right">0.7434</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2526,9 +2489,6 @@ kable(
 <td align="right">3.8700</td>
 <td align="right">0.5782</td>
 <td align="right">0.5632</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">A</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2546,9 +2506,6 @@ kable(
 <td align="right">5.7340</td>
 <td align="right">1.2270</td>
 <td align="right">0.2202</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">G</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2566,9 +2523,6 @@ kable(
 <td align="right">-5.8730</td>
 <td align="right">-0.9411</td>
 <td align="right">0.3468</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2586,9 +2540,6 @@ kable(
 <td align="right">-4.2490</td>
 <td align="right">-0.9021</td>
 <td align="right">0.3671</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">G</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2606,9 +2557,6 @@ kable(
 <td align="right">-0.9856</td>
 <td align="right">-0.2140</td>
 <td align="right">0.8306</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2639,9 +2587,6 @@ kable(
 <th align="right">BETA</th>
 <th align="right">STAT.x</th>
 <th align="right">P.x</th>
-<th align="right">sigP</th>
-<th align="right">sigP1</th>
-<th align="right">sigP2</th>
 <th align="left">A1.y</th>
 <th align="left">TEST.y</th>
 <th align="right">NMISS.y</th>
@@ -2661,9 +2606,6 @@ kable(
 <td align="right">3.2200</td>
 <td align="right">0.3273</td>
 <td align="right">0.7434</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2681,9 +2623,6 @@ kable(
 <td align="right">3.8700</td>
 <td align="right">0.5782</td>
 <td align="right">0.5632</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">A</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2701,9 +2640,6 @@ kable(
 <td align="right">5.7340</td>
 <td align="right">1.2270</td>
 <td align="right">0.2202</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">G</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2721,9 +2657,6 @@ kable(
 <td align="right">-5.8730</td>
 <td align="right">-0.9411</td>
 <td align="right">0.3468</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2741,9 +2674,6 @@ kable(
 <td align="right">-4.2490</td>
 <td align="right">-0.9021</td>
 <td align="right">0.3671</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">G</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2761,9 +2691,6 @@ kable(
 <td align="right">-0.9856</td>
 <td align="right">-0.2140</td>
 <td align="right">0.8306</td>
-<td align="right">0</td>
-<td align="right">0</td>
-<td align="right">0</td>
 <td align="left">C</td>
 <td align="left">ADD</td>
 <td align="right">1787</td>
@@ -2823,10 +2750,10 @@ kable(
 <tr class="odd">
 <td align="left">inner.df</td>
 <td align="right">1</td>
-<td align="right">1.622</td>
-<td align="right">77.238</td>
-<td align="right">1.615</td>
-<td align="right">0.008</td>
+<td align="right">1.779</td>
+<td align="right">84.714</td>
+<td align="right">1.755</td>
+<td align="right">0.023</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -2835,7 +2762,7 @@ kable(
 <td align="right">1</td>
 <td align="right">0.021</td>
 <td align="right">1.000</td>
-<td align="right">0.020</td>
+<td align="right">0.021</td>
 <td align="right">0.000</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2869,7 +2796,7 @@ kable(
 <td align="left">cj.dt</td>
 <td align="right">10</td>
 <td align="right">0.008</td>
-<td align="right">1.000</td>
+<td align="right">1.0</td>
 <td align="right">0.008</td>
 <td align="right">0.000</td>
 <td align="right">0</td>
@@ -2879,9 +2806,9 @@ kable(
 <td>1</td>
 <td align="left">expand.grid.df</td>
 <td align="right">10</td>
-<td align="right">0.073</td>
-<td align="right">9.125</td>
-<td align="right">0.061</td>
+<td align="right">0.060</td>
+<td align="right">7.5</td>
+<td align="right">0.047</td>
 <td align="right">0.012</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -3169,9 +3096,9 @@ ph.wide</code></pre>
 <tr class="odd">
 <td align="left">melt.df</td>
 <td align="right">10</td>
-<td align="right">0.043</td>
-<td align="right">21.5</td>
-<td align="right">0.043</td>
+<td align="right">0.041</td>
+<td align="right">13.667</td>
+<td align="right">0.042</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -3179,9 +3106,9 @@ ph.wide</code></pre>
 <tr class="even">
 <td align="left">melt.dt</td>
 <td align="right">10</td>
-<td align="right">0.002</td>
-<td align="right">1.0</td>
-<td align="right">0.002</td>
+<td align="right">0.003</td>
+<td align="right">1.000</td>
+<td align="right">0.003</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -3214,19 +3141,19 @@ kable(
 <tr class="odd">
 <td align="left">dcast.df</td>
 <td align="right">10</td>
-<td align="right">0.435</td>
-<td align="right">6.493</td>
-<td align="right">0.991</td>
-<td align="right">1.605</td>
+<td align="right">0.261</td>
+<td align="right">4.5</td>
+<td align="right">0.606</td>
+<td align="right">0.965</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">dcast.dt</td>
 <td align="right">10</td>
-<td align="right">0.067</td>
-<td align="right">1.000</td>
-<td align="right">0.254</td>
+<td align="right">0.058</td>
+<td align="right">1.0</td>
+<td align="right">0.207</td>
 <td align="right">0.000</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -3239,13 +3166,8 @@ kable(
 </div>
 <div id="faster-for-loop" class="section level1">
 <h1>Faster for-loop</h1>
-<pre class="r"><code>kable(
-  benchmark(
-    forloop = for(i in 1:8){Sys.sleep(1)},
-    lapply = lapply(1:8,function(x){Sys.sleep(1)}),
-    mclapply = mclapply(1:8,function(x){Sys.sleep(1)}), replications=1
-  )
-)</code></pre>
+<p>이번엔 <code>for</code> loop과 <code>lapply</code>, <code>mapply</code> 함수, 그리고 multi-core를 활용한 <code>mclapply</code>, <code>mcmapply</code>함수를 비교하여 어떤 방법이 가장 빠른지 비교해 보겠다.</p>
+<p>다양한 phenotype과 다양한 covariate들의 조합을 회귀분석하여 계수들을 뽑아내는 것을 예로 들겠다. 먼저 아래는 종속변수 <code>y</code>와 독립변수 <code>xs</code> 를 넣으면 회귀계수를 구해주는 함수이다.</p>
 <pre class="r"><code>CoefExtract = function(y, xs, data=ph){
   form = as.formula(paste(y, xs, sep=&quot;~&quot;))
   reg.model = lm(form, data)
@@ -3291,9 +3213,14 @@ kable(
 </table>
 <div id="loop" class="section level2 tabset">
 <h2>1 loop</h2>
+<ul>
+<li><p>Phenotype: DXA_total_tscore, FBS, tCholesterol , HDL, LDL, TG, SBP, DBP</p></li>
+<li><p>Covariate : age + sex</p></li>
+</ul>
+<p>8개 조합</p>
 <div id="for" class="section level3">
 <h3>For</h3>
-<pre class="r"><code>ybar= c(&quot;FBS&quot;,&quot;tCholesterol&quot;,&quot;HDL&quot;,&quot;LDL&quot;,&quot;TG&quot;,&quot;SBP&quot;,&quot;DBP&quot;)
+<pre class="r"><code>ybar= c(&quot;DXA_total_tscore&quot;, &quot;FBS&quot;,&quot;tCholesterol&quot;,&quot;HDL&quot;,&quot;LDL&quot;,&quot;TG&quot;,&quot;SBP&quot;,&quot;DBP&quot;)
 
 
 out=list()
@@ -3303,42 +3230,48 @@ for (y in ybar){
 }
 out</code></pre>
 <pre><code>## [[1]]
+##                Estimate Std. Error    t value     Pr(&gt;|t|)
+## (Intercept)  1.18315428 0.08920472  13.263359 6.016230e-39
+## age         -0.03279314 0.00180811 -18.136692 1.786053e-69
+## sex         -0.11623913 0.04857521  -2.392972 1.678020e-02
+## 
+## [[2]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 82.2952398 1.24534026 66.082534 0.000000e+00
 ## age          0.3324244 0.02526696 13.156484 2.230556e-38
 ## sex         -5.5484049 0.67791988 -8.184455 4.144824e-16
 ## 
-## [[2]]
+## [[3]]
 ##                Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 164.1880367 2.49414564 65.829370 0.000000e+00
 ## age           0.6030075 0.05060423 11.916148 5.939596e-32
 ## sex          -2.0602344 1.35772605 -1.517415 1.292774e-01
 ## 
-## [[3]]
+## [[4]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 50.72179051 0.87234943 58.14389 0.000000e+00
 ## age         -0.09581274 0.01769928 -5.41337 6.721530e-08
 ## sex          5.73923189 0.47487666 12.08573 8.479426e-33
 ## 
-## [[4]]
+## [[5]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 88.2590834 2.13202348 41.396863 2.955579e-291
 ## age          0.5511586 0.04325706 12.741472  3.634198e-36
 ## sex         -3.7122724 1.16059935 -3.198582  1.396832e-03
 ## 
-## [[5]]
+## [[6]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept)  98.5558111   5.382728  18.309639 9.882907e-71
 ## age           0.9367979   0.109219   8.577247 1.601135e-17
 ## sex         -40.9188285   2.929610 -13.967331 7.083359e-43
 ## 
-## [[6]]
+## [[7]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 96.8058195 1.07102646  90.38602  0.000000e+00
 ## age          0.5588847 0.02173539  25.71312 9.734928e-131
 ## sex         -6.5176870 0.58308597 -11.17792  2.144958e-28
 ## 
-## [[7]]
+## [[8]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 67.5399799 0.74115994 91.127402 0.000000e+00
 ## age          0.2063502 0.01504109 13.719106 1.800342e-41
@@ -3348,42 +3281,48 @@ out</code></pre>
 <h3>lapply</h3>
 <pre class="r"><code>lapply(ybar, CoefExtract, xs=&quot;age+sex&quot;, data=ph)</code></pre>
 <pre><code>## [[1]]
+##                Estimate Std. Error    t value     Pr(&gt;|t|)
+## (Intercept)  1.18315428 0.08920472  13.263359 6.016230e-39
+## age         -0.03279314 0.00180811 -18.136692 1.786053e-69
+## sex         -0.11623913 0.04857521  -2.392972 1.678020e-02
+## 
+## [[2]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 82.2952398 1.24534026 66.082534 0.000000e+00
 ## age          0.3324244 0.02526696 13.156484 2.230556e-38
 ## sex         -5.5484049 0.67791988 -8.184455 4.144824e-16
 ## 
-## [[2]]
+## [[3]]
 ##                Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 164.1880367 2.49414564 65.829370 0.000000e+00
 ## age           0.6030075 0.05060423 11.916148 5.939596e-32
 ## sex          -2.0602344 1.35772605 -1.517415 1.292774e-01
 ## 
-## [[3]]
+## [[4]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 50.72179051 0.87234943 58.14389 0.000000e+00
 ## age         -0.09581274 0.01769928 -5.41337 6.721530e-08
 ## sex          5.73923189 0.47487666 12.08573 8.479426e-33
 ## 
-## [[4]]
+## [[5]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 88.2590834 2.13202348 41.396863 2.955579e-291
 ## age          0.5511586 0.04325706 12.741472  3.634198e-36
 ## sex         -3.7122724 1.16059935 -3.198582  1.396832e-03
 ## 
-## [[5]]
+## [[6]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept)  98.5558111   5.382728  18.309639 9.882907e-71
 ## age           0.9367979   0.109219   8.577247 1.601135e-17
 ## sex         -40.9188285   2.929610 -13.967331 7.083359e-43
 ## 
-## [[6]]
+## [[7]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 96.8058195 1.07102646  90.38602  0.000000e+00
 ## age          0.5588847 0.02173539  25.71312 9.734928e-131
 ## sex         -6.5176870 0.58308597 -11.17792  2.144958e-28
 ## 
-## [[7]]
+## [[8]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 67.5399799 0.74115994 91.127402 0.000000e+00
 ## age          0.2063502 0.01504109 13.719106 1.800342e-41
@@ -3391,47 +3330,61 @@ out</code></pre>
 </div>
 <div id="mclapply" class="section level3">
 <h3>mclapply</h3>
+<p><code>mclapply</code>는 윈도우에선 지원되지 않는다.</p>
 <pre class="r"><code>library(parallel)
-detectCores()</code></pre>
+
+## Setting core
+ncore = detectCores()
+ncore</code></pre>
 <pre><code>## [1] 8</code></pre>
+<pre class="r"><code>options(mc.cores= ncore)
+options(&quot;mc.cores&quot;)</code></pre>
+<pre><code>## $mc.cores
+## [1] 8</code></pre>
 <pre class="r"><code>mclapply(ybar, CoefExtract, xs=&quot;age+sex&quot;, data=ph)</code></pre>
 <pre><code>## [[1]]
+##                Estimate Std. Error    t value     Pr(&gt;|t|)
+## (Intercept)  1.18315428 0.08920472  13.263359 6.016230e-39
+## age         -0.03279314 0.00180811 -18.136692 1.786053e-69
+## sex         -0.11623913 0.04857521  -2.392972 1.678020e-02
+## 
+## [[2]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 82.2952398 1.24534026 66.082534 0.000000e+00
 ## age          0.3324244 0.02526696 13.156484 2.230556e-38
 ## sex         -5.5484049 0.67791988 -8.184455 4.144824e-16
 ## 
-## [[2]]
+## [[3]]
 ##                Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 164.1880367 2.49414564 65.829370 0.000000e+00
 ## age           0.6030075 0.05060423 11.916148 5.939596e-32
 ## sex          -2.0602344 1.35772605 -1.517415 1.292774e-01
 ## 
-## [[3]]
+## [[4]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 50.72179051 0.87234943 58.14389 0.000000e+00
 ## age         -0.09581274 0.01769928 -5.41337 6.721530e-08
 ## sex          5.73923189 0.47487666 12.08573 8.479426e-33
 ## 
-## [[4]]
+## [[5]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 88.2590834 2.13202348 41.396863 2.955579e-291
 ## age          0.5511586 0.04325706 12.741472  3.634198e-36
 ## sex         -3.7122724 1.16059935 -3.198582  1.396832e-03
 ## 
-## [[5]]
+## [[6]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept)  98.5558111   5.382728  18.309639 9.882907e-71
 ## age           0.9367979   0.109219   8.577247 1.601135e-17
 ## sex         -40.9188285   2.929610 -13.967331 7.083359e-43
 ## 
-## [[6]]
+## [[7]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 96.8058195 1.07102646  90.38602  0.000000e+00
 ## age          0.5588847 0.02173539  25.71312 9.734928e-131
 ## sex         -6.5176870 0.58308597 -11.17792  2.144958e-28
 ## 
-## [[7]]
+## [[8]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 67.5399799 0.74115994 91.127402 0.000000e+00
 ## age          0.2063502 0.01504109 13.719106 1.800342e-41
@@ -3463,19 +3416,19 @@ detectCores()</code></pre>
 <tr class="odd">
 <td align="left">CoefExtract.for</td>
 <td align="right">10</td>
-<td align="right">0.207</td>
-<td align="right">1.156</td>
-<td align="right">0.202</td>
-<td align="right">0.004</td>
+<td align="right">0.257</td>
+<td align="right">1.179</td>
+<td align="right">0.245</td>
+<td align="right">0.012</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">CoefExtract.lapply</td>
 <td align="right">10</td>
-<td align="right">0.179</td>
+<td align="right">0.218</td>
 <td align="right">1.000</td>
-<td align="right">0.178</td>
+<td align="right">0.218</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -3483,12 +3436,12 @@ detectCores()</code></pre>
 <tr class="odd">
 <td align="left">CoefExtract.mclapply</td>
 <td align="right">10</td>
-<td align="right">0.360</td>
-<td align="right">2.011</td>
-<td align="right">0.004</td>
-<td align="right">0.204</td>
-<td align="right">0.286</td>
-<td align="right">0.236</td>
+<td align="right">0.459</td>
+<td align="right">2.106</td>
+<td align="right">0.024</td>
+<td align="right">0.352</td>
+<td align="right">0.491</td>
+<td align="right">0.639</td>
 </tr>
 </tbody>
 </table>
@@ -3496,7 +3449,12 @@ detectCores()</code></pre>
 </div>
 <div id="loops" class="section level2 tabset">
 <h2>2 loops</h2>
-<pre class="r"><code>ybar= c(&quot;FBS&quot;,&quot;tCholesterol&quot;,&quot;HDL&quot;,&quot;LDL&quot;,&quot;TG&quot;,&quot;SBP&quot;,&quot;DBP&quot;)
+<ul>
+<li><p>Phenotype: DXA_total_tscore, FBS, tCholesterol , HDL, LDL, TG, SBP, DBP</p></li>
+<li><p>Covariate : No, age, age + sex, age + sex + BMI, age + sex + BMI + smoke + alcohol</p></li>
+</ul>
+<p>총 35개 조합.</p>
+<pre class="r"><code>ybar= c(&quot;DXA_total_tscore&quot;, &quot;FBS&quot;,&quot;tCholesterol&quot;,&quot;HDL&quot;,&quot;LDL&quot;,&quot;TG&quot;,&quot;SBP&quot;,&quot;DBP&quot;)
 xbar= c(&quot;1&quot;,&quot;age&quot;, &quot;age + sex&quot;, &quot;age + sex + BMI&quot;, &quot;age + sex + BMI + smoke + alcohol &quot;)</code></pre>
 <div id="for-1" class="section level3">
 <h3>for</h3>
@@ -3509,28 +3467,59 @@ for (y in ybar){
 }
 out</code></pre>
 <pre><code>## [[1]]
+##               Estimate Std. Error   t value    Pr(&gt;|t|)
+## (Intercept) -0.3379654 0.02503942 -13.49733 3.13349e-40
+## 
+## [[2]]
+##                Estimate  Std. Error   t value     Pr(&gt;|t|)
+## (Intercept)  1.10698381 0.083404931  13.27240 5.366516e-39
+## age         -0.03268478 0.001809118 -18.06669 5.532920e-69
+## 
+## [[3]]
+##                Estimate Std. Error    t value     Pr(&gt;|t|)
+## (Intercept)  1.18315428 0.08920472  13.263359 6.016230e-39
+## age         -0.03279314 0.00180811 -18.136692 1.786053e-69
+## sex         -0.11623913 0.04857521  -2.392972 1.678020e-02
+## 
+## [[4]]
+##                 Estimate  Std. Error     t value     Pr(&gt;|t|)
+## (Intercept) -0.831563111 0.184102012  -4.5168605 6.545133e-06
+## age         -0.037572423 0.001799589 -20.8783324 7.058002e-90
+## sex         -0.006860562 0.048058658  -0.1427539 8.864952e-01
+## BMI          0.091340414 0.007346979  12.4323778 1.502111e-34
+## 
+## [[5]]
+##                Estimate  Std. Error    t value     Pr(&gt;|t|)
+## (Intercept) -0.73765347 0.222698896  -3.312336 9.374104e-04
+## age         -0.03700925 0.001883908 -19.644936 2.057143e-80
+## sex         -0.10272560 0.061351996  -1.674364 9.417495e-02
+## BMI          0.09076497 0.007342021  12.362395 3.457890e-34
+## smoke       -0.11702823 0.035615571  -3.285873 1.029688e-03
+## alcohol      0.05804926 0.028477854   2.038400 4.160729e-02
+## 
+## [[6]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 93.59679  0.3447227 271.5133        0
 ## 
-## [[2]]
+## [[7]]
 ##              Estimate Std. Error  t value    Pr(&gt;|t|)
 ## (Intercept) 78.679816 1.17831767 66.77301 0.00000e+00
 ## age          0.337473 0.02556222 13.20202 1.26334e-38
 ## 
-## [[3]]
+## [[8]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 82.2952398 1.24534026 66.082534 0.000000e+00
 ## age          0.3324244 0.02526696 13.156484 2.230556e-38
 ## sex         -5.5484049 0.67791988 -8.184455 4.144824e-16
 ## 
-## [[4]]
+## [[9]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 63.9065756 2.61870235 24.403910 3.688355e-119
 ## age          0.2905877 0.02557697 11.361300  2.924312e-29
 ## sex         -4.5777251 0.68200819 -6.712126  2.323673e-11
 ## BMI          0.8300624 0.10458434  7.936775  3.000944e-15
 ## 
-## [[5]]
+## [[10]]
 ##               Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 60.1455518 3.17678185 18.9328555 3.377702e-75
 ## age          0.3037790 0.02686746 11.3065755 5.340063e-29
@@ -3539,29 +3528,29 @@ out</code></pre>
 ## smoke        0.8850039 0.50701065  1.7455332 8.100493e-02
 ## alcohol      0.3938682 0.40648983  0.9689498 3.326563e-01
 ## 
-## [[6]]
+## [[11]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 189.5825  0.6786983 279.3326        0
 ## 
-## [[7]]
+## [[12]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 162.8455571 2.33251609 69.81541 0.000000e+00
 ## age           0.6048822 0.05060119 11.95391 3.856016e-32
 ## 
-## [[8]]
+## [[13]]
 ##                Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 164.1880367 2.49414564 65.829370 0.000000e+00
 ## age           0.6030075 0.05060423 11.916148 5.939596e-32
 ## sex          -2.0602344 1.35772605 -1.517415 1.292774e-01
 ## 
-## [[9]]
+## [[14]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 122.7682651 5.23010885 23.4733671 3.777693e-111
 ## age           0.5058568 0.05108269  9.9027059  9.739034e-23
 ## sex           0.1797371 1.36211627  0.1319543  8.950302e-01
 ## BMI           1.8750125 0.20887731  8.9766214  5.073238e-19
 ## 
-## [[10]]
+## [[15]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 114.8944422 6.32564793 18.1632686 1.116759e-69
 ## age           0.5197287 0.05349883  9.7147679 5.902210e-22
@@ -3570,29 +3559,29 @@ out</code></pre>
 ## smoke         2.8883676 1.00956597  2.8609994 4.255290e-03
 ## alcohol       0.3095217 0.80940766  0.3824052 7.021907e-01
 ## 
-## [[11]]
+## [[16]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 49.99562  0.2387532 209.4029        0
 ## 
-## [[12]]
+## [[17]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 54.4615603 0.83696720 65.070125 0.000000e+00
 ## age         -0.1010349 0.01815702 -5.564511 2.883674e-08
 ## 
-## [[13]]
+## [[18]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 50.72179051 0.87234943 58.14389 0.000000e+00
 ## age         -0.09581274 0.01769928 -5.41337 6.721530e-08
 ## sex          5.73923189 0.47487666 12.08573 8.479426e-33
 ## 
-## [[14]]
+## [[19]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 70.51251978 1.80567194  39.050571 1.953060e-265
 ## age         -0.04996883 0.01763607  -2.833331  4.640359e-03
 ## sex          4.67683256 0.47026461   9.945108  6.462027e-23
 ## BMI         -0.89484535 0.07211397 -12.408766  1.948859e-34
 ## 
-## [[15]]
+## [[20]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 64.20012687 2.17841379  29.471043 6.339215e-166
 ## age         -0.02200388 0.01842382  -1.194317  2.324580e-01
@@ -3601,29 +3590,29 @@ out</code></pre>
 ## smoke        0.65970025 0.34767228   1.897477  5.787070e-02
 ## alcohol      1.31674087 0.27874217   4.723867  2.431448e-06
 ## 
-## [[16]]
+## [[21]]
 ##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept) 110.3517  0.5831126 189.246        0
 ## 
-## [[17]]
+## [[22]]
 ##               Estimate Std. Error t value      Pr(&gt;|t|)
 ## (Intercept) 85.8401109 1.99674617 42.9900 5.681223e-309
 ## age          0.5545365 0.04331706 12.8018  1.747137e-36
 ## 
-## [[18]]
+## [[23]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 88.2590834 2.13202348 41.396863 2.955579e-291
 ## age          0.5511586 0.04325706 12.741472  3.634198e-36
 ## sex         -3.7122724 1.16059935 -3.198582  1.396832e-03
 ## 
-## [[19]]
+## [[24]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 46.9780380 4.44686481 10.564305 1.349740e-25
 ## age          0.4544901 0.04343271 10.464234 3.743974e-25
 ## sex         -1.4772736 1.15813018 -1.275568 2.022168e-01
 ## BMI          1.8684460 0.17759652 10.520735 2.106848e-25
 ## 
-## [[20]]
+## [[25]]
 ##               Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 51.3472610 5.38727954  9.5312041 3.317163e-21
 ## age          0.4204558 0.04556263  9.2280843 5.372290e-20
@@ -3632,29 +3621,29 @@ out</code></pre>
 ## smoke        0.7554175 0.85980348  0.8785933 3.796994e-01
 ## alcohol     -1.6911739 0.68933734 -2.4533328 1.421622e-02
 ## 
-## [[21]]
+## [[26]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 114.9459    1.49712 76.77802        0
 ## 
-## [[22]]
+## [[27]]
 ##               Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 71.8690680   5.207705 13.80053 6.224706e-42
 ## age          0.9746975   0.112993  8.62618 1.056875e-17
 ## 
-## [[23]]
+## [[28]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept)  98.5558111   5.382728  18.309639 9.882907e-71
 ## age           0.9367979   0.109219   8.577247 1.601135e-17
 ## sex         -40.9188285   2.929610 -13.967331 7.083359e-43
 ## 
-## [[24]]
+## [[29]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) -61.8235400 10.9100869  -5.666640 1.608477e-08
 ## age           0.5652551  0.1065660   5.304271 1.221816e-07
 ## sex         -32.2921274  2.8411518 -11.365858 2.783645e-29
 ## BMI           7.2516766  0.4356443  16.645866 2.467171e-59
 ## 
-## [[25]]
+## [[30]]
 ##                 Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) -103.3730606 13.1336369 -7.870863 5.040792e-15
 ## age            0.6760743  0.1110898  6.085834 1.321844e-09
@@ -3663,29 +3652,29 @@ out</code></pre>
 ## smoke         13.2007428  2.0959972  6.298073 3.502561e-10
 ## alcohol        2.4392043  1.6806952  1.451307 1.468098e-01
 ## 
-## [[26]]
+## [[31]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 117.5271   0.323093 363.7563        0
 ## 
-## [[27]]
+## [[32]]
 ##               Estimate Std. Error  t value      Pr(&gt;|t|)
 ## (Intercept) 92.5662939  1.0241235 90.38587  0.000000e+00
 ## age          0.5647055  0.0222173 25.41738 4.329773e-128
 ## 
-## [[28]]
+## [[33]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 96.8058195 1.07102646  90.38602  0.000000e+00
 ## age          0.5588847 0.02173539  25.71312 9.734928e-131
 ## sex         -6.5176870 0.58308597 -11.17792  2.144958e-28
 ## 
-## [[29]]
+## [[34]]
 ##              Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 70.556786 2.20727979 31.965493 1.125800e-190
 ## age          0.498183 0.02155045 23.117058 4.134648e-108
 ## sex         -5.105478 0.57474987 -8.882957  1.156815e-18
 ## BMI          1.186790 0.08813541 13.465533  4.635262e-40
 ## 
-## [[30]]
+## [[35]]
 ##               Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 70.1220591 2.67610689 26.2030113 4.168194e-135
 ## age          0.4992206 0.02262375 22.0662219  2.208439e-99
@@ -3694,29 +3683,29 @@ out</code></pre>
 ## smoke       -0.0889666 0.42679757 -0.2084515  8.348921e-01
 ## alcohol      0.1709080 0.34235495  0.4992129  6.176699e-01
 ## 
-## [[31]]
+## [[36]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 74.25275   0.206785 359.0818        0
 ## 
-## [[32]]
+## [[37]]
 ##               Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 64.9761702 0.70502446 92.16158 0.000000e+00
 ## age          0.2098704 0.01529477 13.72170 1.739099e-41
 ## 
-## [[33]]
+## [[38]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 67.5399799 0.74115994 91.127402 0.000000e+00
 ## age          0.2063502 0.01504109 13.719106 1.800342e-41
 ## sex         -3.9415045 0.40350073 -9.768271 3.543069e-22
 ## 
-## [[34]]
+## [[39]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 50.7850605 1.53494913 33.085826 4.392114e-202
 ## age          0.1674870 0.01498625 11.176048  2.191898e-28
 ## sex         -3.0402415 0.39968282 -7.606636  3.848708e-14
 ## BMI          0.7577493 0.06128963 12.363417  3.348170e-34
 ## 
-## [[35]]
+## [[40]]
 ##               Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 51.4465460 1.86163767 27.6351015 2.449444e-148
 ## age          0.1641266 0.01573824 10.4285224  5.414314e-25
@@ -3761,28 +3750,59 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## alcohol     -0.1001832 0.23815972 -0.4206557  6.740398e-01
 ## 
 ## [[6]]
+##               Estimate Std. Error   t value    Pr(&gt;|t|)
+## (Intercept) -0.3379654 0.02503942 -13.49733 3.13349e-40
+## 
+## [[7]]
+##                Estimate  Std. Error   t value     Pr(&gt;|t|)
+## (Intercept)  1.10698381 0.083404931  13.27240 5.366516e-39
+## age         -0.03268478 0.001809118 -18.06669 5.532920e-69
+## 
+## [[8]]
+##                Estimate Std. Error    t value     Pr(&gt;|t|)
+## (Intercept)  1.18315428 0.08920472  13.263359 6.016230e-39
+## age         -0.03279314 0.00180811 -18.136692 1.786053e-69
+## sex         -0.11623913 0.04857521  -2.392972 1.678020e-02
+## 
+## [[9]]
+##                 Estimate  Std. Error     t value     Pr(&gt;|t|)
+## (Intercept) -0.831563111 0.184102012  -4.5168605 6.545133e-06
+## age         -0.037572423 0.001799589 -20.8783324 7.058002e-90
+## sex         -0.006860562 0.048058658  -0.1427539 8.864952e-01
+## BMI          0.091340414 0.007346979  12.4323778 1.502111e-34
+## 
+## [[10]]
+##                Estimate  Std. Error    t value     Pr(&gt;|t|)
+## (Intercept) -0.73765347 0.222698896  -3.312336 9.374104e-04
+## age         -0.03700925 0.001883908 -19.644936 2.057143e-80
+## sex         -0.10272560 0.061351996  -1.674364 9.417495e-02
+## BMI          0.09076497 0.007342021  12.362395 3.457890e-34
+## smoke       -0.11702823 0.035615571  -3.285873 1.029688e-03
+## alcohol      0.05804926 0.028477854   2.038400 4.160729e-02
+## 
+## [[11]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 93.59679  0.3447227 271.5133        0
 ## 
-## [[7]]
+## [[12]]
 ##              Estimate Std. Error  t value    Pr(&gt;|t|)
 ## (Intercept) 78.679816 1.17831767 66.77301 0.00000e+00
 ## age          0.337473 0.02556222 13.20202 1.26334e-38
 ## 
-## [[8]]
+## [[13]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 82.2952398 1.24534026 66.082534 0.000000e+00
 ## age          0.3324244 0.02526696 13.156484 2.230556e-38
 ## sex         -5.5484049 0.67791988 -8.184455 4.144824e-16
 ## 
-## [[9]]
+## [[14]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 63.9065756 2.61870235 24.403910 3.688355e-119
 ## age          0.2905877 0.02557697 11.361300  2.924312e-29
 ## sex         -4.5777251 0.68200819 -6.712126  2.323673e-11
 ## BMI          0.8300624 0.10458434  7.936775  3.000944e-15
 ## 
-## [[10]]
+## [[15]]
 ##               Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 60.1455518 3.17678185 18.9328555 3.377702e-75
 ## age          0.3037790 0.02686746 11.3065755 5.340063e-29
@@ -3791,29 +3811,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke        0.8850039 0.50701065  1.7455332 8.100493e-02
 ## alcohol      0.3938682 0.40648983  0.9689498 3.326563e-01
 ## 
-## [[11]]
+## [[16]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 49.99562  0.2387532 209.4029        0
 ## 
-## [[12]]
+## [[17]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 54.4615603 0.83696720 65.070125 0.000000e+00
 ## age         -0.1010349 0.01815702 -5.564511 2.883674e-08
 ## 
-## [[13]]
+## [[18]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 50.72179051 0.87234943 58.14389 0.000000e+00
 ## age         -0.09581274 0.01769928 -5.41337 6.721530e-08
 ## sex          5.73923189 0.47487666 12.08573 8.479426e-33
 ## 
-## [[14]]
+## [[19]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 70.51251978 1.80567194  39.050571 1.953060e-265
 ## age         -0.04996883 0.01763607  -2.833331  4.640359e-03
 ## sex          4.67683256 0.47026461   9.945108  6.462027e-23
 ## BMI         -0.89484535 0.07211397 -12.408766  1.948859e-34
 ## 
-## [[15]]
+## [[20]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 64.20012687 2.17841379  29.471043 6.339215e-166
 ## age         -0.02200388 0.01842382  -1.194317  2.324580e-01
@@ -3822,29 +3842,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke        0.65970025 0.34767228   1.897477  5.787070e-02
 ## alcohol      1.31674087 0.27874217   4.723867  2.431448e-06
 ## 
-## [[16]]
+## [[21]]
 ##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept) 110.3517  0.5831126 189.246        0
 ## 
-## [[17]]
+## [[22]]
 ##               Estimate Std. Error t value      Pr(&gt;|t|)
 ## (Intercept) 85.8401109 1.99674617 42.9900 5.681223e-309
 ## age          0.5545365 0.04331706 12.8018  1.747137e-36
 ## 
-## [[18]]
+## [[23]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 88.2590834 2.13202348 41.396863 2.955579e-291
 ## age          0.5511586 0.04325706 12.741472  3.634198e-36
 ## sex         -3.7122724 1.16059935 -3.198582  1.396832e-03
 ## 
-## [[19]]
+## [[24]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 46.9780380 4.44686481 10.564305 1.349740e-25
 ## age          0.4544901 0.04343271 10.464234 3.743974e-25
 ## sex         -1.4772736 1.15813018 -1.275568 2.022168e-01
 ## BMI          1.8684460 0.17759652 10.520735 2.106848e-25
 ## 
-## [[20]]
+## [[25]]
 ##               Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 51.3472610 5.38727954  9.5312041 3.317163e-21
 ## age          0.4204558 0.04556263  9.2280843 5.372290e-20
@@ -3853,29 +3873,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke        0.7554175 0.85980348  0.8785933 3.796994e-01
 ## alcohol     -1.6911739 0.68933734 -2.4533328 1.421622e-02
 ## 
-## [[21]]
+## [[26]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 117.5271   0.323093 363.7563        0
 ## 
-## [[22]]
+## [[27]]
 ##               Estimate Std. Error  t value      Pr(&gt;|t|)
 ## (Intercept) 92.5662939  1.0241235 90.38587  0.000000e+00
 ## age          0.5647055  0.0222173 25.41738 4.329773e-128
 ## 
-## [[23]]
+## [[28]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 96.8058195 1.07102646  90.38602  0.000000e+00
 ## age          0.5588847 0.02173539  25.71312 9.734928e-131
 ## sex         -6.5176870 0.58308597 -11.17792  2.144958e-28
 ## 
-## [[24]]
+## [[29]]
 ##              Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 70.556786 2.20727979 31.965493 1.125800e-190
 ## age          0.498183 0.02155045 23.117058 4.134648e-108
 ## sex         -5.105478 0.57474987 -8.882957  1.156815e-18
 ## BMI          1.186790 0.08813541 13.465533  4.635262e-40
 ## 
-## [[25]]
+## [[30]]
 ##               Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 70.1220591 2.67610689 26.2030113 4.168194e-135
 ## age          0.4992206 0.02262375 22.0662219  2.208439e-99
@@ -3884,29 +3904,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke       -0.0889666 0.42679757 -0.2084515  8.348921e-01
 ## alcohol      0.1709080 0.34235495  0.4992129  6.176699e-01
 ## 
-## [[26]]
+## [[31]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 114.9459    1.49712 76.77802        0
 ## 
-## [[27]]
+## [[32]]
 ##               Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 71.8690680   5.207705 13.80053 6.224706e-42
 ## age          0.9746975   0.112993  8.62618 1.056875e-17
 ## 
-## [[28]]
+## [[33]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept)  98.5558111   5.382728  18.309639 9.882907e-71
 ## age           0.9367979   0.109219   8.577247 1.601135e-17
 ## sex         -40.9188285   2.929610 -13.967331 7.083359e-43
 ## 
-## [[29]]
+## [[34]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) -61.8235400 10.9100869  -5.666640 1.608477e-08
 ## age           0.5652551  0.1065660   5.304271 1.221816e-07
 ## sex         -32.2921274  2.8411518 -11.365858 2.783645e-29
 ## BMI           7.2516766  0.4356443  16.645866 2.467171e-59
 ## 
-## [[30]]
+## [[35]]
 ##                 Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) -103.3730606 13.1336369 -7.870863 5.040792e-15
 ## age            0.6760743  0.1110898  6.085834 1.321844e-09
@@ -3915,29 +3935,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke         13.2007428  2.0959972  6.298073 3.502561e-10
 ## alcohol        2.4392043  1.6806952  1.451307 1.468098e-01
 ## 
-## [[31]]
+## [[36]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 189.5825  0.6786983 279.3326        0
 ## 
-## [[32]]
+## [[37]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 162.8455571 2.33251609 69.81541 0.000000e+00
 ## age           0.6048822 0.05060119 11.95391 3.856016e-32
 ## 
-## [[33]]
+## [[38]]
 ##                Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 164.1880367 2.49414564 65.829370 0.000000e+00
 ## age           0.6030075 0.05060423 11.916148 5.939596e-32
 ## sex          -2.0602344 1.35772605 -1.517415 1.292774e-01
 ## 
-## [[34]]
+## [[39]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 122.7682651 5.23010885 23.4733671 3.777693e-111
 ## age           0.5058568 0.05108269  9.9027059  9.739034e-23
 ## sex           0.1797371 1.36211627  0.1319543  8.950302e-01
 ## BMI           1.8750125 0.20887731  8.9766214  5.073238e-19
 ## 
-## [[35]]
+## [[40]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 114.8944422 6.32564793 18.1632686 1.116759e-69
 ## age           0.5197287 0.05349883  9.7147679 5.902210e-22
@@ -3981,28 +4001,59 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## alcohol     -0.1001832 0.23815972 -0.4206557  6.740398e-01
 ## 
 ## [[6]]
+##               Estimate Std. Error   t value    Pr(&gt;|t|)
+## (Intercept) -0.3379654 0.02503942 -13.49733 3.13349e-40
+## 
+## [[7]]
+##                Estimate  Std. Error   t value     Pr(&gt;|t|)
+## (Intercept)  1.10698381 0.083404931  13.27240 5.366516e-39
+## age         -0.03268478 0.001809118 -18.06669 5.532920e-69
+## 
+## [[8]]
+##                Estimate Std. Error    t value     Pr(&gt;|t|)
+## (Intercept)  1.18315428 0.08920472  13.263359 6.016230e-39
+## age         -0.03279314 0.00180811 -18.136692 1.786053e-69
+## sex         -0.11623913 0.04857521  -2.392972 1.678020e-02
+## 
+## [[9]]
+##                 Estimate  Std. Error     t value     Pr(&gt;|t|)
+## (Intercept) -0.831563111 0.184102012  -4.5168605 6.545133e-06
+## age         -0.037572423 0.001799589 -20.8783324 7.058002e-90
+## sex         -0.006860562 0.048058658  -0.1427539 8.864952e-01
+## BMI          0.091340414 0.007346979  12.4323778 1.502111e-34
+## 
+## [[10]]
+##                Estimate  Std. Error    t value     Pr(&gt;|t|)
+## (Intercept) -0.73765347 0.222698896  -3.312336 9.374104e-04
+## age         -0.03700925 0.001883908 -19.644936 2.057143e-80
+## sex         -0.10272560 0.061351996  -1.674364 9.417495e-02
+## BMI          0.09076497 0.007342021  12.362395 3.457890e-34
+## smoke       -0.11702823 0.035615571  -3.285873 1.029688e-03
+## alcohol      0.05804926 0.028477854   2.038400 4.160729e-02
+## 
+## [[11]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 93.59679  0.3447227 271.5133        0
 ## 
-## [[7]]
+## [[12]]
 ##              Estimate Std. Error  t value    Pr(&gt;|t|)
 ## (Intercept) 78.679816 1.17831767 66.77301 0.00000e+00
 ## age          0.337473 0.02556222 13.20202 1.26334e-38
 ## 
-## [[8]]
+## [[13]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 82.2952398 1.24534026 66.082534 0.000000e+00
 ## age          0.3324244 0.02526696 13.156484 2.230556e-38
 ## sex         -5.5484049 0.67791988 -8.184455 4.144824e-16
 ## 
-## [[9]]
+## [[14]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 63.9065756 2.61870235 24.403910 3.688355e-119
 ## age          0.2905877 0.02557697 11.361300  2.924312e-29
 ## sex         -4.5777251 0.68200819 -6.712126  2.323673e-11
 ## BMI          0.8300624 0.10458434  7.936775  3.000944e-15
 ## 
-## [[10]]
+## [[15]]
 ##               Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 60.1455518 3.17678185 18.9328555 3.377702e-75
 ## age          0.3037790 0.02686746 11.3065755 5.340063e-29
@@ -4011,29 +4062,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke        0.8850039 0.50701065  1.7455332 8.100493e-02
 ## alcohol      0.3938682 0.40648983  0.9689498 3.326563e-01
 ## 
-## [[11]]
+## [[16]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 49.99562  0.2387532 209.4029        0
 ## 
-## [[12]]
+## [[17]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 54.4615603 0.83696720 65.070125 0.000000e+00
 ## age         -0.1010349 0.01815702 -5.564511 2.883674e-08
 ## 
-## [[13]]
+## [[18]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 50.72179051 0.87234943 58.14389 0.000000e+00
 ## age         -0.09581274 0.01769928 -5.41337 6.721530e-08
 ## sex          5.73923189 0.47487666 12.08573 8.479426e-33
 ## 
-## [[14]]
+## [[19]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 70.51251978 1.80567194  39.050571 1.953060e-265
 ## age         -0.04996883 0.01763607  -2.833331  4.640359e-03
 ## sex          4.67683256 0.47026461   9.945108  6.462027e-23
 ## BMI         -0.89484535 0.07211397 -12.408766  1.948859e-34
 ## 
-## [[15]]
+## [[20]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 64.20012687 2.17841379  29.471043 6.339215e-166
 ## age         -0.02200388 0.01842382  -1.194317  2.324580e-01
@@ -4042,29 +4093,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke        0.65970025 0.34767228   1.897477  5.787070e-02
 ## alcohol      1.31674087 0.27874217   4.723867  2.431448e-06
 ## 
-## [[16]]
+## [[21]]
 ##             Estimate Std. Error t value Pr(&gt;|t|)
 ## (Intercept) 110.3517  0.5831126 189.246        0
 ## 
-## [[17]]
+## [[22]]
 ##               Estimate Std. Error t value      Pr(&gt;|t|)
 ## (Intercept) 85.8401109 1.99674617 42.9900 5.681223e-309
 ## age          0.5545365 0.04331706 12.8018  1.747137e-36
 ## 
-## [[18]]
+## [[23]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 88.2590834 2.13202348 41.396863 2.955579e-291
 ## age          0.5511586 0.04325706 12.741472  3.634198e-36
 ## sex         -3.7122724 1.16059935 -3.198582  1.396832e-03
 ## 
-## [[19]]
+## [[24]]
 ##               Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 46.9780380 4.44686481 10.564305 1.349740e-25
 ## age          0.4544901 0.04343271 10.464234 3.743974e-25
 ## sex         -1.4772736 1.15813018 -1.275568 2.022168e-01
 ## BMI          1.8684460 0.17759652 10.520735 2.106848e-25
 ## 
-## [[20]]
+## [[25]]
 ##               Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 51.3472610 5.38727954  9.5312041 3.317163e-21
 ## age          0.4204558 0.04556263  9.2280843 5.372290e-20
@@ -4073,29 +4124,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke        0.7554175 0.85980348  0.8785933 3.796994e-01
 ## alcohol     -1.6911739 0.68933734 -2.4533328 1.421622e-02
 ## 
-## [[21]]
+## [[26]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 117.5271   0.323093 363.7563        0
 ## 
-## [[22]]
+## [[27]]
 ##               Estimate Std. Error  t value      Pr(&gt;|t|)
 ## (Intercept) 92.5662939  1.0241235 90.38587  0.000000e+00
 ## age          0.5647055  0.0222173 25.41738 4.329773e-128
 ## 
-## [[23]]
+## [[28]]
 ##               Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 96.8058195 1.07102646  90.38602  0.000000e+00
 ## age          0.5588847 0.02173539  25.71312 9.734928e-131
 ## sex         -6.5176870 0.58308597 -11.17792  2.144958e-28
 ## 
-## [[24]]
+## [[29]]
 ##              Estimate Std. Error   t value      Pr(&gt;|t|)
 ## (Intercept) 70.556786 2.20727979 31.965493 1.125800e-190
 ## age          0.498183 0.02155045 23.117058 4.134648e-108
 ## sex         -5.105478 0.57474987 -8.882957  1.156815e-18
 ## BMI          1.186790 0.08813541 13.465533  4.635262e-40
 ## 
-## [[25]]
+## [[30]]
 ##               Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 70.1220591 2.67610689 26.2030113 4.168194e-135
 ## age          0.4992206 0.02262375 22.0662219  2.208439e-99
@@ -4104,29 +4155,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke       -0.0889666 0.42679757 -0.2084515  8.348921e-01
 ## alcohol      0.1709080 0.34235495  0.4992129  6.176699e-01
 ## 
-## [[26]]
+## [[31]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 114.9459    1.49712 76.77802        0
 ## 
-## [[27]]
+## [[32]]
 ##               Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 71.8690680   5.207705 13.80053 6.224706e-42
 ## age          0.9746975   0.112993  8.62618 1.056875e-17
 ## 
-## [[28]]
+## [[33]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept)  98.5558111   5.382728  18.309639 9.882907e-71
 ## age           0.9367979   0.109219   8.577247 1.601135e-17
 ## sex         -40.9188285   2.929610 -13.967331 7.083359e-43
 ## 
-## [[29]]
+## [[34]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) -61.8235400 10.9100869  -5.666640 1.608477e-08
 ## age           0.5652551  0.1065660   5.304271 1.221816e-07
 ## sex         -32.2921274  2.8411518 -11.365858 2.783645e-29
 ## BMI           7.2516766  0.4356443  16.645866 2.467171e-59
 ## 
-## [[30]]
+## [[35]]
 ##                 Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) -103.3730606 13.1336369 -7.870863 5.040792e-15
 ## age            0.6760743  0.1110898  6.085834 1.321844e-09
@@ -4135,29 +4186,29 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## smoke         13.2007428  2.0959972  6.298073 3.502561e-10
 ## alcohol        2.4392043  1.6806952  1.451307 1.468098e-01
 ## 
-## [[31]]
+## [[36]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
 ## (Intercept) 189.5825  0.6786983 279.3326        0
 ## 
-## [[32]]
+## [[37]]
 ##                Estimate Std. Error  t value     Pr(&gt;|t|)
 ## (Intercept) 162.8455571 2.33251609 69.81541 0.000000e+00
 ## age           0.6048822 0.05060119 11.95391 3.856016e-32
 ## 
-## [[33]]
+## [[38]]
 ##                Estimate Std. Error   t value     Pr(&gt;|t|)
 ## (Intercept) 164.1880367 2.49414564 65.829370 0.000000e+00
 ## age           0.6030075 0.05060423 11.916148 5.939596e-32
 ## sex          -2.0602344 1.35772605 -1.517415 1.292774e-01
 ## 
-## [[34]]
+## [[39]]
 ##                Estimate Std. Error    t value      Pr(&gt;|t|)
 ## (Intercept) 122.7682651 5.23010885 23.4733671 3.777693e-111
 ## age           0.5058568 0.05108269  9.9027059  9.739034e-23
 ## sex           0.1797371 1.36211627  0.1319543  8.950302e-01
 ## BMI           1.8750125 0.20887731  8.9766214  5.073238e-19
 ## 
-## [[35]]
+## [[40]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
 ## (Intercept) 114.8944422 6.32564793 18.1632686 1.116759e-69
 ## age           0.5197287 0.05349883  9.7147679 5.902210e-22
@@ -4192,9 +4243,9 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 <tr class="odd">
 <td align="left">CoefExtract.for2</td>
 <td align="right">10</td>
-<td align="right">0.872</td>
-<td align="right">1.001</td>
-<td align="right">0.860</td>
+<td align="right">1.067</td>
+<td align="right">1.155</td>
+<td align="right">1.055</td>
 <td align="right">0.012</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -4202,9 +4253,9 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 <tr class="even">
 <td align="left">CoefExtract.mapply</td>
 <td align="right">10</td>
-<td align="right">0.871</td>
-<td align="right">1.000</td>
-<td align="right">0.872</td>
+<td align="right">1.198</td>
+<td align="right">1.297</td>
+<td align="right">1.198</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -4213,112 +4264,481 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 <td align="left">CoefExtract.mcmapply</td>
 <td align="right">10</td>
 <td align="right">0.924</td>
-<td align="right">1.061</td>
-<td align="right">0.017</td>
-<td align="right">0.216</td>
-<td align="right">1.126</td>
-<td align="right">0.534</td>
+<td align="right">1.000</td>
+<td align="right">0.038</td>
+<td align="right">0.523</td>
+<td align="right">2.354</td>
+<td align="right">1.164</td>
 </tr>
 </tbody>
 </table>
 </div>
 </div>
+<div id="when-we-use-multi-core" class="section level2 tabset">
+<h2>When we use multi-core?</h2>
+<p>위의 결과를 요약하면 아래와 같다.</p>
+<ol style="list-style-type: decimal">
+<li><p>마법은 없다. <code>for</code>나 <code>lapply</code>, <code>mapply</code>나 비슷하다.</p></li>
+<li>multi-core가 더 느릴 수도 있다.
+<ul>
+<li>간단한 작업을 조금 반복할 때 특히.</li>
+</ul></li>
+</ol>
+<p>그럼 언제 multi-core가 효과적일까? <span class="math inline">\(N\)</span>초간 정지하는 <code>Sys.sleep</code>함수를 통해 살펴보자.</p>
+<div id="n0.0001" class="section level3">
+<h3><span class="math inline">\(N=0.0001\)</span></h3>
+<pre class="r"><code>N=0.0001
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 10
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">forloop</td>
+<td align="right">10</td>
+<td align="right">0.031</td>
+<td align="right">2.385</td>
+<td align="right">0.015</td>
+<td align="right">0.003</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">lapply</td>
+<td align="right">10</td>
+<td align="right">0.013</td>
+<td align="right">1.000</td>
+<td align="right">0.001</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">mclapply</td>
+<td align="right">10</td>
+<td align="right">0.464</td>
+<td align="right">35.692</td>
+<td align="right">0.017</td>
+<td align="right">0.409</td>
+<td align="right">0.069</td>
+<td align="right">0.646</td>
+</tr>
+</tbody>
+</table>
 </div>
-<div id="tableone" class="section level1">
-<h1>tableone</h1>
+<div id="n0.001" class="section level3">
+<h3><span class="math inline">\(N=0.001\)</span></h3>
+<pre class="r"><code>N=0.001
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 10
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">forloop</td>
+<td align="right">10</td>
+<td align="right">0.108</td>
+<td align="right">1.227</td>
+<td align="right">0.020</td>
+<td align="right">0.001</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">lapply</td>
+<td align="right">10</td>
+<td align="right">0.088</td>
+<td align="right">1.000</td>
+<td align="right">0.002</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">mclapply</td>
+<td align="right">10</td>
+<td align="right">0.451</td>
+<td align="right">5.125</td>
+<td align="right">0.020</td>
+<td align="right">0.392</td>
+<td align="right">0.099</td>
+<td align="right">0.694</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="n0.01" class="section level3">
+<h3><span class="math inline">\(N=0.01\)</span></h3>
+<pre class="r"><code>N=0.01
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 10
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">forloop</td>
+<td align="right">10</td>
+<td align="right">0.859</td>
+<td align="right">1.698</td>
+<td align="right">0.042</td>
+<td align="right">0.003</td>
+<td align="right">0.000</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="even">
+<td align="left">lapply</td>
+<td align="right">10</td>
+<td align="right">0.818</td>
+<td align="right">1.617</td>
+<td align="right">0.004</td>
+<td align="right">0.001</td>
+<td align="right">0.000</td>
+<td align="right">0.00</td>
+</tr>
+<tr class="odd">
+<td align="left">mclapply</td>
+<td align="right">10</td>
+<td align="right">0.506</td>
+<td align="right">1.000</td>
+<td align="right">0.019</td>
+<td align="right">0.379</td>
+<td align="right">0.086</td>
+<td align="right">0.56</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="n0.1" class="section level3">
+<h3><span class="math inline">\(N=0.1\)</span></h3>
+<pre class="r"><code>N=0.1
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 10
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">forloop</td>
+<td align="right">10</td>
+<td align="right">8.056</td>
+<td align="right">5.389</td>
+<td align="right">0.042</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">lapply</td>
+<td align="right">10</td>
+<td align="right">8.024</td>
+<td align="right">5.367</td>
+<td align="right">0.003</td>
+<td align="right">0.003</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">mclapply</td>
+<td align="right">10</td>
+<td align="right">1.495</td>
+<td align="right">1.000</td>
+<td align="right">0.037</td>
+<td align="right">0.456</td>
+<td align="right">0.073</td>
+<td align="right">1.094</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="n1" class="section level3">
+<h3><span class="math inline">\(N=1\)</span></h3>
+<pre class="r"><code>N=1
+
+kable(
+  benchmark(
+    forloop = {for(i in 1:8){Sys.sleep(N)}},
+    lapply = lapply(rep(N,8), Sys.sleep),
+    mclapply = mclapply(rep(N,8), Sys.sleep), replications= 1
+  )
+)</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">test</th>
+<th align="right">replications</th>
+<th align="right">elapsed</th>
+<th align="right">relative</th>
+<th align="right">user.self</th>
+<th align="right">sys.self</th>
+<th align="right">user.child</th>
+<th align="right">sys.child</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">forloop</td>
+<td align="right">1</td>
+<td align="right">8.011</td>
+<td align="right">7.688</td>
+<td align="right">0.003</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="even">
+<td align="left">lapply</td>
+<td align="right">1</td>
+<td align="right">8.009</td>
+<td align="right">7.686</td>
+<td align="right">0.001</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+</tr>
+<tr class="odd">
+<td align="left">mclapply</td>
+<td align="right">1</td>
+<td align="right">1.042</td>
+<td align="right">1.000</td>
+<td align="right">0.000</td>
+<td align="right">0.043</td>
+<td align="right">0.006</td>
+<td align="right">0.052</td>
+</tr>
+</tbody>
+</table>
+<p>결론적으로 작업당 0.01초 이상이 걸리면 multi-core의 강점이 드러난다고 할 수 있겠다.</p>
+</div>
+</div>
+</div>
+<div id="table-1-tableone-package" class="section level1 tabset">
+<h1>Table 1: tableone package</h1>
+<p><strong>tableone</strong> 패키지를 이용하면 간단하게 논문에 들어갈 table 1을 만들 수 있다. TG <span class="math inline">\(\ge200\)</span> 을 기준으로 그룹을 나누어 table 1을 만들어보도록 하자. 편의상 몇가지 변수만 뽑아 결측치 없는 데이터를 만든 후 table 1을 만들겠다.</p>
 <pre class="r"><code>#install.packages(&quot;tableone&quot;)
 library(tableone)
-ph[,hyperTG := as.numeric(TG&gt;=200)]
-ph[,sex:= ifelse(sex==0,&quot;Male&quot;,&quot;Female&quot;)]
-setnames(ph,c(&quot;sex&quot;,&quot;age&quot;),c(&quot;Sex&quot;,&quot;Age&quot;))
 
-tb1= CreateTableOne(vars = names(ph)[-c(1,2,24)], strata = c(&quot;hyperTG&quot;),factorVars = c(&quot;Sex&quot;,&quot;smoke&quot;,&quot;alcohol&quot;), data = ph, includeNA = T)
-zz=print(tb1 , nonnormal = c(&quot;PY&quot;), exact = c(&quot;Sex&quot;), smd = TRUE, cramVars = NULL, printToggle=T)</code></pre>
+## Make TG variable
+ph[,hyperTG := as.numeric(TG&gt;=200)]
+
+## Rename sex
+ph[,sex:= ifelse(sex==0,&quot;Male&quot;,&quot;Female&quot;)]
+
+## Rename : Sex, Age
+setnames(ph, c(&quot;sex&quot;, &quot;age&quot;), c(&quot;Sex&quot;, &quot;Age&quot;))
+
+## select var
+vars.tb1 = names(ph)[c(3:20,27,28)]
+vars.tb1</code></pre>
+<pre><code>##  [1] &quot;Sex&quot;              &quot;Age&quot;              &quot;DXA_total_tscore&quot;
+##  [4] &quot;FBS&quot;              &quot;tCholesterol&quot;     &quot;HDL&quot;             
+##  [7] &quot;LDL&quot;              &quot;TG&quot;               &quot;Height&quot;          
+## [10] &quot;Weight&quot;           &quot;SittingHt&quot;        &quot;Waist&quot;           
+## [13] &quot;Hip&quot;              &quot;headcircum&quot;       &quot;armspan&quot;         
+## [16] &quot;BMI&quot;              &quot;SBP&quot;              &quot;DBP&quot;             
+## [19] &quot;smoke&quot;            &quot;alcohol&quot;</code></pre>
+<pre class="r"><code>## Na omit
+ph.omit = na.omit(ph, vars)</code></pre>
+<div id="ctrl-c-ctrl-v" class="section level2">
+<h2>Ctrl + C &amp; Ctrl + V</h2>
+<p><code>CreatTableOne</code>함수로 테이블을 만든 후 <code>print</code>명령어로 세부 옵션을 지정할 수 있다. 주요 옵션은 다음과 같다.</p>
+<ul>
+<li><code>CreatTableOne</code>
+<ul>
+<li><p><strong>vars</strong>: 테이블에 들어갈 변수들</p></li>
+<li><p><strong>strata</strong> : 그룹 변수(여러 개 가능)</p></li>
+<li><p><strong>factorVars</strong>: 범주형 변수들</p></li>
+<li><p><strong>data</strong>: 데이터</p></li>
+<li><p><strong>includeNA</strong>: 범주형변수에서 <code>NA</code>를 하나의 범주로 포함할 것인가?</p></li>
+</ul></li>
+</ul>
+<pre class="r"><code>tb1= CreateTableOne(vars = vars.tb1,
+                    strata = &quot;hyperTG&quot;, 
+                    factorVars = c(&quot;Sex&quot;,&quot;smoke&quot;,&quot;alcohol&quot;), 
+                    data = ph.omit, 
+                    includeNA = F
+                    )
+
+tb1</code></pre>
 <pre><code>##                               Stratified by hyperTG
-##                                0                     
-##   n                                 2412             
-##   Sex = Male (%)                     862 (35.7)      
-##   Age (mean (sd))                  43.75 (13.00)     
-##   DXA_total_tscore (mean (sd))     -0.31 (1.31)      
-##   FBS (mean (sd))                  92.39 (15.83)     
-##   tCholesterol (mean (sd))        187.67 (34.81)     
-##   HDL (mean (sd))                  51.13 (12.44)     
-##   LDL (mean (sd))                 110.28 (30.16)     
-##   TG (mean (sd))                   92.60 (40.48)     
-##   Height (mean (sd))              161.26 (8.44)      
-##   Weight (mean (sd))               60.98 (10.71)     
-##   SittingHt (mean (sd))            88.01 (4.66)      
-##   Waist (mean (sd))                79.56 (8.90)      
-##   Hip (mean (sd))                  94.14 (5.67)      
-##   headcircum (mean (sd))           55.30 (3.50)      
-##   armspan (mean (sd))             160.50 (9.35)      
-##   BMI (mean (sd))                  23.36 (3.15)      
-##   SBP (mean (sd))                 116.29 (16.45)     
-##   DBP (mean (sd))                  73.58 (10.50)     
-##   birth (mean (sd))            625008.67 (130534.28) 
-##   gweek (mean (sd))                97.81 (189.54)    
-##   MET (mean (sd))                6324.83 (10719.34)  
-##   PY (median [IQR])                 0.00 [0.00, 2.79]
-##   FTND (mean (sd))                  3.28 (2.48)      
-##   smoke (%)                                          
-##      1                              1645 (68.2)      
-##      2                               288 (11.9)      
-##      3                               471 (19.5)      
-##      NA                                8 ( 0.3)      
-##   alcohol (%)                                        
-##      1                               703 (29.1)      
-##      2                               242 (10.0)      
-##      3                              1466 (60.8)      
-##      NA                                1 ( 0.0)      
-##   hyperTG (mean (sd))               0.00 (0.00)      
+##                                0              1              p      test
+##   n                              2412            325                    
+##   Sex = Male (%)                  862 (35.7)     202 (62.2)  &lt;0.001     
+##   Age (mean (sd))               43.75 (13.00)  47.50 (13.23) &lt;0.001     
+##   DXA_total_tscore (mean (sd))  -0.31 (1.31)   -0.53 (1.27)   0.004     
+##   FBS (mean (sd))               92.39 (15.83) 102.46 (28.13) &lt;0.001     
+##   tCholesterol (mean (sd))     187.67 (34.81) 203.84 (37.47) &lt;0.001     
+##   HDL (mean (sd))               51.13 (12.44)  41.62 (9.26)  &lt;0.001     
+##   LDL (mean (sd))              110.28 (30.16) 111.06 (32.91)  0.666     
+##   TG (mean (sd))                92.60 (40.48) 280.76 (91.19) &lt;0.001     
+##   Height (mean (sd))           161.26 (8.44)  164.32 (8.32)  &lt;0.001     
+##   Weight (mean (sd))            60.98 (10.71)  69.99 (11.91) &lt;0.001     
+##   SittingHt (mean (sd))         88.01 (4.66)   89.86 (4.48)  &lt;0.001     
+##   Waist (mean (sd))             79.56 (8.90)   87.39 (8.10)  &lt;0.001     
+##   Hip (mean (sd))               94.14 (5.67)   97.24 (5.95)  &lt;0.001     
+##   headcircum (mean (sd))        55.30 (3.50)   55.85 (1.86)   0.005     
+##   armspan (mean (sd))          160.50 (9.35)  163.22 (9.38)  &lt;0.001     
+##   BMI (mean (sd))               23.36 (3.15)   25.78 (3.20)  &lt;0.001     
+##   SBP (mean (sd))              116.29 (16.45) 126.63 (17.27) &lt;0.001     
+##   DBP (mean (sd))               73.58 (10.50)  79.26 (11.71) &lt;0.001     
+##   smoke (%)                                                  &lt;0.001     
+##      1                           1645 (68.4)     138 (42.5)             
+##      2                            288 (12.0)      55 (16.9)             
+##      3                            471 (19.6)     132 (40.6)             
+##   alcohol (%)                                                 0.003     
+##      1                            703 (29.2)      79 (24.3)             
+##      2                            242 (10.0)      19 ( 5.8)             
+##      3                           1466 (60.8)     227 (69.8)</code></pre>
+<ul>
+<li><code>print</code>
+<ul>
+<li><p><strong>nonnormal</strong>: 비모수통계를 쓸 연속 변수</p></li>
+<li><p><strong>exact</strong>: fisher-test를 쓸 범주형 변수</p></li>
+<li><p><strong>smd</strong>: standardized mean difference</p></li>
+<li><p><strong>cramVars</strong>: 2범주인 변수에서 2범주를 다 보여줄 변수.</p></li>
+</ul></li>
+</ul>
+<pre class="r"><code>zz= print(tb1, 
+          nonnormal = c(&quot;FBS&quot;,&quot;TG&quot;), 
+          exact = c(&quot;Sex&quot;, &quot;alcohol&quot;), 
+          smd = TRUE, 
+          cramVars = &quot;Sex&quot;, 
+          printToggle=T)</code></pre>
+<pre><code>##                               Stratified by hyperTG
+##                                0                       
+##   n                                2412                
+##   Sex = Female/Male (%)        1550/862 (64.3/35.7)    
+##   Age (mean (sd))                 43.75 (13.00)        
+##   DXA_total_tscore (mean (sd))    -0.31 (1.31)         
+##   FBS (median [IQR])              90.00 [85.00, 96.00] 
+##   tCholesterol (mean (sd))       187.67 (34.81)        
+##   HDL (mean (sd))                 51.13 (12.44)        
+##   LDL (mean (sd))                110.28 (30.16)        
+##   TG (median [IQR])               85.00 [60.00, 120.00]
+##   Height (mean (sd))             161.26 (8.44)         
+##   Weight (mean (sd))              60.98 (10.71)        
+##   SittingHt (mean (sd))           88.01 (4.66)         
+##   Waist (mean (sd))               79.56 (8.90)         
+##   Hip (mean (sd))                 94.14 (5.67)         
+##   headcircum (mean (sd))          55.30 (3.50)         
+##   armspan (mean (sd))            160.50 (9.35)         
+##   BMI (mean (sd))                 23.36 (3.15)         
+##   SBP (mean (sd))                116.29 (16.45)        
+##   DBP (mean (sd))                 73.58 (10.50)        
+##   smoke (%)                                            
+##      1                             1645 (68.4)         
+##      2                              288 (12.0)         
+##      3                              471 (19.6)         
+##   alcohol (%)                                          
+##      1                              703 (29.2)         
+##      2                              242 (10.0)         
+##      3                             1466 (60.8)         
 ##                               Stratified by hyperTG
-##                                1                       p      test   
-##   n                                  325                             
-##   Sex = Male (%)                     202 (62.2)        &lt;0.001 exact  
-##   Age (mean (sd))                  47.50 (13.23)       &lt;0.001        
-##   DXA_total_tscore (mean (sd))     -0.53 (1.27)         0.004        
-##   FBS (mean (sd))                 102.46 (28.13)       &lt;0.001        
-##   tCholesterol (mean (sd))        203.84 (37.47)       &lt;0.001        
-##   HDL (mean (sd))                  41.62 (9.26)        &lt;0.001        
-##   LDL (mean (sd))                 111.06 (32.91)        0.666        
-##   TG (mean (sd))                  280.76 (91.19)       &lt;0.001        
-##   Height (mean (sd))              164.32 (8.32)        &lt;0.001        
-##   Weight (mean (sd))               69.99 (11.91)       &lt;0.001        
-##   SittingHt (mean (sd))            89.86 (4.48)        &lt;0.001        
-##   Waist (mean (sd))                87.39 (8.10)        &lt;0.001        
-##   Hip (mean (sd))                  97.24 (5.95)        &lt;0.001        
-##   headcircum (mean (sd))           55.85 (1.86)         0.005        
-##   armspan (mean (sd))             163.22 (9.38)        &lt;0.001        
-##   BMI (mean (sd))                  25.78 (3.20)        &lt;0.001        
-##   SBP (mean (sd))                 126.63 (17.27)       &lt;0.001        
-##   DBP (mean (sd))                  79.26 (11.71)       &lt;0.001        
-##   birth (mean (sd))            588797.03 (132492.01)   &lt;0.001        
-##   gweek (mean (sd))               201.72 (279.31)      &lt;0.001        
-##   MET (mean (sd))                6470.16 (8573.75)      0.826        
-##   PY (median [IQR])                 3.75 [0.00, 18.00] &lt;0.001 nonnorm
-##   FTND (mean (sd))                  3.74 (2.39)         0.024        
-##   smoke (%)                                            &lt;0.001        
-##      1                               138 (42.5)                      
-##      2                                55 (16.9)                      
-##      3                               132 (40.6)                      
-##      NA                                0 ( 0.0)                      
-##   alcohol (%)                                           0.009        
-##      1                                79 (24.3)                      
-##      2                                19 ( 5.8)                      
-##      3                               227 (69.8)                      
-##      NA                                0 ( 0.0)                      
-##   hyperTG (mean (sd))               1.00 (0.00)        &lt;0.001        
+##                                1                        p      test   
+##   n                                325                                
+##   Sex = Female/Male (%)        123/202 (37.8/62.2)      &lt;0.001 exact  
+##   Age (mean (sd))                47.50 (13.23)          &lt;0.001        
+##   DXA_total_tscore (mean (sd))   -0.53 (1.27)            0.004        
+##   FBS (median [IQR])             95.00 [89.00, 106.00]  &lt;0.001 nonnorm
+##   tCholesterol (mean (sd))      203.84 (37.47)          &lt;0.001        
+##   HDL (mean (sd))                41.62 (9.26)           &lt;0.001        
+##   LDL (mean (sd))               111.06 (32.91)           0.666        
+##   TG (median [IQR])             251.00 [219.00, 311.00] &lt;0.001 nonnorm
+##   Height (mean (sd))            164.32 (8.32)           &lt;0.001        
+##   Weight (mean (sd))             69.99 (11.91)          &lt;0.001        
+##   SittingHt (mean (sd))          89.86 (4.48)           &lt;0.001        
+##   Waist (mean (sd))              87.39 (8.10)           &lt;0.001        
+##   Hip (mean (sd))                97.24 (5.95)           &lt;0.001        
+##   headcircum (mean (sd))         55.85 (1.86)            0.005        
+##   armspan (mean (sd))           163.22 (9.38)           &lt;0.001        
+##   BMI (mean (sd))                25.78 (3.20)           &lt;0.001        
+##   SBP (mean (sd))               126.63 (17.27)          &lt;0.001        
+##   DBP (mean (sd))                79.26 (11.71)          &lt;0.001        
+##   smoke (%)                                             &lt;0.001        
+##      1                             138 (42.5)                         
+##      2                              55 (16.9)                         
+##      3                             132 (40.6)                         
+##   alcohol (%)                                            0.003 exact  
+##      1                              79 (24.3)                         
+##      2                              19 ( 5.8)                         
+##      3                             227 (69.8)                         
 ##                               Stratified by hyperTG
 ##                                SMD   
 ##   n                                  
-##   Sex = Male (%)                0.548
+##   Sex = Female/Male (%)         0.548
 ##   Age (mean (sd))               0.286
 ##   DXA_total_tscore (mean (sd))  0.173
-##   FBS (mean (sd))               0.441
+##   FBS (median [IQR])            0.441
 ##   tCholesterol (mean (sd))      0.447
 ##   HDL (mean (sd))               0.867
 ##   LDL (mean (sd))               0.025
-##   TG (mean (sd))                2.667
+##   TG (median [IQR])             2.667
 ##   Height (mean (sd))            0.366
 ##   Weight (mean (sd))            0.795
 ##   SittingHt (mean (sd))         0.404
@@ -4329,24 +4749,23 @@ zz=print(tb1 , nonnormal = c(&quot;PY&quot;), exact = c(&quot;Sex&quot;), smd = 
 ##   BMI (mean (sd))               0.762
 ##   SBP (mean (sd))               0.613
 ##   DBP (mean (sd))               0.511
-##   birth (mean (sd))             0.275
-##   gweek (mean (sd))             0.435
-##   MET (mean (sd))               0.015
-##   PY (median [IQR])             0.392
-##   FTND (mean (sd))              0.188
-##   smoke (%)                     0.561
+##   smoke (%)                     0.554
 ##      1                               
 ##      2                               
 ##      3                               
-##      NA                              
-##   alcohol (%)                   0.212
+##   alcohol (%)                   0.210
 ##      1                               
 ##      2                               
-##      3                               
-##      NA                              
-##   hyperTG (mean (sd))           Inf</code></pre>
-<pre class="r"><code>## Export table
-kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics by TG&quot;,col.names=c(&quot;TG &lt; 200&quot;,&quot;TG ≥ 200&quot;,&quot;p&quot;,&quot;test&quot;,&quot;SMD&quot;))</code></pre>
+##      3</code></pre>
+</div>
+<div id="export-table" class="section level2">
+<h2>Export table</h2>
+<pre class="r"><code>kable(
+  zz,
+  align=&quot;c&quot;,
+  caption=&quot;Descriptive statistics by TG&quot;,
+  col.names=c(&quot;TG &lt; 200&quot;,&quot;TG ≥ 200&quot;,&quot;p&quot;,&quot;test&quot;,&quot;SMD&quot;)
+)</code></pre>
 <table>
 <caption>Descriptive statistics by TG</caption>
 <thead>
@@ -4369,9 +4788,9 @@ kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics by TG&quot;,co
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td>Sex = Male (%)</td>
-<td align="center">862 (35.7)</td>
-<td align="center">202 (62.2)</td>
+<td>Sex = Female/Male (%)</td>
+<td align="center">1550/862 (64.3/35.7)</td>
+<td align="center">123/202 (37.8/62.2)</td>
 <td align="center">&lt;0.001</td>
 <td align="center">exact</td>
 <td align="center">0.548</td>
@@ -4393,11 +4812,11 @@ kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics by TG&quot;,co
 <td align="center">0.173</td>
 </tr>
 <tr class="odd">
-<td>FBS (mean (sd))</td>
-<td align="center">92.39 (15.83)</td>
-<td align="center">102.46 (28.13)</td>
+<td>FBS (median [IQR])</td>
+<td align="center">90.00 [85.00, 96.00]</td>
+<td align="center">95.00 [89.00, 106.00]</td>
 <td align="center">&lt;0.001</td>
-<td align="center"></td>
+<td align="center">nonnorm</td>
 <td align="center">0.441</td>
 </tr>
 <tr class="even">
@@ -4425,11 +4844,11 @@ kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics by TG&quot;,co
 <td align="center">0.025</td>
 </tr>
 <tr class="odd">
-<td>TG (mean (sd))</td>
-<td align="center">92.60 (40.48)</td>
-<td align="center">280.76 (91.19)</td>
+<td>TG (median [IQR])</td>
+<td align="center">85.00 [60.00, 120.00]</td>
+<td align="center">251.00 [219.00, 311.00]</td>
 <td align="center">&lt;0.001</td>
-<td align="center"></td>
+<td align="center">nonnorm</td>
 <td align="center">2.667</td>
 </tr>
 <tr class="even">
@@ -4513,81 +4932,33 @@ kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics by TG&quot;,co
 <td align="center">0.511</td>
 </tr>
 <tr class="even">
-<td>birth (mean (sd))</td>
-<td align="center">625008.67 (130534.28)</td>
-<td align="center">588797.03 (132492.01)</td>
-<td align="center">&lt;0.001</td>
-<td align="center"></td>
-<td align="center">0.275</td>
-</tr>
-<tr class="odd">
-<td>gweek (mean (sd))</td>
-<td align="center">97.81 (189.54)</td>
-<td align="center">201.72 (279.31)</td>
-<td align="center">&lt;0.001</td>
-<td align="center"></td>
-<td align="center">0.435</td>
-</tr>
-<tr class="even">
-<td>MET (mean (sd))</td>
-<td align="center">6324.83 (10719.34)</td>
-<td align="center">6470.16 (8573.75)</td>
-<td align="center">0.826</td>
-<td align="center"></td>
-<td align="center">0.015</td>
-</tr>
-<tr class="odd">
-<td>PY (median [IQR])</td>
-<td align="center">0.00 [0.00, 2.79]</td>
-<td align="center">3.75 [0.00, 18.00]</td>
-<td align="center">&lt;0.001</td>
-<td align="center">nonnorm</td>
-<td align="center">0.392</td>
-</tr>
-<tr class="even">
-<td>FTND (mean (sd))</td>
-<td align="center">3.28 (2.48)</td>
-<td align="center">3.74 (2.39)</td>
-<td align="center">0.024</td>
-<td align="center"></td>
-<td align="center">0.188</td>
-</tr>
-<tr class="odd">
 <td>smoke (%)</td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center">&lt;0.001</td>
 <td align="center"></td>
-<td align="center">0.561</td>
+<td align="center">0.554</td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>1</td>
-<td align="center">1645 (68.2)</td>
+<td align="center">1645 (68.4)</td>
 <td align="center">138 (42.5)</td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
-<tr class="odd">
+<tr class="even">
 <td>2</td>
-<td align="center">288 (11.9)</td>
+<td align="center">288 (12.0)</td>
 <td align="center">55 (16.9)</td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
 </tr>
-<tr class="even">
-<td>3</td>
-<td align="center">471 (19.5)</td>
-<td align="center">132 (40.6)</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
 <tr class="odd">
-<td>NA</td>
-<td align="center">8 ( 0.3)</td>
-<td align="center">0 ( 0.0)</td>
+<td>3</td>
+<td align="center">471 (19.6)</td>
+<td align="center">132 (40.6)</td>
 <td align="center"></td>
 <td align="center"></td>
 <td align="center"></td>
@@ -4596,13 +4967,13 @@ kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics by TG&quot;,co
 <td>alcohol (%)</td>
 <td align="center"></td>
 <td align="center"></td>
-<td align="center">0.009</td>
-<td align="center"></td>
-<td align="center">0.212</td>
+<td align="center">0.003</td>
+<td align="center">exact</td>
+<td align="center">0.210</td>
 </tr>
 <tr class="odd">
 <td>1</td>
-<td align="center">703 (29.1)</td>
+<td align="center">703 (29.2)</td>
 <td align="center">79 (24.3)</td>
 <td align="center"></td>
 <td align="center"></td>
@@ -4624,36 +4995,32 @@ kable(zz,align=&quot;c&quot;,caption=&quot;Descriptive statistics by TG&quot;,co
 <td align="center"></td>
 <td align="center"></td>
 </tr>
-<tr class="even">
-<td>NA</td>
-<td align="center">1 ( 0.0)</td>
-<td align="center">0 ( 0.0)</td>
-<td align="center"></td>
-<td align="center"></td>
-<td align="center"></td>
-</tr>
-<tr class="odd">
-<td>hyperTG (mean (sd))</td>
-<td align="center">0.00 (0.00)</td>
-<td align="center">1.00 (0.00)</td>
-<td align="center">&lt;0.001</td>
-<td align="center"></td>
-<td align="center">Inf</td>
-</tr>
 </tbody>
 </table>
 </div>
-<div id="regression-result" class="section level1 tabset">
-<h1>Regression result</h1>
+</div>
+<div id="regression-result-epidisplay-package" class="section level1 tabset">
+<h1>Regression result: epiDisplay package</h1>
+<p><strong>epiDisplay</strong> 패키지를 이용하면 회귀분석 결과를 보기 좋게 정리할 수 있고 adjust p-value와 crude p-value를 동시에 확인할 수 있다. 명령어는 아래의 4가지이다.</p>
+<ol style="list-style-type: decimal">
+<li><p><code>regress.display</code>: Linear model</p></li>
+<li><p><code>logistic.display</code>: Logistic model</p></li>
+<li><p><code>idr.display</code>: Poisson regression</p></li>
+<li><p><code>cox.display</code>: Cox proportional hazard model</p></li>
+</ol>
 <div id="linear-regression" class="section level2">
 <h2>Linear regression</h2>
-<pre class="r"><code>library(epiDisplay)
-factorVars= c(&quot;Sex&quot;,&quot;smoke&quot;,&quot;alcohol&quot;)
+<pre class="r"><code>## Load package
+library(epiDisplay)
+
+## Pre-setting: factor variable 
+factorVars= c(&quot;Sex&quot;, &quot;smoke&quot;, &quot;alcohol&quot;)
 ph[, (factorVars) := lapply(.SD, as.factor), .SDcols= factorVars]
 
-
+## Linear model
 m1 = lm(LDL~ Age +Sex + BMI + smoke + alcohol , data=ph)
 
+## summary table
 tb.m1 = regress.display(m1, crude=T, crude.p.value = T)
 tb.m1</code></pre>
 <pre><code>## Linear regression predicting LDL
@@ -4689,7 +5056,7 @@ tb.m1</code></pre>
 ##    3                -3.35 (-6.08,-0.63)  0.016              
 ##                                                             
 ## No. of observations = 2728</code></pre>
-<pre class="r"><code>### Export table
+<pre class="r"><code>## Export table
 kable(tb.m1$table[rownames(tb.m1$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m1$last.lines)</code></pre>
 <table>
 <caption>No. of observations = 2728</caption>
@@ -4781,8 +5148,10 @@ kable(tb.m1$table[rownames(tb.m1$table) != &quot;&quot;,], align=&quot;c&quot;, 
 </div>
 <div id="logistic-regression" class="section level2">
 <h2>Logistic regression</h2>
-<pre class="r"><code>m2 = glm(hyperTG~ Age +Sex + BMI + smoke + alcohol , data=ph, family=binomial)
+<pre class="r"><code>## Logistic model
+m2 = glm(hyperTG~ Age +Sex + BMI + smoke + alcohol , data=ph, family=binomial)
 
+## summary table
 tb.m2 = logistic.display(m2, crude=T, crude.p.value = T)
 tb.m2</code></pre>
 <pre><code>## 
@@ -4821,7 +5190,7 @@ tb.m2</code></pre>
 ## Log-likelihood = -872.071
 ## No. of observations = 2727
 ## AIC value = 1760.1421</code></pre>
-<pre class="r"><code>### Export table
+<pre class="r"><code>## Export table
 kable(tb.m2$table[rownames(tb.m2$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m2$last.lines)</code></pre>
 <table>
 <caption>Log-likelihood = -872.071 No. of observations = 2727 AIC value = 1760.1421</caption>
@@ -4913,9 +5282,13 @@ kable(tb.m2$table[rownames(tb.m2$table) != &quot;&quot;,], align=&quot;c&quot;, 
 </div>
 <div id="poisson-regression--" class="section level2">
 <h2>Poisson regression: 사망 데이터</h2>
-<pre class="r"><code>library(HEAT);data(mort)
+<pre class="r"><code>## Load example data
+library(HEAT);data(mort)
+
+## Poisson regression
 m3 = glm(nonacc~meantemp+ meanso2 + meanhumi, data= mort, family= poisson)
 
+## Summary table
 tb.m3 = idr.display(m3, crude=T, crude.p.value = T )</code></pre>
 <pre class="r"><code>tb.m3</code></pre>
 <pre><code>## 
@@ -4938,7 +5311,7 @@ tb.m3 = idr.display(m3, crude=T, crude.p.value = T )</code></pre>
 ## Log-likelihood = -206421.7862
 ## No. of observations = 17361
 ## AIC value = 412851.5724</code></pre>
-<pre class="r"><code>### Export table
+<pre class="r"><code>## Export table
 kable(tb.m3$table[rownames(tb.m3$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m3$last.lines)</code></pre>
 <table>
 <caption>Log-likelihood = -206421.7862 No. of observations = 17361 AIC value = 412851.5724</caption>
@@ -4982,9 +5355,14 @@ kable(tb.m3$table[rownames(tb.m3$table) != &quot;&quot;,], align=&quot;c&quot;, 
 </div>
 <div id="cox-" class="section level2">
 <h2>Cox: 생존분석</h2>
-<pre class="r"><code>library(survival);data(bladder)
+<pre class="r"><code>## Load package &amp; example data
+library(survival)
+data(bladder)
+
+## Cox model
 m4 = coxph(Surv(stop, event) ~ rx + size + number, data=bladder)
 
+## Summary table
 tb.m4 = cox.display(m4, crude=T, crude.p.value = T )</code></pre>
 <pre class="r"><code>tb.m4</code></pre>
 <pre><code>## Cox&#39;s proportional hazard model on time (&#39;stop&#39;) to event (&#39;event&#39;) 
@@ -5004,7 +5382,7 @@ tb.m4 = cox.display(m4, crude=T, crude.p.value = T )</code></pre>
 ## number (cont. var.) &lt; 0.001        &lt; 0.001   
 ##                                              
 ## No. of observations =  340</code></pre>
-<pre class="r"><code>### Export table
+<pre class="r"><code>## Export table
 kable(tb.m4$table[rownames(tb.m4$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m4$last.lines)</code></pre>
 <table>
 <caption>No. of observations = 340</caption>
