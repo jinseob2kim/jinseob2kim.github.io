@@ -427,6 +427,13 @@ div.tocify {
 </div>
 
 
+<p>본 자료는 아래의 내용들을 다룬다.</p>
+<ol style="list-style-type: decimal">
+<li><p><strong>data.table</strong> 패키지 소개</p></li>
+<li><p>반복문 비교: <strong>for</strong> loop, <strong>apply</strong>문 (<code>lapply</code>, <code>mapply</code>), 멀티코어 이용(<strong>parallel</strong> 패키지의 <code>mclapply</code>, <code>mcmapply</code>)</p></li>
+<li><p>Table 1 만들기: <strong>tableone</strong> 패키지</p></li>
+<li><p>Regression result 정리하기: <strong>epiDisplay</strong> 패키지</p></li>
+</ol>
 <div id="data.table" class="section level1">
 <h1>data.table</h1>
 <p><strong>data.table</strong> 패키지는 data step을 빠르고 쉽게 수행하기 위한 패키지로 가장 인기많은 <code>R</code>패키지 중 하나이다. (<a href="https://www.rdocumentation.org/trends?page1=1&amp;sort1=direct&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1" class="uri">https://www.rdocumentation.org/trends?page1=1&amp;sort1=direct&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1</a>)</p>
@@ -3453,7 +3460,7 @@ options(&quot;mc.cores&quot;)</code></pre>
 <li><p>Phenotype: DXA_total_tscore, FBS, tCholesterol , HDL, LDL, TG, SBP, DBP</p></li>
 <li><p>Covariate : No, age, age + sex, age + sex + BMI, age + sex + BMI + smoke + alcohol</p></li>
 </ul>
-<p>총 35개 조합.</p>
+<p>총 40개 조합.</p>
 <pre class="r"><code>ybar= c(&quot;DXA_total_tscore&quot;, &quot;FBS&quot;,&quot;tCholesterol&quot;,&quot;HDL&quot;,&quot;LDL&quot;,&quot;TG&quot;,&quot;SBP&quot;,&quot;DBP&quot;)
 xbar= c(&quot;1&quot;,&quot;age&quot;, &quot;age + sex&quot;, &quot;age + sex + BMI&quot;, &quot;age + sex + BMI + smoke + alcohol &quot;)</code></pre>
 <div id="for-1" class="section level3">
@@ -4578,8 +4585,8 @@ kable(
 </div>
 </div>
 </div>
-<div id="table-1-tableone-package" class="section level1 tabset">
-<h1>Table 1: tableone package</h1>
+<div id="table-1" class="section level1 tabset">
+<h1>Table 1</h1>
 <p><strong>tableone</strong> 패키지를 이용하면 간단하게 논문에 들어갈 table 1을 만들 수 있다. TG <span class="math inline">\(\ge200\)</span> 을 기준으로 그룹을 나누어 table 1을 만들어보도록 하자. 편의상 몇가지 변수만 뽑아 결측치 없는 데이터를 만든 후 table 1을 만들겠다.</p>
 <pre class="r"><code>#install.packages(&quot;tableone&quot;)
 library(tableone)
@@ -4999,8 +5006,8 @@ tb1</code></pre>
 </table>
 </div>
 </div>
-<div id="regression-result-epidisplay-package" class="section level1 tabset">
-<h1>Regression result: epiDisplay package</h1>
+<div id="regression-result" class="section level1 tabset">
+<h1>Regression result</h1>
 <p><strong>epiDisplay</strong> 패키지를 이용하면 회귀분석 결과를 보기 좋게 정리할 수 있고 adjust p-value와 crude p-value를 동시에 확인할 수 있다. 명령어는 아래의 4가지이다.</p>
 <ol style="list-style-type: decimal">
 <li><p><code>regress.display</code>: Linear model</p></li>

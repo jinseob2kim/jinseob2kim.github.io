@@ -17,6 +17,20 @@ knitr::opts_chunk$set(echo = TRUE,cache=T, message=F, warning=F)
 library(knitr)
 ```
 
+본 자료는 아래의 내용들을 다룬다.
+
+1. **data.table** 패키지 소개
+
+
+2. 반복문 비교: **for** loop, **apply**문 (`lapply`, `mapply`), 멀티코어 이용(**parallel** 패키지의 `mclapply`, `mcmapply`)
+
+
+3. Table 1 만들기: **tableone** 패키지
+
+
+4. Regression result 정리하기: **epiDisplay** 패키지 
+
+
 
 # data.table
 
@@ -525,7 +539,7 @@ kable(
 
 * Covariate : No, age, age + sex, age + sex + BMI, age + sex + BMI + smoke + alcohol
 
-총 35개 조합.
+총 40개 조합.
 
 ```{r}
 ybar= c("DXA_total_tscore", "FBS","tCholesterol","HDL","LDL","TG","SBP","DBP")
@@ -658,7 +672,7 @@ kable(
 
 
 
-# Table 1: tableone package{.tabset}
+# Table 1{.tabset}
 
 **tableone** 패키지를 이용하면 간단하게 논문에 들어갈 table 1을 만들 수 있다. TG $\ge200$ 을 기준으로 그룹을 나누어 table 1을 만들어보도록 하자. 편의상 몇가지 변수만 뽑아 결측치 없는 데이터를 만든 후 table 1을 만들겠다.
 
@@ -747,7 +761,7 @@ kable(
 ```
 
 
-# Regression result: epiDisplay package{.tabset}
+# Regression result{.tabset}
 **epiDisplay** 패키지를 이용하면 회귀분석 결과를 보기 좋게 정리할 수 있고 adjust p-value와 crude p-value를 동시에 확인할 수 있다. 명령어는 아래의 4가지이다.
 
 1. `regress.display`: Linear model
