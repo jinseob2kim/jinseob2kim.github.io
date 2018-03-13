@@ -335,8 +335,16 @@ z = letters       ## a~z
 CJ(num= x, L= y, l= z)
 ```
 
-그 외 `rbindlist`를 사용하면 여러 개의 data를 빠르게 위아래로 합칠 수 있다. 
+### rbindlist
 
+`rbindlist`함수를 사용하면 여러 개의 data를 빠르게 위아래로 합치면서 겹치지 않는 변수는 따로 분류할 수 있다.
+
+```{r}
+rbindlist(list(res,res_logit), fill=T)
+
+#rbind(res,res_logit, fill=T)
+
+```
 
 ### Benchmark
 Inner join을 비교해보겠다.

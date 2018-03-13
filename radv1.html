@@ -2728,7 +2728,24 @@ CJ(num= x, L= y, l= z)</code></pre>
 ## 67598: 100 Z x
 ## 67599: 100 Z y
 ## 67600: 100 Z z</code></pre>
-<p>그 외 <code>rbindlist</code>를 사용하면 여러 개의 data를 빠르게 위아래로 합칠 수 있다.</p>
+</div>
+<div id="rbindlist" class="section level3">
+<h3>rbindlist</h3>
+<p><code>rbindlist</code>함수를 사용하면 여러 개의 data를 빠르게 위아래로 합치면서 겹치지 않는 변수는 따로 분류할 수 있다.</p>
+<pre class="r"><code>rbindlist(list(res,res_logit), fill=T)</code></pre>
+<pre><code>##         CHR       SNP        BP A1 TEST NMISS   BETA    STAT      P     OR
+##      1:   1 rs1000085  66857915  C  ADD  1787  3.220  0.3273 0.7434     NA
+##      2:   1 rs1000283 209894661  A  ADD  1787  3.870  0.5782 0.5632     NA
+##      3:   1 rs1000382 175866321  G  ADD  1787  5.734  1.2270 0.2202     NA
+##      4:   1 rs1000528 114471189  C  ADD  1787 -5.873 -0.9411 0.3468     NA
+##      5:   1 rs1000997  16125961  G  ADD  1787 -4.249 -0.9021 0.3671     NA
+##     ---                                                                   
+## 278046:  22  rs986646  22398220  C  ADD  1787     NA -1.1270 0.2599 0.8858
+## 278047:  22 rs9917559  37977305  A  ADD  1787     NA -1.0390 0.2988 0.8992
+## 278048:  22 rs9941927  40209175  G  ADD  1787     NA -1.0640 0.2875 0.8237
+## 278049:  22 rs9941935  22015144  G  ADD  1787     NA -0.7683 0.4423 0.8293
+## 278050:  22  rs999224  27834500  G  ADD  1787     NA  0.6709 0.5023 1.0540</code></pre>
+<pre class="r"><code>#rbind(res,res_logit, fill=T)</code></pre>
 </div>
 <div id="benchmark-5" class="section level3">
 <h3>Benchmark</h3>
@@ -2757,19 +2774,19 @@ kable(
 <tr class="odd">
 <td align="left">inner.df</td>
 <td align="right">1</td>
-<td align="right">1.779</td>
-<td align="right">84.714</td>
-<td align="right">1.755</td>
-<td align="right">0.023</td>
+<td align="right">2.223</td>
+<td align="right">79.393</td>
+<td align="right">2.193</td>
+<td align="right">0.028</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">inner.dt</td>
 <td align="right">1</td>
-<td align="right">0.021</td>
+<td align="right">0.028</td>
 <td align="right">1.000</td>
-<td align="right">0.021</td>
+<td align="right">0.028</td>
 <td align="right">0.000</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2802,10 +2819,10 @@ kable(
 <td>2</td>
 <td align="left">cj.dt</td>
 <td align="right">10</td>
-<td align="right">0.008</td>
-<td align="right">1.0</td>
-<td align="right">0.008</td>
-<td align="right">0.000</td>
+<td align="right">0.011</td>
+<td align="right">1.000</td>
+<td align="right">0.012</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -2813,10 +2830,10 @@ kable(
 <td>1</td>
 <td align="left">expand.grid.df</td>
 <td align="right">10</td>
-<td align="right">0.060</td>
-<td align="right">7.5</td>
-<td align="right">0.047</td>
-<td align="right">0.012</td>
+<td align="right">0.080</td>
+<td align="right">7.273</td>
+<td align="right">0.081</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -3103,9 +3120,9 @@ ph.wide</code></pre>
 <tr class="odd">
 <td align="left">melt.df</td>
 <td align="right">10</td>
-<td align="right">0.041</td>
-<td align="right">13.667</td>
-<td align="right">0.042</td>
+<td align="right">0.061</td>
+<td align="right">20.333</td>
+<td align="right">0.061</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -3115,7 +3132,7 @@ ph.wide</code></pre>
 <td align="right">10</td>
 <td align="right">0.003</td>
 <td align="right">1.000</td>
-<td align="right">0.003</td>
+<td align="right">0.002</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -3148,20 +3165,20 @@ kable(
 <tr class="odd">
 <td align="left">dcast.df</td>
 <td align="right">10</td>
-<td align="right">0.261</td>
-<td align="right">4.5</td>
-<td align="right">0.606</td>
-<td align="right">0.965</td>
+<td align="right">0.215</td>
+<td align="right">3.116</td>
+<td align="right">0.470</td>
+<td align="right">0.7</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">dcast.dt</td>
 <td align="right">10</td>
-<td align="right">0.058</td>
-<td align="right">1.0</td>
-<td align="right">0.207</td>
-<td align="right">0.000</td>
+<td align="right">0.069</td>
+<td align="right">1.000</td>
+<td align="right">0.246</td>
+<td align="right">0.0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -3423,19 +3440,19 @@ options(&quot;mc.cores&quot;)</code></pre>
 <tr class="odd">
 <td align="left">CoefExtract.for</td>
 <td align="right">10</td>
-<td align="right">0.257</td>
-<td align="right">1.179</td>
-<td align="right">0.245</td>
-<td align="right">0.012</td>
+<td align="right">0.335</td>
+<td align="right">1.147</td>
+<td align="right">0.327</td>
+<td align="right">0.008</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">CoefExtract.lapply</td>
 <td align="right">10</td>
-<td align="right">0.218</td>
+<td align="right">0.292</td>
 <td align="right">1.000</td>
-<td align="right">0.218</td>
+<td align="right">0.292</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -3443,12 +3460,12 @@ options(&quot;mc.cores&quot;)</code></pre>
 <tr class="odd">
 <td align="left">CoefExtract.mclapply</td>
 <td align="right">10</td>
-<td align="right">0.459</td>
-<td align="right">2.106</td>
-<td align="right">0.024</td>
-<td align="right">0.352</td>
-<td align="right">0.491</td>
-<td align="right">0.639</td>
+<td align="right">0.674</td>
+<td align="right">2.308</td>
+<td align="right">0.015</td>
+<td align="right">0.532</td>
+<td align="right">0.711</td>
+<td align="right">0.914</td>
 </tr>
 </tbody>
 </table>
@@ -4250,32 +4267,32 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 <tr class="odd">
 <td align="left">CoefExtract.for2</td>
 <td align="right">10</td>
-<td align="right">1.067</td>
-<td align="right">1.155</td>
-<td align="right">1.055</td>
-<td align="right">0.012</td>
-<td align="right">0.000</td>
+<td align="right">1.452</td>
+<td align="right">1.106</td>
+<td align="right">1.436</td>
+<td align="right">0.016</td>
+<td align="right">0.00</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">CoefExtract.mapply</td>
 <td align="right">10</td>
-<td align="right">1.198</td>
-<td align="right">1.297</td>
-<td align="right">1.198</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">1.376</td>
+<td align="right">1.048</td>
+<td align="right">1.371</td>
+<td align="right">0.004</td>
+<td align="right">0.00</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">CoefExtract.mcmapply</td>
 <td align="right">10</td>
-<td align="right">0.924</td>
+<td align="right">1.313</td>
 <td align="right">1.000</td>
-<td align="right">0.038</td>
-<td align="right">0.523</td>
-<td align="right">2.354</td>
-<td align="right">1.164</td>
+<td align="right">0.044</td>
+<td align="right">0.708</td>
+<td align="right">3.32</td>
+<td align="right">1.611</td>
 </tr>
 </tbody>
 </table>
@@ -4320,32 +4337,32 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">10</td>
-<td align="right">0.031</td>
-<td align="right">2.385</td>
-<td align="right">0.015</td>
-<td align="right">0.003</td>
+<td align="right">0.042</td>
+<td align="right">3.231</td>
+<td align="right">0.026</td>
+<td align="right">0.005</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">10</td>
 <td align="right">0.013</td>
 <td align="right">1.000</td>
+<td align="right">0.000</td>
 <td align="right">0.001</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">10</td>
-<td align="right">0.464</td>
-<td align="right">35.692</td>
-<td align="right">0.017</td>
-<td align="right">0.409</td>
-<td align="right">0.069</td>
-<td align="right">0.646</td>
+<td align="right">0.479</td>
+<td align="right">36.846</td>
+<td align="right">0.028</td>
+<td align="right">0.416</td>
+<td align="right">0.043</td>
+<td align="right">0.61</td>
 </tr>
 </tbody>
 </table>
@@ -4378,19 +4395,19 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">10</td>
-<td align="right">0.108</td>
+<td align="right">0.119</td>
 <td align="right">1.227</td>
-<td align="right">0.020</td>
-<td align="right">0.001</td>
+<td align="right">0.029</td>
+<td align="right">0.003</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">10</td>
-<td align="right">0.088</td>
+<td align="right">0.097</td>
 <td align="right">1.000</td>
-<td align="right">0.002</td>
+<td align="right">0.003</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -4398,12 +4415,12 @@ kable(
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">10</td>
-<td align="right">0.451</td>
-<td align="right">5.125</td>
-<td align="right">0.020</td>
-<td align="right">0.392</td>
-<td align="right">0.099</td>
-<td align="right">0.694</td>
+<td align="right">0.538</td>
+<td align="right">5.546</td>
+<td align="right">0.019</td>
+<td align="right">0.491</td>
+<td align="right">0.063</td>
+<td align="right">0.693</td>
 </tr>
 </tbody>
 </table>
@@ -4436,32 +4453,32 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">10</td>
-<td align="right">0.859</td>
-<td align="right">1.698</td>
-<td align="right">0.042</td>
-<td align="right">0.003</td>
+<td align="right">0.878</td>
+<td align="right">1.579</td>
+<td align="right">0.061</td>
 <td align="right">0.000</td>
 <td align="right">0.00</td>
+<td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">10</td>
 <td align="right">0.818</td>
-<td align="right">1.617</td>
-<td align="right">0.004</td>
+<td align="right">1.471</td>
 <td align="right">0.001</td>
-<td align="right">0.000</td>
+<td align="right">0.004</td>
 <td align="right">0.00</td>
+<td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">10</td>
-<td align="right">0.506</td>
+<td align="right">0.556</td>
 <td align="right">1.000</td>
-<td align="right">0.019</td>
-<td align="right">0.379</td>
-<td align="right">0.086</td>
-<td align="right">0.56</td>
+<td align="right">0.025</td>
+<td align="right">0.421</td>
+<td align="right">0.07</td>
+<td align="right">0.628</td>
 </tr>
 </tbody>
 </table>
@@ -4494,32 +4511,32 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">10</td>
-<td align="right">8.056</td>
-<td align="right">5.389</td>
-<td align="right">0.042</td>
+<td align="right">8.086</td>
+<td align="right">4.076</td>
+<td align="right">0.061</td>
+<td align="right">0.002</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">10</td>
-<td align="right">8.024</td>
-<td align="right">5.367</td>
-<td align="right">0.003</td>
-<td align="right">0.003</td>
+<td align="right">8.028</td>
+<td align="right">4.046</td>
+<td align="right">0.007</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">10</td>
-<td align="right">1.495</td>
+<td align="right">1.984</td>
 <td align="right">1.000</td>
-<td align="right">0.037</td>
-<td align="right">0.456</td>
-<td align="right">0.073</td>
-<td align="right">1.094</td>
+<td align="right">0.058</td>
+<td align="right">0.931</td>
+<td align="right">0.148</td>
+<td align="right">1.07</td>
 </tr>
 </tbody>
 </table>
@@ -4552,32 +4569,32 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">1</td>
-<td align="right">8.011</td>
-<td align="right">7.688</td>
-<td align="right">0.003</td>
+<td align="right">8.015</td>
+<td align="right">7.583</td>
+<td align="right">0.005</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">1</td>
-<td align="right">8.009</td>
-<td align="right">7.686</td>
+<td align="right">8.010</td>
+<td align="right">7.578</td>
 <td align="right">0.001</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">1</td>
-<td align="right">1.042</td>
+<td align="right">1.057</td>
 <td align="right">1.000</td>
-<td align="right">0.000</td>
-<td align="right">0.043</td>
-<td align="right">0.006</td>
-<td align="right">0.052</td>
+<td align="right">0.004</td>
+<td align="right">0.053</td>
+<td align="right">0.007</td>
+<td align="right">0.09</td>
 </tr>
 </tbody>
 </table>
