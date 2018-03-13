@@ -430,25 +430,25 @@ div.tocify {
 <p>본 자료는 아래의 내용들을 다룬다.</p>
 <ol style="list-style-type: decimal">
 <li><p><strong>data.table</strong> 패키지 소개</p></li>
-<li><p>반복문 비교: <strong>for</strong> loop, <strong>apply</strong>문 (<code>lapply</code>, <code>mapply</code>), 멀티코어 이용(<strong>parallel</strong> 패키지의 <code>mclapply</code>, <code>mcmapply</code>)</p></li>
+<li><p>반복문 비교: <code>for</code> loop, <code>apply</code>문 (<code>lapply</code>, <code>mapply</code>), 멀티코어 이용(<strong>parallel</strong> 패키지의 <code>mclapply</code>, <code>mcmapply</code>)</p></li>
 <li><p>Table 1 만들기: <strong>tableone</strong> 패키지</p></li>
 <li><p>Regression result 정리하기: <strong>epiDisplay</strong> 패키지</p></li>
 </ol>
 <div id="data.table" class="section level1">
 <h1>data.table</h1>
-<p><strong>data.table</strong> 패키지는 data step을 빠르고 쉽게 수행하기 위한 패키지로 가장 인기많은 <code>R</code>패키지 중 하나이다. (<a href="https://www.rdocumentation.org/trends?page1=1&amp;sort1=direct&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1" class="uri">https://www.rdocumentation.org/trends?page1=1&amp;sort1=direct&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1</a>)</p>
+<p><strong>data.table</strong> 패키지는 data step을 빠르고 쉽게 수행하기 위한 패키지로 가장 인기많은 <strong>R</strong>패키지 중 하나이다. (<a href="https://www.rdocumentation.org/trends?page1=1&amp;sort1=direct&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1" class="uri">https://www.rdocumentation.org/trends?page1=1&amp;sort1=direct&amp;page2=1&amp;sort2=total&amp;page3=1&amp;page4=1</a>)</p>
 <ul>
-<li>장점: 매우 빠르다. (<code>base</code>, <code>dplyr</code> 대비)</li>
+<li>장점: 매우 빠르다. (<strong>base</strong>, <strong>dplyr</strong> 대비)</li>
 </ul>
 <div class="figure">
 <img src="http://csgillespie.github.io/efficientR/_main_files/figure-html/dtplot-1.png" alt="https://csgillespie.github.io/efficientR/data-processing-with-data-table.html" />
 <p class="caption"><a href="https://csgillespie.github.io/efficientR/data-processing-with-data-table.html" class="uri">https://csgillespie.github.io/efficientR/data-processing-with-data-table.html</a></p>
 </div>
 <ul>
-<li>단점: 문법이 헷갈린다. (<code>dplyr</code>가 가장 직관적임)</li>
+<li>단점: 문법이 헷갈린다. (<strong>dplyr</strong>가 가장 직관적임)</li>
 </ul>
 <div id="load-save-data-fread-fwrite" class="section level2 tabset">
-<h2>Load &amp; Save data: <code>fread</code> &amp; <code>fwrite</code></h2>
+<h2>Load &amp; save data: <code>fread</code> &amp; <code>fwrite</code></h2>
 <p><code>fread</code> 함수로 구분자 (comma, tab, …)에 상관없이 빠르게 데이터를 읽을 수 있으며, <code>fwrtie</code>함수로 그것을 빠르게 파일로 저장할 수 있다. GWAS result 파일을 읽고 쓰는 것을 예로 들겠다. <code>fread</code>로 파일을 읽으면 그 class는 <code>data.frame</code>에 <code>data.table</code>이 추가되며 문법이 원래의 <code>data.frame</code>과 달라지는 점을 유의하자. 만약 데이터를 빨리 읽는 것만 활용하겠다면 <code>fread</code>를 활용해서 읽은 후 다시 원래의 <code>data.frame</code>형태로 바꿔 사용하면 된다.</p>
 <div id="code" class="section level3">
 <h3>Code</h3>
@@ -582,8 +582,8 @@ kable(
 </div>
 </div>
 <div id="row-opreation" class="section level2 tabset">
-<h2><strong>Row</strong> opreation</h2>
-<p><code>data.table</code> 의 기본 문법은 <strong>DT[i, j, by]</strong> 형태이다. <a href="https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf" class="uri">https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf</a> 의 cheetsheet를 참고하면 좋다.</p>
+<h2>Row opreation</h2>
+<p><strong>data.table</strong> 의 기본 문법은 <strong>DT[i, j, by]</strong> 형태이다. <a href="https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf" class="uri">https://s3.amazonaws.com/assets.datacamp.com/blog_assets/datatable_Cheat_Sheet_R.pdf</a> 의 cheetsheet를 참고하면 좋다.</p>
 <div class="figure">
 <img src="http://2.bp.blogspot.com/-L-DIRIa6pi4/WAdcNIhzCfI/AAAAAAAAFiE/RN9-bFU6rZAIfZpAbY9v8pLFRpoTHbQxACLcB/s1600/Data%2BTable%2BSyntax.png" alt="data.table 문법" />
 <p class="caption">data.table 문법</p>
@@ -1193,8 +1193,8 @@ dt[ .(&quot;ADD&quot;, 11)]        </code></pre>
 </table>
 </div>
 </div>
-<div id="column-by-opereation" class="section level2 tabset">
-<h2><strong>Column</strong> &amp; <code>By</code> opereation</h2>
+<div id="column-opereation" class="section level2 tabset">
+<h2>Column opereation</h2>
 <p>열을 선택하는 방법도 기존의 <code>data.frame</code>과 비슷하나 몇 가지 차이점이 있다.</p>
 <div id="code-2" class="section level3">
 <h3>Code</h3>
@@ -1732,7 +1732,7 @@ kable(
 </div>
 </div>
 <div id="by-operation" class="section level2 tabset">
-<h2><strong>By</strong> operation</h2>
+<h2>By operation</h2>
 <p><code>By</code> 옵션을 이용하여 그룹별로 함수를 적용할 수 있다.</p>
 <div id="code-4" class="section level3">
 <h3>Code</h3>
@@ -2826,7 +2826,7 @@ kable(
 </div>
 <div id="foverlaps-fast-overlap-joins" class="section level2">
 <h2>foverlaps: Fast overlap joins</h2>
-<p><code>data.table</code> 패키지의 <code>foverlaps</code>함수를 이용해서</p>
+<p><strong>data.table</strong> 패키지의 <code>foverlaps</code>함수를 이용해서</p>
 <ol style="list-style-type: decimal">
 <li><p>Large data with small interval: ex) GWAS 결과</p></li>
 <li><p>Small data with large interval: ex) GENE 정보</p></li>
@@ -3078,7 +3078,7 @@ ph.wide</code></pre>
 </div>
 <div id="benchmark-6" class="section level3">
 <h3>Benchmark</h3>
-<p><code>data.frame</code>에 <code>reshape2</code>패키지의 <code>melt</code>, <code>dcast</code>함수를 적용한 것과 비교해보겠다.</p>
+<p><code>data.frame</code>에 <strong>reshape2</strong>패키지의 <code>melt</code>, <code>dcast</code>함수를 적용한 것과 비교해보겠다.</p>
 <pre class="r"><code>kable(
   benchmark(
   melt.df = melt(ph.df, measure.vars =  c(&quot;tCholesterol&quot;, &quot;HDL&quot;, &quot;LDL&quot;, &quot;TG&quot;), id.vars = c(&quot;FID&quot;,&quot;ID&quot;,&quot;sex&quot;,&quot;age&quot;), variable.name = &quot;Lipid&quot;, value.name = &quot;value&quot;, na.rm =F), 
@@ -3226,7 +3226,7 @@ kable(
 </ul>
 <p>8개 조합</p>
 <div id="for" class="section level3">
-<h3>For</h3>
+<h3><code>For</code></h3>
 <pre class="r"><code>ybar= c(&quot;DXA_total_tscore&quot;, &quot;FBS&quot;,&quot;tCholesterol&quot;,&quot;HDL&quot;,&quot;LDL&quot;,&quot;TG&quot;,&quot;SBP&quot;,&quot;DBP&quot;)
 
 
@@ -3285,7 +3285,7 @@ out</code></pre>
 ## sex         -3.9415045 0.40350073 -9.768271 3.543069e-22</code></pre>
 </div>
 <div id="lapply" class="section level3">
-<h3>lapply</h3>
+<h3><code>lapply</code></h3>
 <pre class="r"><code>lapply(ybar, CoefExtract, xs=&quot;age+sex&quot;, data=ph)</code></pre>
 <pre><code>## [[1]]
 ##                Estimate Std. Error    t value     Pr(&gt;|t|)
@@ -3336,8 +3336,8 @@ out</code></pre>
 ## sex         -3.9415045 0.40350073 -9.768271 3.543069e-22</code></pre>
 </div>
 <div id="mclapply" class="section level3">
-<h3>mclapply</h3>
-<p><code>mclapply</code>는 윈도우에선 지원되지 않는다.</p>
+<h3><code>mclapply</code></h3>
+<p><code>mclapply</code>는 기본으로 설치된 <strong>parallel</strong> 패키지를 통해 이용할 수 있고 윈도우는 지원하지 않는다.</p>
 <pre class="r"><code>library(parallel)
 
 ## Setting core
@@ -3464,7 +3464,7 @@ options(&quot;mc.cores&quot;)</code></pre>
 <pre class="r"><code>ybar= c(&quot;DXA_total_tscore&quot;, &quot;FBS&quot;,&quot;tCholesterol&quot;,&quot;HDL&quot;,&quot;LDL&quot;,&quot;TG&quot;,&quot;SBP&quot;,&quot;DBP&quot;)
 xbar= c(&quot;1&quot;,&quot;age&quot;, &quot;age + sex&quot;, &quot;age + sex + BMI&quot;, &quot;age + sex + BMI + smoke + alcohol &quot;)</code></pre>
 <div id="for-1" class="section level3">
-<h3>for</h3>
+<h3><code>for</code></h3>
 <pre class="r"><code>out=list()
 
 for (y in ybar){
@@ -3722,7 +3722,7 @@ out</code></pre>
 ## alcohol     -0.1001832 0.23815972 -0.4206557  6.740398e-01</code></pre>
 </div>
 <div id="mapply" class="section level3">
-<h3>mapply</h3>
+<h3><code>mapply</code></h3>
 <pre class="r"><code>yx.list = CJ(y= ybar, xs= xbar)
 mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.NAMES = F)</code></pre>
 <pre><code>## [[1]]
@@ -3974,7 +3974,7 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 ## alcohol       0.3095217 0.80940766  0.3824052 7.021907e-01</code></pre>
 </div>
 <div id="mcmapply" class="section level3">
-<h3>mcmapply</h3>
+<h3><code>mcmapply</code></h3>
 <pre class="r"><code>mcmapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.NAMES = F)</code></pre>
 <pre><code>## [[1]]
 ##             Estimate Std. Error  t value Pr(&gt;|t|)
