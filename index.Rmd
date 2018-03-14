@@ -13,7 +13,7 @@ output:
 * 3월 14일
     + 가로 스크롤 추가
     + 하이퍼링크 추가: [Likelihood](probability_likelihood.html), [Normal distribution](Normal_distribution.html)
-    + [5차방정식은 5차방정식은 근의 공식이 없다 (미완)](eq5.html)
+    + [5차방정식은 근의 공식이 없다 (미완)](eq5.html)
 
 
 * 3월 13일
