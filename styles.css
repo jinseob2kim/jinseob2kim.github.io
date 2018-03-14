@@ -3,4 +3,6 @@ blockquote {
 }
 
 
+pre, code {white-space:pre !important; overflow-x:scroll !important}
+
 

@@ -13,7 +13,7 @@ output:
 
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE,cache=T, message=F, warning=F)
+knitr::opts_chunk$set(echo = TRUE,cache=T, message=F, warning=F,tidy = F)
 library(knitr)
 ```
 
@@ -684,6 +684,10 @@ kable(
 
 **tableone** 패키지를 이용하면 간단하게 논문에 들어갈 table 1을 만들 수 있다. TG $\ge200$ 을 기준으로 그룹을 나누어 table 1을 만들어보도록 하자. 편의상 몇가지 변수만 뽑아 결측치 없는 데이터를 만든 후 table 1을 만들겠다.
 
+
+
+
+
 ```{r,cache=F}
 #install.packages("tableone")
 library(tableone)
@@ -702,7 +706,7 @@ vars.tb1 = names(ph)[c(3:20,27,28)]
 vars.tb1
 
 ## Na omit
-ph.omit = na.omit(ph, vars)
+ph.omit = na.omit(ph, vars.tb1)
 ```
 
 ## Ctrl + C & Ctrl + V  
@@ -753,7 +757,7 @@ zz= print(tb1,
           exact = c("Sex", "alcohol"), 
           smd = TRUE, 
           cramVars = "Sex", 
-          printToggle=T)
+          printToggle=T,quote=T)
 ```
 
 
