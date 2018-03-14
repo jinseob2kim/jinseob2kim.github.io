@@ -440,42 +440,49 @@ div.tocify {
 <h3>일반화</h3>
 <p>동전과 주사위의 예를 간략히 정리해보고 그 결론을 조금씩 일반화해보자. 먼저 이항분포와 정규분포의 표현으로 두 예를 기술하면</p>
 <ol style="list-style-type: decimal">
-<li><span class="math inline">\(B(1000,0.5)\)</span>는 <span class="math inline">\(N(1000\times 0.5, 1000\times 0.5 \times 0.5)\)</span> 와 거의 같다.</li>
-<li><span class="math inline">\(B(600,\frac{1}{6})\)</span>는 <span class="math inline">\(N(600\times \frac{1}{6}, 600\times \frac{1}{6} \times \frac{5}{6})\)</span>와 거의 같다.</li>
+<li><p><span class="math inline">\(B(1000,0.5)\)</span>는 <span class="math inline">\(N(1000\times 0.5, 1000\times 0.5 \times 0.5)\)</span> 와 거의 같다.</p></li>
+<li><p><span class="math inline">\(B(600,\dfrac{1}{6})\)</span>는 <span class="math inline">\(N(600\times \dfrac{1}{6}, 600\times \dfrac{1}{6} \times \dfrac{5}{6})\)</span>와 거의 같다.</p></li>
 </ol>
-<p>가 된다(<span class="math inline">\(600\times \frac{1}{6} \times \frac{5}{6}=83.3\)</span>). 시행횟수가 더 커지면 더 정규분포에 가까워 질 것이라는 것이 우리의 예상이므로 이를 표현하면 다음과 같다.</p>
+<p>가 된다(<span class="math inline">\(600\times \dfrac{1}{6} \times \dfrac{5}{6}=83.3\)</span>). 시행횟수가 더 커지면 더 정규분포에 가까워 질 것이라는 것이 우리의 예상이므로 이를 표현하면 다음과 같다.</p>
 <ol style="list-style-type: decimal">
-<li>시행횟수 <span class="math inline">\(N\)</span>이 커질 때, <span class="math inline">\(B(N,0.5)\)</span>는 <span class="math inline">\(N(N \times 0.5, N \times 0.5 \times 0.5)\)</span>와 거의 같아진다.</li>
-<li>시행횟수 <span class="math inline">\(N\)</span>이 커질 때, <span class="math inline">\(B(N,\frac{1}{6})\)</span>는 <span class="math inline">\(N(N \times \frac{1}{6}, N \times \frac{1}{6} \times \frac{5}{6})\)</span>와 거의 같아진다.</li>
+<li><p>시행횟수 <span class="math inline">\(N\)</span>이 커질 때, <span class="math inline">\(B(N,0.5)\)</span>는 <span class="math inline">\(N(N \times 0.5, N \times 0.5 \times 0.5)\)</span>와 거의 같아진다.</p></li>
+<li><p>시행횟수 <span class="math inline">\(N\)</span>이 커질 때, <span class="math inline">\(B(N,\dfrac{1}{6})\)</span>는 <span class="math inline">\(N(N \times \dfrac{1}{6}, N \times \dfrac{1}{6} \times \dfrac{5}{6})\)</span>와 거의 같아진다.</p></li>
 </ol>
 <p>두 예상을 종합하면 우리는 어떤 추측을 할 수 있을까? 확률을 <span class="math inline">\(p\)</span>로 바꿔놓고 보면 다음과 같이 두 예상은 하나로 합쳐지게 된다.</p>
-<ul>
-<li>시행횟수 <span class="math inline">\(N\)</span>이 커질 때, <span class="math inline">\(B(N,p)\)</span>는 <span class="math inline">\(N(Np, Npq)\)</span>와 거의 같아진다.</li>
-</ul>
+<blockquote>
+<p>시행횟수 <span class="math inline">\(N\)</span>이 커질 때 <span class="math inline">\(B(N,p)\)</span>는 <span class="math inline">\(N(Np, Npq)\)</span>와 거의 같아진다.</p>
+</blockquote>
 <p>그런데 이것은 드무아브르-라플라스의 정리라는 이름으로 이미 수학적으로 증명 되어 있는 내용이다. 따라서 우리는 시행횟수 <span class="math inline">\(N\)</span>이 커진다면 확률 <span class="math inline">\(p\)</span>인 사건을 <span class="math inline">\(N\)</span>번 시행하는 이항분포가 평균 <span class="math inline">\(Np\)</span>, 분산 <span class="math inline">\(Npq\)</span>인 정규분포와 거의 같아짐을 알 수 있으며, 따라서 정규분포 또한 이항분포와 마찬가지로 세상의 수많은 일들을 설명할 수 있는 분포임을 예상할 수 있다.</p>
 </div>
 </div>
 <div id="-------." class="section level2">
 <h2>오차의 법칙: 오차라면 마땅히 가지고 있어야 할 조건들.</h2>
-<p>이번에는 수학자 가우스(Gauss)가 정규분포를 유도한 방법을 알아보도록 하자. 가우스는 이항분포에서 정규분포를 유도하는 방법과는 별개로 오차에 대한 고찰을 통해 정규분포를 유도하였는데, 여기서는 앞단원의 <code>나의 실제 키</code> 예제와의 비교를 통해 설명하도록 하겠다. <code>나의 실제 키</code> 예제의 핵심을 간단히 말하면 <strong>정규분포를 인정한다면, 측정값의 평균을 실제값이라 여기는 우리의 직관은 옳다</strong>는 것이며 좀 더 정확히 표현하면 다음과 같다.</p>
+<p>이번에는 수학자 가우스(Gauss)가 정규분포를 유도한 방법을 알아보도록 하자. 가우스는 이항분포에서 정규분포를 유도하는 방법과는 별개로 오차에 대한 고찰을 통해 정규분포를 유도하였는데, 여기서는 앞단원의 <code>나의 실제 키</code> 예제와의 비교를 통해 설명하도록 하겠다. <code>나의 실제 키</code> 예제의 핵심을 간단히 말하면</p>
+<blockquote>
+<p>정규분포를 인정한다면, 측정값의 평균을 실제값이라 여기는 우리의 직관은 옳다</p>
+</blockquote>
+<p>는 것이며 좀 더 정확히 표현하면 다음과 같다.</p>
 <ol style="list-style-type: decimal">
-<li>키의 측정값 <span class="math inline">\(x\)</span>이 실제 키의 값인 <span class="math inline">\(\mu\)</span>를 평균으로 하는 정규분포를 따른다면 즉, <strong>오차(error) <span class="math inline">\(\epsilon=x-\mu\)</span>가 평균 0인 정규분포를 따른다면</strong></li>
-<li>실제 키 <span class="math inline">\(\mu\)</span> MLE, 즉 <strong>실제 키일 가능성이 가장 높은 값은 측정값의 평균</strong>이다.</li>
+<li><p>키의 측정값 <span class="math inline">\(x\)</span>이 실제 키의 값인 <span class="math inline">\(\mu\)</span>를 평균으로 하는 정규분포를 따른다면 즉, <strong>오차(error) <span class="math inline">\(\epsilon=x-\mu\)</span>가 평균 0인 정규분포를 따른다면</strong></p></li>
+<li><p>실제 키 <span class="math inline">\(\mu\)</span> MLE, 즉 <strong>실제 키일 가능성이 가장 높은 값은 측정값의 평균</strong>이다.</p></li>
 </ol>
-<p>가우스의 논리는 이것을 뒤짚으면 된다. 즉, <strong>측정값의 평균을 실제값이라 여기는 우리의 직관이 옳다면, 오차는 정규분포를 따른다</strong>는 것이며 좀 더 풀어서 쓰면 다음과 같다.</p>
+<p>가우스의 논리는 이것을 뒤짚으면 된다. 즉,</p>
+<blockquote>
+<p>측정값의 평균을 실제값이라 여기는 우리의 직관이 옳다면, 오차는 정규분포를 따른다</p>
+</blockquote>
+<p>는 것이며 좀 더 풀어서 쓰면 다음과 같다.</p>
 <ol style="list-style-type: decimal">
-<li>실제 키의 MLE, 즉 실제 키일 가능성이 가장 높은 값은 측정값의 평균이라면</li>
-<li>오차는 정규분포를 따른다.</li>
+<li><p>실제 키의 MLE, 즉 실제 키일 가능성이 가장 높은 값은 측정값의 평균이라면</p></li>
+<li><p>오차는 정규분포를 따른다.</p></li>
 </ol>
 <p>가우스는 여기에 오차라면 마땅히 가져야 할 조건 3개를 추가하여 다음과 같은 <strong>오차의 법칙</strong>을 제시하였다.</p>
 <ol style="list-style-type: decimal">
-<li>+오차와 -오차가 나올 가능성은 같다. 즉, 오차의 분포를 나타내는 확률밀도 함수 <span class="math inline">\(f\)</span>는 <span class="math inline">\(f(-\epsilon)=f(\epsilon)\)</span>인 좌우대칭 함수이다.<br />
-</li>
-<li>작은 오차가 나올 가능성이 큰 오차가 나올 가능성보다 크다. 즉, <span class="math inline">\(f(\epsilon)\)</span>는 위로 볼록한 모양이다.</li>
-<li><span class="math inline">\(f(\epsilon)\)</span>는 2번 미분가능하고, 전체 확률은 1이다. 즉, <span class="math inline">\(\int_{-\infty}^{\infty} f(\epsilon) d\epsilon=1\)</span></li>
-<li>참값의 MLE는 측정값의 평균값이다. 즉, <span class="math inline">\(n\)</span>번 측정하여 측정값을 각각 <span class="math inline">\(x_1, x_2, \cdots, x_n\)</span>이라 할 때 가능도 <span class="math inline">\(L=f(x_1-\mu)f(x_2-\mu)\dots f(x_n-\mu)\)</span>는 <span class="math inline">\(\mu=\frac{x_1+x_2+\cdots+x_n}{n}\)</span>에서 최대값을 갖는다.</li>
+<li><p>(+) 오차와 (-) 오차가 나올 가능성은 같다. 즉, 오차의 분포를 나타내는 확률밀도 함수 <span class="math inline">\(f\)</span>는 <span class="math inline">\(f(-\epsilon)=f(\epsilon)\)</span>인 좌우대칭 함수이다.</p></li>
+<li><p>작은 오차가 나올 가능성이 큰 오차가 나올 가능성보다 크다. 즉, <span class="math inline">\(f(\epsilon)\)</span>는 위로 볼록한 모양이다.</p></li>
+<li><p><span class="math inline">\(f(\epsilon)\)</span>는 2번 미분가능하고, 전체 확률은 1이다. 즉, <span class="math inline">\(\int_{-\infty}^{\infty} f(\epsilon) d\epsilon=1\)</span></p></li>
+<li><p>참값의 MLE는 측정값의 평균값이다. 즉, <span class="math inline">\(n\)</span>번 측정하여 측정값을 각각 <span class="math inline">\(x_1, x_2, \cdots, x_n\)</span>이라 할 때 가능도 <span class="math inline">\(L=f(x_1-\mu)f(x_2-\mu)\dots f(x_n-\mu)\)</span>는 <span class="math inline">\(\mu=\dfrac{x_1+x_2+\cdots+x_n}{n}\)</span>에서 최대값을 갖는다.</p></li>
 </ol>
-<p>조건 1,2,3는 직관적으로 오차의 성질로 받아들일 수 있는 조건들로 이들을 포함한 총 4개의 조건에서 정규분포의 확률밀도함수(PDF)를 직접 수학적으로 유도할 수 있고, 결국 정규분포가 세상의 온갖 측정값을 설명하는 중요한 분포라는 결론에 이르게 된다. 혹시 유도 과정이 궁금한 독자는 <a href="http://wiki.mathnt.net/index.php?title=정규분포와_그_확률밀도함수" class="uri">http://wiki.mathnt.net/index.php?title=정규분포와_그_확률밀도함수</a> 를 참고하기 바란다.</p>
+<p>조건 1, 2, 3는 직관적으로 오차의 성질로 받아들일 수 있는 조건들로 이들을 포함한 총 4개의 조건에서 정규분포의 확률밀도함수(PDF)를 직접 수학적으로 유도할 수 있고, 결국 정규분포가 세상의 온갖 측정값을 설명하는 중요한 분포라는 결론에 이르게 된다. 혹시 유도 과정이 궁금한 독자는 <a href="http://wiki.mathnt.net/index.php?title=정규분포와_그_확률밀도함수" class="uri">http://wiki.mathnt.net/index.php?title=정규분포와_그_확률밀도함수</a> 를 참고하기 바란다.</p>
 </div>
 <div id="---ok" class="section level2">
 <h2>중심극한정리: 무조건 정규분포 OK?</h2>
@@ -485,11 +492,11 @@ div.tocify {
 <p>앞단원에서 다루었던 찌그러진 동전을 다시 생각해 보자. 이 동전은 모양이 찌그러져서 앞면이 나올 확률 <span class="math inline">\(p\)</span>가 0.5가 아닌 0.4였으며, 앞면이 나오는 사건을 1, 뒷면이 나오는 경우를 0이라 하면 분산은 <span class="math inline">\(p \times (1-p)^2 + (1-p) \times (0-p)^2 = p(1-p) = 0.24\)</span>이다.</p>
 <p>이제 직접 동전을 여러 번 던져서 앞면이 나올 확률을 계산한 후, 실제 확률인 0.4와 얼마가 차이가 나는지 알아볼 것인데 그 과정은 다음과 같다.</p>
 <ol style="list-style-type: decimal">
-<li>앞면이 나올 확률을 얻기 위해 수행한 동전 던지기 횟수, 즉 표본수를 <span class="math inline">\(n\)</span>이라 하자.</li>
-<li><span class="math inline">\(n=10\)</span>일 때 앞면이 나올 확률 <span class="math inline">\(\hat{p}\)</span>을 계산한다.</li>
-<li>2의 과정을 10000번 반복하여 10000개의 <span class="math inline">\(\hat{p}\)</span>를 얻는다. 꼭 10000개일 필요는 없으며 <span class="math inline">\(\hat{p}\)</span>의 분포를 파악할 수 있을 정도면 된다.</li>
-<li><span class="math inline">\(\hat{p}\)</span>들의 분포를 그래프로 그려보고 그것들의 평균, 분산을 구해본다.</li>
-<li><span class="math inline">\(n=30, 100\)</span>인 경우에도 마찬가지 과정을 수행한다.</li>
+<li><p>앞면이 나올 확률을 얻기 위해 수행한 동전 던지기 횟수, 즉 표본수를 <span class="math inline">\(n\)</span>이라 하자.</p></li>
+<li><p><span class="math inline">\(n=10\)</span>일 때 앞면이 나올 확률 <span class="math inline">\(\hat{p}\)</span>을 계산한다.</p></li>
+<li><p>2의 과정을 10000번 반복하여 10000개의 <span class="math inline">\(\hat{p}\)</span>를 얻는다. 꼭 10000개일 필요는 없으며 <span class="math inline">\(\hat{p}\)</span>의 분포를 파악할 수 있을 정도면 된다.</p></li>
+<li><p><span class="math inline">\(\hat{p}\)</span>들의 분포를 그래프로 그려보고 그것들의 평균, 분산을 구해본다.</p></li>
+<li><p><span class="math inline">\(n=30, 100\)</span>인 경우에도 마찬가지 과정을 수행한다.</p></li>
 </ol>
 <div class="figure" style="text-align: center">
 <img src="Normal_distribution_files/figure-html/unnamed-chunk-3-1.png" alt="확률분포 &amp; 표본평균분포: 찌그러진 동전 던지기" width="960" />
@@ -499,15 +506,19 @@ div.tocify {
 </div>
 <p>그림을 보면 아래와 같은 몇 가지의 규칙을 발견할 수 있다.</p>
 <ol style="list-style-type: decimal">
-<li><span class="math inline">\(n\)</span>이 증가할수록, 특히 30 이상부터는 <span class="math inline">\(\hat{p}\)</span>의 분포는 정규분포와 비슷해진다.</li>
-<li><span class="math inline">\(\hat{p}\)</span>의 평균은 실제 <span class="math inline">\(p\)</span>값인 0.4와 가까워진다.</li>
-<li><span class="math inline">\(\hat{p}\)</span>의 분산은 실제 앞면이 나오는 사건의 분산을 <span class="math inline">\(n\)</span>으로 나눈 값인 <span class="math inline">\(\frac{0.24}{n}=\frac{p(1-p)}{n}\)</span>과 가까워진다.</li>
+<li><p><span class="math inline">\(n\)</span>이 증가할수록, 특히 30 이상부터는 <span class="math inline">\(\hat{p}\)</span>의 분포는 정규분포와 비슷해진다.</p></li>
+<li><p><span class="math inline">\(\hat{p}\)</span>의 평균은 실제 <span class="math inline">\(p\)</span>값인 0.4와 가까워진다.</p></li>
+<li><p><span class="math inline">\(\hat{p}\)</span>의 분산은 실제 앞면이 나오는 사건의 분산을 <span class="math inline">\(n\)</span>으로 나눈 값인 <span class="math inline">\(\dfrac{0.24}{n}=\dfrac{p(1-p)}{n}\)</span>과 가까워진다.</p></li>
 </ol>
-<p>이제 이것들을 종합하면 <strong><span class="math inline">\(n\)</span>이 커지면 <span class="math inline">\(\hat{p}\)</span>는 평균이 <span class="math inline">\(p\)</span>이고 분산이 <span class="math inline">\(\frac{p(1-p)}{n}\)</span>인 정규분포, 즉 <span class="math inline">\(N(p,\frac{p(1-p)}{n})\)</span>을 따른다</strong>는 추측을 할 수 있다.</p>
+<p>이제 이것들을 종합하면</p>
+<blockquote>
+<p><span class="math inline">\(n\)</span>이 커지면 <span class="math inline">\(\hat{p}\)</span>는 평균이 <span class="math inline">\(p\)</span>이고 분산이 <span class="math inline">\(\dfrac{p(1-p)}{n}\)</span>인 정규분포, 즉 <span class="math inline">\(N(p,\frac{p(1-p)}{n})\)</span>을 따른다</p>
+</blockquote>
+<p>는 추측을 할 수 있다.</p>
 </div>
 <div id="----." class="section level3">
 <h3>주사위를 던져서 나오는 숫자의 평균값.</h3>
-<p>이번에는 다시 주사위 이야기로 돌아가서 주사위를 던졌을 때 평균적으로 얼마가 나올 것인지 생각해 보자. 1,2,3,4,5,6 중 랜덤으로 하나가 나올 것이므로 평균(<span class="math inline">\(\mu\)</span>)은 <span class="math inline">\(\frac{1+2+3+4+5+6}{6}=3.5\)</span>가 되고 분산(<span class="math inline">\(\sigma^2\)</span>)을 구해보면 <span class="math inline">\(\frac{(1-3.5)^2+(2-3.5)^2+\cdots+(6-3.5)^2}{6}\approx 2.92\)</span>가 된다. 이제 동전던지기 때와 마찬가지로 아래의 시행을 통해 표본평균(<span class="math inline">\(\bar{X}\)</span>)과 실제 평균(<span class="math inline">\(\mu\)</span>)을 비교해 보겠다. 아</p>
+<p>이번에는 다시 주사위 이야기로 돌아가서 주사위를 던졌을 때 평균적으로 얼마가 나올 것인지 생각해 보자. 1,2,3,4,5,6 중 랜덤으로 하나가 나올 것이므로 평균(<span class="math inline">\(\mu\)</span>)은 <span class="math inline">\(\dfrac{1+2+3+4+5+6}{6}=3.5\)</span>가 되고 분산(<span class="math inline">\(\sigma^2\)</span>)을 구해보면 <span class="math inline">\(\dfrac{(1-3.5)^2+(2-3.5)^2+\cdots+(6-3.5)^2}{6}\approx 2.92\)</span>가 된다. 이제 동전던지기 때와 마찬가지로 아래의 시행을 통해 표본평균(<span class="math inline">\(\bar{X}\)</span>)과 실제 평균(<span class="math inline">\(\mu\)</span>)을 비교해 보겠다.</p>
 <div class="figure" style="text-align: center">
 <img src="Normal_distribution_files/figure-html/unnamed-chunk-4-1.png" alt="확률분포 &amp; 표본평균분포: 주사위 던지기" width="960" />
 <p class="caption">
@@ -516,12 +527,16 @@ div.tocify {
 </div>
 <p>그림을 보면 동전던지기 때와 유사하다는 느낌을 받을 수 있는데 아래와 같이 결과를 정리해보면 더욱 확실해진다.</p>
 <ol style="list-style-type: decimal">
-<li><span class="math inline">\(n\)</span>이 증가할수록, 특히 30 이상부터는 표본평균 <span class="math inline">\(\bar{X}\)</span>의 분포는 정규분포와 유사해진다.</li>
-<li><span class="math inline">\(\bar{X}\)</span>의 평균은 실제 평균인 <span class="math inline">\(\mu=3.5\)</span>에 가까워진다.</li>
-<li><span class="math inline">\(\bar{X}\)</span>의 분산은 <span class="math inline">\(\frac{2.92}{n}=\frac{\sigma^2}{n}\)</span>에 가까워진다.</li>
+<li><p><span class="math inline">\(n\)</span>이 증가할수록, 특히 30 이상부터는 표본평균 <span class="math inline">\(\bar{X}\)</span>의 분포는 정규분포와 유사해진다.</p></li>
+<li><p><span class="math inline">\(\bar{X}\)</span>의 평균은 실제 평균인 <span class="math inline">\(\mu=3.5\)</span>에 가까워진다.</p></li>
+<li><p><span class="math inline">\(\bar{X}\)</span>의 분산은 <span class="math inline">\(\dfrac{2.92}{n}=\dfrac{\sigma^2}{n}\)</span>에 가까워진다.</p></li>
 </ol>
-<p>따라서 이것들을 종합하면 동전던지기 때와 비슷하게 <strong><span class="math inline">\(n\)</span>이 커지면 <span class="math inline">\(\bar{X}\)</span>는 평균이 <span class="math inline">\(\mu\)</span>이고 분산이 <span class="math inline">\(\frac{\sigma^2}{n}\)</span>인 정규분포, 즉 <span class="math inline">\(N(\mu,\frac{\sigma^2}{n})\)</span>을 따른다</strong>는 추측을 할 수 있다.</p>
-<p>이쯤되면 확률분포의 종류에 상관없이 <span class="math inline">\(n\)</span>이 커지면 표본평균 <span class="math inline">\(\bar{X}\)</span>는 평균이 <span class="math inline">\(\mu\)</span>이고 분산이 <span class="math inline">\(\frac{\sigma^2}{n}\)</span>인 정규분포를 따르지 않을까? 라는 과감한 추측을 할 수도 있을 것 같다. 그러나 동전던지기나 주사위 던지기는 둘 다 사건의 갯수가 유한한 이산확률분포로 일반화하기에는 무리가 있어, 연속확률분포에 대해서도 실험을 해 봐야 할 것 같다. 정규분포를 비롯한 몇 가지 예를 통해 연속확률분포의 경우에도 같은 추측을 할 수 있을지 알아보도록 하자.</p>
+<p>따라서 이것들을 종합하면 동전던지기 때와 비슷하게</p>
+<blockquote>
+<p><span class="math inline">\(n\)</span>이 커지면 <span class="math inline">\(\bar{X}\)</span>는 평균이 <span class="math inline">\(\mu\)</span>이고 분산이 <span class="math inline">\(\dfrac{\sigma^2}{n}\)</span>인 정규분포, 즉 <span class="math inline">\(N(\mu,\dfrac{\sigma^2}{n})\)</span>을 따른다</p>
+</blockquote>
+<p>는 추측을 할 수 있다.</p>
+<p>이쯤되면 확률분포의 종류에 상관없이 <span class="math inline">\(n\)</span>이 커지면 표본평균 <span class="math inline">\(\bar{X}\)</span>는 평균이 <span class="math inline">\(\mu\)</span>이고 분산이 <span class="math inline">\(\dfrac{\sigma^2}{n}\)</span>인 정규분포를 따르지 않을까? 라는 과감한 추측을 할 수도 있을 것 같다. 그러나 동전던지기나 주사위 던지기는 둘 다 사건의 갯수가 유한한 이산확률분포로 일반화하기에는 무리가 있어, 연속확률분포에 대해서도 실험을 해 봐야 할 것 같다. 정규분포를 비롯한 몇 가지 예를 통해 연속확률분포의 경우에도 같은 추측을 할 수 있을지 알아보도록 하자.</p>
 </div>
 <div id="--" class="section level3">
 <h3>표준정규분포에서 숫자 뽑기</h3>
@@ -532,7 +547,7 @@ div.tocify {
 확률분포 &amp; 표본평균분포: 표준정규분포
 </p>
 </div>
-<p>어떤가? 이번에도 역시 <span class="math inline">\(n=30\)</span>만 되어도 표본평균 <span class="math inline">\(\bar{X}\)</span>가 정규분포를 따르는 것을 느낄 수 있으며, <span class="math inline">\(\bar{X}\)</span>의 평균은 실제 평균 0에, 분산은 <span class="math inline">\(\frac{1}{n}\)</span>에 가까워졌고, 이제는 진짜 모든 경우에 우리의 추측이 성립하는 것 같다. 그래도 혹시나 하는 마음에 정규분포가 아닌 연속확률분포에서의 예제를 마지막으로 다루어 보겠다.</p>
+<p>어떤가? 이번에도 역시 <span class="math inline">\(n=30\)</span>만 되어도 표본평균 <span class="math inline">\(\bar{X}\)</span>가 정규분포를 따르는 것을 느낄 수 있으며, <span class="math inline">\(\bar{X}\)</span>의 평균은 실제 평균 0에, 분산은 <span class="math inline">\(\dfrac{1}{n}\)</span>에 가까워졌고, 이제는 진짜 모든 경우에 우리의 추측이 성립하는 것 같다. 그래도 혹시나 하는 마음에 정규분포가 아닌 연속확률분포에서의 예제를 마지막으로 다루어 보겠다.</p>
 </div>
 <div id="chi-square-distribution" class="section level3">
 <h3>카이제곱분포(Chi-square distribution)</h3>
@@ -545,14 +560,16 @@ div.tocify {
 </div>
 <p>그림을 살펴보면 <span class="math inline">\(n=10\)</span>일 때는 원래 카이제곱 분포만큼은 아니어도 미세하게 왼쪽으로 치우친 느낌이 들지만 <span class="math inline">\(n=30\)</span>만 되어도 정규분포의 모양을 보임을 확인할 수 있으며, 지금까지와 마찬가지로 표본평균들의 평균은 실제 카이제곱분포의 평균인 1, 분산은 카이제곱 분포의 분산을 표본수로 나눈 <span class="math inline">\(\frac{2}{n}\)</span>에 가까워지는 것을 확인할 수 있다.</p>
 <p>이제 한쪽으로 치우친 연속확률분포의 경우까지 확인했으므로 더 이상 망설이지 않고 외칠 수 있다</p>
-<p><strong>평균이 <span class="math inline">\(\mu\)</span>, 분산이 <span class="math inline">\(\sigma^2\)</span>인 모집단에서(정규분포일 필요 없음) <span class="math inline">\(n\)</span>개의 표본을 뽑아서 계산한 표본평균 <span class="math inline">\(\bar{X}\)</span>는 <span class="math inline">\(n\)</span>이 커질 때 <span class="math inline">\(N(\mu,\frac{\sigma^2}{n})\)</span>을 따른다.</strong></p>
+<blockquote>
+<p>평균이 <span class="math inline">\(\mu\)</span>, 분산이 <span class="math inline">\(\sigma^2\)</span>인 모집단에서(정규분포일 필요 없음) <span class="math inline">\(n\)</span>개의 표본을 뽑아서 계산한 표본평균 <span class="math inline">\(\bar{X}\)</span>는 <span class="math inline">\(n\)</span>이 커질 때 <span class="math inline">\(N(\mu,\frac{\sigma^2}{n})\)</span>을 따른다.</p>
+</blockquote>
 <p>이것이 바로 통계학에서 가장 중요하다고 일컬어지는 <strong>중심극한정리(Central Limit Theorem, CLT)</strong>이며 이미 수학적으로 증명이 되어 있다. 이제 정규분포가 얼마나 중요한 분포인지 느껴지는가? 모집단이 어떻게 생겼든 상관없이 30개 표본정도만 확보하면 표본평균들은 무조건 정규분포를 따른다고 우겨도 괜찮다는 뜻이다.</p>
 <p>이제 우리는 정규분포가 세상에서 가장 중요한 분포인 이유를 3가지나 알았다. <strong>이항분포</strong>에서도 만들 수 있고 가장 간단한 <strong>오차의 법칙</strong>으로부터도 만들 수 있으며 대부분의 <strong>표본평균을 설명하는 분포</strong>인 정규분포, 사람들이 왠만하면 정규분포만 쓰는 것은 지극히 정상적인 판단이라고 할 수 있다.</p>
 </div>
 </div>
 <div id="-" class="section level2">
 <h2>중심극한정리 고찰</h2>
-<p>앞서 중심극한정리를 통계학에서 가장 중요하다고 말했는데 이런 중요한 내용을 고작(?) 정규분포의 중요성을 설명하는 것에만 활용하는 것은 너무 아쉬운 일이라고 생각한다. 정규분포의 이야기를 제외하더라도 표본평균의 평균과 분산에 대한 이야기가 남아있지 않은가? 이 중 표본평균의 평균이 실제 평균에 가까워질 것은 직관적으로 당연하게 받아들일 수 있는 내용이지만, 분산에 대한 이야기는 그렇지 않다. 표본평균의 분산이 원래 모집단 분산을 <span class="math inline">\(n\)</span>으로 나눈 <span class="math inline">\(\frac{\sigma^2}{n}\)</span>이 된다는 것에서 우리는 무엇을 깨달을 수 있을까? 첫째로는 <strong>쪽수가 깡패(?)</strong>임을 알 수 있다. <span class="math inline">\(n\)</span>이 계속 커지면 표본평균의 분산은 점점 0에 가까워지게 되어 표본평균을 그냥 실제평균으로 간주해도 문제가 없게 된다. 학생 100명이 수학시험을 보았을 때, 10명을 뽑아 평균을 내는 것보다 50명을 뽑아 평균을 내는 것이 더 정확할 것이라는 지극히 자연스러운 이야기이다. 둘째로는 <strong>의심의 정도를 숫자로 표현할 수 있다</strong>는 점이며, 앞서 다루었던 찌그러진 동전의 예를 다시 떠올려보자. 우리는 동전이 찌그러져서 앞면이 나올 확률 <span class="math inline">\(p\)</span>가 0.4인줄로 알고 있다. 그런데 실제 동전을 10번 던졌더니 앞면이 6번 나와서 확률이 0.6으로 계산되어 실제 확률 0.4와 0.2가 차이난다면 이 일을 어떻게 받아들여야 하는가? 아래의 그림을 본 후에 생각해 보자.</p>
+<p>앞서 중심극한정리를 통계학에서 가장 중요하다고 말했는데 이런 중요한 내용을 고작(?) 정규분포의 중요성을 설명하는 것에만 활용하는 것은 너무 아쉬운 일이라고 생각한다. 정규분포의 이야기를 제외하더라도 표본평균의 평균과 분산에 대한 이야기가 남아있지 않은가? 이 중 표본평균의 평균이 실제 평균에 가까워질 것은 직관적으로 당연하게 받아들일 수 있는 내용이지만, 분산에 대한 이야기는 그렇지 않다. 표본평균의 분산이 원래 모집단 분산을 <span class="math inline">\(n\)</span>으로 나눈 <span class="math inline">\(\dfrac{\sigma^2}{n}\)</span>이 된다는 것에서 우리는 무엇을 깨달을 수 있을까? 첫째로는 <strong>쪽수가 깡패(?)</strong>임을 알 수 있다. <span class="math inline">\(n\)</span>이 계속 커지면 표본평균의 분산은 점점 0에 가까워지게 되어 표본평균을 그냥 실제평균으로 간주해도 문제가 없게 된다. 학생 100명이 수학시험을 보았을 때, 10명을 뽑아 평균을 내는 것보다 50명을 뽑아 평균을 내는 것이 더 정확할 것이라는 지극히 자연스러운 이야기이다. 둘째로는 <strong>의심의 정도를 숫자로 표현할 수 있다</strong>는 점이며, 앞서 다루었던 찌그러진 동전의 예를 다시 떠올려보자. 우리는 동전이 찌그러져서 앞면이 나올 확률 <span class="math inline">\(p\)</span>가 0.4인줄로 알고 있다. 그런데 실제 동전을 10번 던졌더니 앞면이 6번 나와서 확률이 0.6으로 계산되어 실제 확률 0.4와 0.2가 차이난다면 이 일을 어떻게 받아들여야 하는가? 아래의 그림을 본 후에 생각해 보자.</p>
 <div class="figure" style="text-align: center">
 <img src="Normal_distribution_files/figure-html/unnamed-chunk-7-1.png" alt="찌그러진 동전 던지기(중심극한분포 이용한 정규분포 근사)" width="1440" />
 <p class="caption">
