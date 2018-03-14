@@ -10,15 +10,23 @@ output:
 
 
 ### 2018
+* 3월 14일
+    + 가로 스크롤 추가
+    + 하이퍼링크 추가: [Likelihood](probability_likelihood.html), [Normal distribution](Normal_distribution.html)
+    + [5차방정식은 5차방정식은 근의 공식이 없다 (미완)](eq5.html)
+
+
 * 3월 13일
     + [Advanced R (1): Fast R & Table 만들기](radv1.html)
+
 
 * 2월 18일
     + 홈페이지 주소 변경 (mathemedicine $\rightarrow$ jinseob2kim)
     + 기존 댓글 지워짐
 
+
 * 2월 9일
-    + [리눅스 서버와 깃허브(github) 쉽게 사용하기](2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html)
+    + [리눅스 서버와 깃허브(github) 쉽게 사용하기 (미완)](2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html)
     + [GWAS visualization (1): Summary table](2018-02-09-gwas-visualization1.html)
     + [GWAS visualization (2): Interactive plot](2018-02-09-gwas-visualization2.html)
     + [GWAS visualization (3): Automation](2018-02-09-gwas-visualization3.html)
@@ -54,43 +62,46 @@ ggplot(d,aes(r,Orbit))+geom_point()+xlab("")+ylab("")
 
 ### 2017
 * 11월 22일
-    + Population Genetics Index: 유전체역학 2017
+    + [Population Genetics Index: 유전체역학 2017](PopGene.html)
 
 
 * 8월 26일
-    + GAM: 고려대학교 의과대학
+    + [GAM: 고려대학교 의과대학](gam_korea.html)
 
 
 ### 2016
 * 12월 9일
-    + *R* 의학통계 강의계획: 삼성서울병원
+    + [*R* 의학통계 강의계획: 삼성서울병원](rbasic_plan_smc.html)
+
+
 * 12월 15일
-    + *R* 의학통계: 삼성서울병원(1)
+    + [*R* 의학통계: 삼성서울병원(1)](r_smc_1.html)
 
 
 * 11월 30일
-    + *R*을 이용한 데이터 매니지먼트 기초
+    + [*R*을 이용한 데이터 매니지먼트 기초](rbasic.html)
 
 
 * 10월 31일
     + 메인페이지 그림 추가: Logistic Map
     
+
 * 10월 26일
-    + 가설검정의 심리학, 건강지표: DALY, QALY
+    + [가설검정의 심리학, 건강지표: DALY, QALY](health_metrics.html)
     
 * 10월 24일
-    + 조건부 확률로 알아보는 프로포즈 전략
+    + [조건부 확률로 알아보는 프로포즈 전략](propose.html)
     + Google Analytics 적용, SNS 주소 추가. 
 
 * 10월 22일
-    + 야구에서의 통계학: WAR
+    + [야구에서의 통계학: WAR](WAR.html)
 
 * 10월 21일
-    + ML 탭 추가, 딥러닝의 역사
+    + ML 탭 추가, [딥러닝의 역사](deep_learning.html)
     + 홈페이지 디자인 변경: Home 탭 삭제, 배경색과 목차 표현방법 변경.
  
 * 10월 20일
-    + Mathematics 탭 추가, 괴델의 불완전성 정리.
+    + Mathematics 탭 추가, [괴델의 불완전성 정리](godel.html).
     + 댓글기능 추가.
 
 

@@ -1,5 +1,5 @@
 ---
-title: "5차방정식은 근의 공식이 없다"
+title: "5차방정식은 근의 공식이 없다 (미완)"
 output: html_document
 ---
 

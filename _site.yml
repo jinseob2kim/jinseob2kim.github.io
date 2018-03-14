@@ -22,6 +22,8 @@ navbar:
       href: godel.html
     - text: 조건부 확률로 알아보는 프로포즈 전략
       href: propose.html
+    - text: 5차방정식은 근의 공식이 없다
+      href: eq5.html
   - text: ML
     menu:
     - text: 딥러닝의 역사
