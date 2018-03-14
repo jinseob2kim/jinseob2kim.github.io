@@ -11,17 +11,17 @@ output:
 
 ### 2018
 * 3월 13일
-    + Advanced R (1): Fast R & Table 만들기
+    + [Advanced R (1): Fast R & Table 만들기](radv1.html)
 
 * 2월 18일
     + 홈페이지 주소 변경 (mathemedicine $\rightarrow$ jinseob2kim)
     + 기존 댓글 지워짐
 
 * 2월 9일
-    + 리눅스 서버와 깃허브(github) 쉽게 사용하기
-    + GWAS visualization (1): Summary table
-    + GWAS visualization (2): Interactive plot
-    + GWAS visualization (3): Automation
+    + [리눅스 서버와 깃허브(github) 쉽게 사용하기](2018-02-09-리눅스-서버와-깃허브-github-쉽게-사용하기.html)
+    + [GWAS visualization (1): Summary table](2018-02-09-gwas-visualization1.html)
+    + [GWAS visualization (2): Interactive plot](2018-02-09-gwas-visualization2.html)
+    + [GWAS visualization (3): Automation](2018-02-09-gwas-visualization3.html)
 
 ```{r,echo=F,message=F,cache=T,fig.align="center",fig.width=30, fig.height=27}
 library(ggplot2)
