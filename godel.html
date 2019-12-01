@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,7 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -36,6 +37,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -84,9 +87,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,13 +101,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -122,7 +128,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -142,6 +147,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -163,47 +205,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -217,6 +278,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -252,8 +319,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -268,6 +333,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -314,6 +389,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -384,6 +471,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -411,22 +507,22 @@ div.tocify {
 </div>
 
 
-<div class="section level2">
+<div id="서론" class="section level2">
 <h2>서론</h2>
 <p>괴델의 불완전성 정리에 대한 많은 책들이 시중에 출판되어 있다. 허나 대부분이 역사와 증명의 의미에 치중되어 있고 실제 증명의 아이디어를 설명한 책은 거의 없으며, 있다고 하더라도 외국 서적을 번역하면서 난해한 표현이 많이 나와 이해하기가 어렵다. 이에 본 글에서는 불완전성 정리 증명의 핵심적인 아이디어를 크게 <strong>수학(mathematics)과 메타수학(meta-mathematics)</strong>, <strong>괴델수(Gödel number)</strong>, <strong>메타수학의 수학화</strong>의 3가지로 나누어 설명하겠다. 본 글이 불완전성정리의 아름다움을 느끼는 데 도움이 되길 바란다.</p>
 </div>
-<div id="mathematics-meta-mathematics" class="section level2">
+<div id="수학mathematics과-메타수학meta-mathematics" class="section level2">
 <h2>수학(mathematics)과 메타수학(meta-mathematics)</h2>
 <p>보통 불완전성 정리에 대한 책들에서는 간략하게 증명의 개요만 언급하는데 그것은 아래와 같다. <span class="math display">\[G: G는 \:증명불가능하다.\]</span></p>
 <p>만약 <span class="math inline">\(G\)</span>가 거짓이라면 <span class="math inline">\(G\)</span>는 증명가능하므로 참이된다. 이는 <span class="math inline">\(G\)</span>가 거짓이라는 데 모순이다. 따라서 <span class="math inline">\(G\)</span>는 참인데 <span class="math inline">\(G\)</span>의 내용은 <span class="math inline">\(G\)</span>가 증명불가능하다는 것이므로 결국 <span class="math inline">\(G\)</span>는 참이지만 증명불가능한 명제라는 것이다. 이 설명을 보고 고개를 끄덕 인 후 증명이 끝난 것 아닌가? 라는 생각을 할 수도 있을 것이다. 그러나 명제 내부에 명제 자신을 언급한 순환논리부분을 해결하지 않으면 안되고 사실 불완전성정리의 핵심부분도 이 부분이며 수학의 명제와 메타수학의 명제를 구분하는 것이 이해의 시작이 된다.</p>
-<div id="----" class="section level3">
+<div id="수학-명제와-메타수학-명제의-차이점" class="section level3">
 <h3>수학 명제와 메타수학 명제의 차이점</h3>
 <p>아주 간단한 수학 명제 하나를 살펴보자. <span class="math display">\[1+1=2\]</span></p>
 <p>이 표현은 수학에 속한 표현이다. 이제 다음 명제를 살펴보면 <span class="math display">\[``1+1=2&quot;는 \:수학\: 명제이다.\]</span></p>
 <p>이 진술은 앞에 나온 수학명제에 대해 무엇인가를 주장하고 있으며 따라서 수학이 아니라 메타수학의 명제라고 할 수 있다. 비슷하게 <strong><span class="math inline">\(x\)</span>는 변수이다</strong>, <span class="math inline">\(``x=1&quot;\)</span><strong>은 방정식이다</strong> 들도 수학 명제가 아니라 메타수학의 명제이다. 수학과 메타수학을 구별하는 것은 몇 번을 강조해도 지나치지 않은데 이 구별에 소홀한 것이 수많은 역설이 만들어지는 이유이기 때문이다. 이제 다시 처음 식을 살펴보면 <strong><span class="math inline">\(G\)</span>는 증명불가능하다</strong> 는 명제는 수학의 명제가 아니라 메타수학의 명제가 되고 따라서 수학에서 쓰는 증명방법(귀류법)을 그대로 써서 대충 주장하면 안되는 것이다. 괴델은 이 문제를 해결하기 위해 괴델수라는 독창적인 아이디어를 구사하여 메타수학의 명제를 수학의 명제로 바꾸었는데 괴델수부터 차근차근 알아보도록 하자.</p>
 </div>
 </div>
-<div id="godel-number" class="section level2">
+<div id="괴델수gödel-number" class="section level2">
 <h2>괴델수(Gödel number)</h2>
 <p>괴델수는 모든 기호, 변수, 명제, 명제묶음(증명)들에 유일한 숫자를 부여하는 것인데 몇가지 예를 들어보면 다음과 같다.</p>
 <table>
@@ -572,13 +668,13 @@ div.tocify {
 <p>이제 문장 (<span class="math inline">\(\exists x\)</span>)(<span class="math inline">\(x=sy\)</span>) 를 살펴보자. 이것은 <span class="math inline">\(y\)</span> 다음 수가 존재한다고 읽으며, 기본기호 하나하나의 괴델수를 살펴보면 8, 4, 13, 9, 8, 13, 5, 7, 17, 9이고 문장 전체의 괴델수는 다음과 같이 소수를 이용하여 표현한다. <span class="math display">\[2^8 \times 3^4 \times 5^{13} \times 7^9 \times 11^8 \times 13^{13} \times 17^5 \times 19^7 \times 23^{17} \times 29^9\]</span></p>
 <p>마찬가지로 증명에 대해서도 괴델수를 부여할 수 있는데 예를들어 증명이 두 서술로 되어 있고 각 서술의 괴델수가 <span class="math inline">\(m\)</span>과 <span class="math inline">\(n\)</span>이라면 증명의 괴델수는 <span class="math inline">\(2^m \times 3^n\)</span> 으로 표현한다. 이런식으로 모든 수학적 표현에 대해서 겹치지 않고 유일하게 괴델수를 부여할 수 있다. 한가지 예를 더 들면 괴델수 243,000,000은 <span class="math inline">\(2^6 \times 3^5 \times 5^6\)</span>으로 소인수분해 되며 지수부분인 6,5,6은 각각 0, <span class="math inline">\(=\)</span>, 0에 대응되므로 결국 <strong><span class="math inline">\(0=0\)</span></strong>이라는 수학명제를 나타내게 된다.</p>
 </div>
-<div id="-" class="section level2">
+<div id="메타수학의-수학화" class="section level2">
 <h2>메타수학의 수학화</h2>
 <p>괴델은 괴델수를 이용하여 메타수학의 명제를 수학의 명제로 바꾸는 데 성공하였는데 간단한 예를 들어보겠다. <span class="math inline">\(``\sim(0=0)&quot;\)</span> 는 <strong>0은 0이 아니다</strong> 라는 단순한 수학 명제인 반면 <strong>수학 명제 <span class="math inline">\(``\sim(0=0)&quot;\)</span>의 첫 번째 기호는 틸드(<span class="math inline">\(\sim\)</span>)이다.</strong>는 수학명제가 아니라 메타수학의 명제이다. 그런데 이 메타수학의 명제는 적당한 과정을 거치면 수학명제로 바뀌게 되는데, 편의상 <span class="math inline">\(``\sim(0=0)&quot;\)</span>의 괴델수를 <span class="math inline">\(a\)</span>라고 하고 위의 상항기호 표에서 <span class="math inline">\(``\sim&quot;\)</span>의 괴델수가 1임을 기억하자. 그렇다면 첫 번째 기호가 <span class="math inline">\(``\sim&quot;\)</span>이라는 것은 곧 <span class="math inline">\(a\)</span>를 소인수분해했을 때 제일 작은 소수인 2의 지수가 1임을 의미하게 되고 메타수학의 명제는 <strong><span class="math inline">\(2\)</span>는 <span class="math inline">\(a\)</span>의 인수이지만 <span class="math inline">\(2^2\)</span>은 <span class="math inline">\(a\)</span>의 인수가 아니다.</strong>와 같이 수학명제로 바뀌게 된다. 기호로 표현하기 위해 표현을 바꾸면 <strong><span class="math inline">\(y=z\times 2\)</span>인 <span class="math inline">\(z\)</span>가 존재하고, <span class="math inline">\(y=z\times 2 \times 2\)</span>인 <span class="math inline">\(z\)</span>는 존재하지 않는다.</strong> 가 되며 실제로 이를 기호로 표현하면 다음과 같다.</p>
 <p><span class="math display">\[(\exists z) (sss\cdots sss0=z\times ss0) \cdot \sim(\exists z) (sss\cdots sss0=z\times (ss0 \times ss0)) 
 \]</span> (<span class="math inline">\(sss\cdots sss0\)</span>에서 <span class="math inline">\(s\)</span>는 정확히 <span class="math inline">\(a\)</span>번 나타난다.) 이와 비슷한 방법으로 모든 메타수학의 명제를 괴델수를 이용하여 수학의 명제로 바꿀 수 있다.</p>
 </div>
-<div id="-" class="section level2">
+<div id="불완전성-정리" class="section level2">
 <h2>불완전성 정리</h2>
 <p>이제 불완전성 정리를 천천히 이해해보자. <strong>Dem</strong>과 <strong>Sub/sub</strong>의 개념을 정의한 후 증명의 핵심 아이디어로 들어가 보겠다.</p>
 <div id="dem" class="section level3">
@@ -591,7 +687,7 @@ div.tocify {
 <p><span class="math display">\[2^8 \times 3^4 \times 5^{13} \times 7^9 \times 11^8 \times 13^{13} \times 17^5 \times 19^7 \times 23^{7} \times 29^7 \times 31^7 \times 37^7 \times \cdots (P_{k+10})^9\]</span> (<span class="math inline">\(P_{k+10}\)</span>: <span class="math inline">\(k+10\)</span>번 째 소수)</p>
 <p>얼핏 보기에 명제의 괴델수를 명제 그 자체에 대입한다는 것이 순환논리같은 느낌을 주는데 이것이 바로 괴델의 핵심적인 아이디어 중 하나이다. 이제부터 본격적인 증명의 내용으로 들어가기로 하자.</p>
 </div>
-<div id="--1" class="section level3">
+<div id="불완전성-정리-1" class="section level3">
 <h3>불완전성 정리</h3>
 <p>불완전성 정리의 증명은 <strong>괴델수 <span class="math inline">\(z\)</span>를 가진 명제는 증명불가능하다</strong>라는 메타수학의 명제를 수학의 명제로 바꾼 후, 이 명제의 특별한 경우가 증명될 수 없다는 것을 보이는것으로 이루어진다. 이제 다음의 명제를 살펴보자.</p>
 <p><span class="math display">\[\sim(\exists x)\text{Dem}(x,\text{Sub}(y, 17, y))\]</span></p>
@@ -600,9 +696,9 @@ div.tocify {
 <p>명제 <span class="math inline">\(G\)</span>가 바로 우리가 찾는 명제인데 이것의 메타수학적 의미를 살펴보면 <strong>괴델수 sub(<span class="math inline">\(n\)</span>, 17, <span class="math inline">\(n\)</span>)을 가진 명제는 증명할 수 없다</strong>이다. 이 메타수학 명제와 대응되는 수학명제의 괴델수를 <span class="math inline">\(g\)</span>라고 하고 <span class="math inline">\(g\)</span>는 어떤 숫자일지 생각해보자. 놀랍게도 <span class="math inline">\(g=\text{sub}(n, 17, n)\)</span>임을 알 수 있다. <strong><span class="math inline">\(G\)</span>는 괴델수 <span class="math inline">\(n\)</span>을 가진 명제에서 <span class="math inline">\(y\)</span>에 숫자 <span class="math inline">\(n\)</span>을 대입하여 만든 명제이므로, 이것의 괴델수 <span class="math inline">\(g\)</span>는 정확히 sub(<span class="math inline">\(n\)</span>, 17, <span class="math inline">\(n\)</span>)의 정의와 일치하게 된다</strong>. 이제 <span class="math inline">\(G\)</span> 의미를 다시 살펴보면 <strong>괴델 수 <span class="math inline">\(g\)</span>를 가진 명제는 증명불가능하다.</strong>이고 즉, <span class="math inline">\(G\)</span>는 증명불가능하다는 의미가 된다. 이제 맨 처음으로 돌아가자. <span class="math inline">\(G\)</span>에 대응되는 수학명제는 참이지만 증명불가능한 명제가 되어 불완전성의 정리가 증명된다.</p>
 </div>
 </div>
-<div class="section level2">
+<div id="마치며" class="section level2">
 <h2>마치며</h2>
-<p>필자는 고등학생때부터 괴델의 불완전성정리를 이해해보려고 괴델의 논문원본도 찾아보고 여러 교양서적을 많이 읽어보았었다. 그러나 논문을 다 보는것은 이해하기가 어렵고 교양서적은 겉핥기식으로만 나와있어서 최근까지도 증명의 핵심을 이해하지 못했었는데 출판사 승산에서 나온 ``괴델의 증명“을 읽으면서 한층 이해수준을 올릴 수 있었다. 이 책은 외국서적을 번역한 것으로 번역하면서 생소한 단어와 표현들이 많이나와 읽기가 어려운 부분이 있어 이번기회에 잘 풀어서 설명해볼 목적으로 글을 쓰게 되었다. 본 글이 논문과 교양서적 사이에서 가교 역할을 하여 불완전성 정리를 이해하는데 도움이 되길 기대한다.</p>
+<p>필자는 고등학생때부터 괴델의 불완전성정리를 이해해보려고 괴델의 논문원본도 찾아보고 여러 교양서적을 많이 읽어보았었다. 그러나 논문을 다 보는것은 이해하기가 어렵고 교양서적은 겉핥기식으로만 나와있어서 최근까지도 증명의 핵심을 이해하지 못했었는데 출판사 승산에서 나온 ``괴델의 증명&quot;을 읽으면서 한층 이해수준을 올릴 수 있었다. 이 책은 외국서적을 번역한 것으로 번역하면서 생소한 단어와 표현들이 많이나와 읽기가 어려운 부분이 있어 이번기회에 잘 풀어서 설명해볼 목적으로 글을 쓰게 되었다. 본 글이 논문과 교양서적 사이에서 가교 역할을 하여 불완전성 정리를 이해하는데 도움이 되길 기대한다.</p>
 </div>
 
 <p>Copyright &copy;2016 <a href="mailto:jinseob2kim@gmail.com">Jinseob Kim</a>&nbsp;&nbsp;
@@ -654,6 +750,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

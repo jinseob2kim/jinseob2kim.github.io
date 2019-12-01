@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,7 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -36,6 +37,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -84,9 +87,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,13 +101,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -122,7 +128,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -142,6 +147,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -163,47 +205,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -217,6 +278,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -252,8 +319,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -268,6 +333,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -314,6 +389,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -384,6 +471,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -412,7 +508,7 @@ div.tocify {
 
 
 <p>이 글은 2013년 12월에 썼던 것을 HTML형식으로 재정리한 내용이며 최신지견이 아님을 감안하길 바란다.</p>
-<div class="section level2">
+<div id="서론" class="section level2">
 <h2>서론</h2>
 <p>만화 <strong>드래곤볼</strong>을 보면 눈에 착용하는 스카우터라는 안경 비슷한 물건이 있다. 이것을 착용하고 사람을 관찰하면 그 사람의 전투력을 숫자 1개로 표시해 주는데 이는 싸움에서 이기는 능력을 숫자 1개로 단순히 제시해 줌으로서 많은 독자들이 드래곤볼에 빠지게 되는 하나의 원인이 되었다.</p>
 <p>최근 미국 메이저리그에서는 세이버메트릭스(Sabermetrics)라는 분야가 대두되고 선수의 능력을 판단하는 기준으로 활발히 활용되고 있는데, 이는 야구 기록을 수리통계학적으로 분석하여 전통적인 타율, 다승, 방어율 등의 지표를 넘어 어떤 선수가 승리를 부르는 선수인지를 정확히 파악하기 위해 생긴 통계학의 한 분야이다<span class="citation">(Albert 1997)</span>. 지금은 한국프로야구에서도 널리 쓰이는 OPS(On-base percentage Plus Slugging : 출루율 + 장타율), WHIP(Walks plus Hits divided by Innings Pitched: 이닝(inning) 당 출루 허용율) 가 가장 유명한 세이버메트릭스의 지표이며 메이저리그에서는 이를 넘어 야구는 승리를 위한 게임이고 승리를 위한 것은 곧 득점을 위한 것이라는 가정 하에 모든 포지션의 선수들의 능력치를 득점기여도 또는 승리기여도라는 지표를 만들어 단 하나의 숫자로 표시하려는 노력들이 일어나고 있고 이것의 결정체가 <strong>WAR(Win Above Replacement)</strong>라는 통계량이다. 해석은 해당 포지션의 대체선수(1군의 백업선수 및 마이너리그선수) 대비 몇 승을 더 팀에 가져다 주었는가로 이루어지며 이에 의한 2013년 류현진 선수의 fWAR(fangraph-WAR: WAR의 한 종류, 구하는 방법은 아직 통일되어 있지 않다)는 3.1로 대체 선발투수 대비 3.1승을 더 팀에 가져다 주었다고 해석한다<span class="citation">(Fangraph, n.d.)</span>. 실제로 이 지표들이 자유계약선수(FA: Free Agent) 계약이나 MVP 투표 등에 조금씩 반영되고 있다.</p>
@@ -464,7 +560,7 @@ Distribution of WAR values in 2010 (fangraph)
 </center>
 <p>한편, WAR가 제시하는 숫자는 직관적으로 이해하기 쉽지만 이를 구하는 방법은 간단하지가 않은데 기본적으로 <strong>WAR는 종합스탯이며 여러가지 통계량의 조합 및 보정</strong>을 거쳐서 만들어지기 때문이다. 이에 본 장에서는 fangraph에서 제공하는 타자와 투수(선발투수 및 불펜투수)의 WAR를 구하는 방법을 간단히 소개하겠다.</p>
 </div>
-<div class="section level2">
+<div id="타자편" class="section level2">
 <h2>타자편</h2>
 <p>타자의 능력은 크게 <strong>타격, 주루, 수비</strong>의 3가지로 나뉘는데 이 각각의 분야에서 승리기여도를 계산하여 그것을 합한 것이 타자의 WAR에 해당하는 개념이 될 것이다.</p>
 <div id="batting" class="section level3">
@@ -941,7 +1037,7 @@ wSB, UBR and BsR’s of 2013 Indians
 </div>
 <div id="replacement-level" class="section level3">
 <h3>Replacement level</h3>
-<p>지금까지 구한 수치는 모두 리그평균에 비해 어느정도인가를 비교한 통계량인데 실제 그 선수가 어떤 가치를 갖고 있으며 얼마짜리인지 선수를 판단하기에는 적합한 통계량이 아니다<span class="citation">(MacAree, n.d.)</span>. 이를 보완하기 위하여 대체 선수라는 개념이 나왔는데 이는 대략적으로 메이저리그 최저연봉인 40만달러를 받는 선수들에 대한 것으로 이들이 대략적으로 평균보다 얼마나 더 적게 득점에 기여하였는가를 나타내는 것이다. 최저연봉은 메이저리그에 올라오면 누구나 최소로 받는 액수로 다르게 말하면 능력과 상관없는 비용이라 할 수 있으며 공짜로 영입한 선수라고 해석할 수도 있다. 이들이 대략적으로 득점에 얼마나 기여하였는지를 분석해 보니 600타석당 평균보다 -20점정도(타석당 -0.03점) 득점에 기여하는 것으로 나타났으며 이를 Replacement level이라 한다. 즉 타자가 들어선 타석수에 -0.03을 곱하면 Replacement level이 된다는 것이다. 그러나 실제로는 포지션별 가중치가 들어가야 하는 등 계산이 복잡하며 분석하는 방법에 따라 약간의 차이가 있는데, 어쨌든 이를 고려하여 더하면 대체선수대비 득점기여도가 계산되는 것이다<span class="citation">(Cameron, n.d.; Cameron, n.d.)</span>.</p>
+<p>지금까지 구한 수치는 모두 리그평균에 비해 어느정도인가를 비교한 통계량인데 실제 그 선수가 어떤 가치를 갖고 있으며 얼마짜리인지 선수를 판단하기에는 적합한 통계량이 아니다<span class="citation">(MacAree, n.d.)</span>. 이를 보완하기 위하여 대체 선수라는 개념이 나왔는데 이는 대략적으로 메이저리그 최저연봉인 40만달러를 받는 선수들에 대한 것으로 이들이 대략적으로 평균보다 얼마나 더 적게 득점에 기여하였는가를 나타내는 것이다. 최저연봉은 메이저리그에 올라오면 누구나 최소로 받는 액수로 다르게 말하면 능력과 상관없는 비용이라 할 수 있으며 공짜로 영입한 선수라고 해석할 수도 있다. 이들이 대략적으로 득점에 얼마나 기여하였는지를 분석해 보니 600타석당 평균보다 -20점정도(타석당 -0.03점) 득점에 기여하는 것으로 나타났으며 이를 Replacement level이라 한다. 즉 타자가 들어선 타석수에 -0.03을 곱하면 Replacement level이 된다는 것이다. 그러나 실제로는 포지션별 가중치가 들어가야 하는 등 계산이 복잡하며 분석하는 방법에 따라 약간의 차이가 있는데, 어쨌든 이를 고려하여 더하면 대체선수대비 득점기여도가 계산되는 것이다<span class="citation">(Cameron, n.d., <span class="citeproc-no-output"><strong>???</strong></span>)</span>.</p>
 </div>
 <div id="run-to-win" class="section level3">
 <h3>Run to win</h3>
@@ -949,7 +1045,7 @@ wSB, UBR and BsR’s of 2013 Indians
 <p><span class="math display">\[\text{Pythagorean Winning Percentage}=\frac{RS^2}{RS^2+RA^2}\]</span> (<span class="math inline">\(RS\)</span>: 팀득점, <span class="math inline">\(RA\)</span>: 팀실점)</p>
 <p>예를 들어 어떤 팀이 1시즌(162)경기 동안 775점 득점, 775점 실점을 했다고 하자. 그렇다면 피타고리안 승률은 50%가 될 것이고 기대승수는 81점이 될 것이다. 대략적으로 10점정도가 1승을 의미한다고 할 수 있다. 기타 여러가지 경우를 다 살펴보았을 때 대략적으로 10점=1승 이라는 해석을 할 수 있었고 WAR계산에 이것에서 약간 보정한 수치를 이용하고 있다.</p>
 </div>
-<div class="section level3">
+<div id="추신수" class="section level3">
 <h3>2013 추신수</h3>
 <p>2013년 추신수의 WAR의 세부 지표를 살펴보는 것으로 타자 WAR를 마무리하겠다(아래 표).</p>
 <table>
@@ -1138,7 +1234,7 @@ wSB, UBR and BsR’s of 2013 Indians
 <p>2013년을 살펴보면 타격에서 40.9의 대체선수 대비 득점기여도, 주루에서 -0.6점을 기록하여 공격 WAR의 수치는 40.3이고, Fielding 점수 -15.5, 포지션 가중치 2.1(대부분을 중견수로 뛰었음)을 기록하여 수비 WAR는 -13.3을 기록하였다. 여기에 리그보정치(아메리칸리그 VS 내셔널리그) 1점, Replace level 20.3을 더하면 전체 득점기여도(RAR: Run Above Replacement)는 48.4이고 이를 승리기여도로 환산하면 5.2가 된다. 즉 추신수 선수는 2013시즌 대체선수 대비 약 5.2승을 더 팀에 가져다 주었다고 해석할 수 있으며 이는 약 2600만 달러의 연봉가치를 나타내며(대략적으로 1 WAR 가 약 500만 달러의 가치가 있는 것으로 분석되고 있다.), 올시즌 메이저리그 30개 팀의 야수 중 20위에 해당하는 성적이다 (1등은 Mike Trout선수로 10.4 WAR를 기록하였다.)</p>
 </div>
 </div>
-<div id="-" class="section level2">
+<div id="투수편-선발투수" class="section level2">
 <h2>투수편 : 선발투수</h2>
 <p>타자의 공격력의 나타내는 지표인 wOBA와 wRAA는 널리 인정되고 있지만 투수의 능력을 나타내는 지표는 간단히 표현하기 어려운데, 이는 실점이 투수에 의해서만 결정되는 것이 아니라 다른 수비수들의 능력과도 관련이 있기 때문이다<span class="citation">(Fangraph, n.d.)</span>. 이를 고려하기 위한 많은 방법들이 제안되고 있는데 본문에서는 fangraph에서 이용하는 <strong>FIP(Fielding Independent Pitching)</strong>를 소개하고 이를 이용한 <strong>fWAR(fangraph WAR)</strong>계산에 대해 알아보도록 하곘다<span class="citation">(Fangraph, n.d.)</span>.</p>
 <div id="fip" class="section level3">
@@ -1679,13 +1775,13 @@ wSB, UBR and BsR’s of 2013 Indians
 <h3>Win probability</h3>
 <p>이제 기대 승률만 계산하면 WAR를 계산할 수 있다<span class="citation">(Cameron, n.d.)</span>. 2013년 류현진 선수의 9이닝당 평균 실점은 3.71, 리그 평균은 4.21이므로 리그 평균에 비해 0.5점 점수를 덜 내주는 것이 된다. 앞서 계산한 1승에 필요한 득점기대값인 9.05를 적용하면 류현진 선수는 리그 평균 투수에 비하여 <span class="math inline">\(0.5/9.05=0.055\)</span> 즉, 9이닝당 0.055승을 리그평균투수보다 더 기여하게 되는 것이다. 리그평균 투수의 승률은 0.5이므로 팀동료와 상대팀이 모두 리그평균수준임을 가정했을 때 <span class="math inline">\(0.5+0.055=0.555\)</span> 의 9이닝당 기대승률을 가지게 된다.</p>
 </div>
-<div id="-war" class="section level3">
+<div id="류현진의-war" class="section level3">
 <h3>2013 류현진의 WAR</h3>
 <p>이제 2013년 류현진 선수의 WAR를 계산할 수 있다(투수의 수비능력은 포함되지 않음). Replacement level 선발투수의 기대승률은 앞서 언급한 대로 0.38이었으므로 류현진 선수는 Replacement level의 선발투수에 비해 9이닝 당 0.555-0.38=0.175 승을 더 기대할 수 있다. 류현진 선수의 투구이닝은 192이닝이므로 결국 WAR<span class="math inline">\(=0.175 \times \frac{192}{9}=3.73\)</span> 이 된다. 즉, 류현진 선수가 Replacement 선발투수에 비하여 3.73승 정도를 팀에 더 가져다 주었다고 해석할 수 있다. 이 수치는 Fangraph WAR인 3.1과 차이가 있는데 Replacement level, 리그평균투수, Park factor의 보정방법의 차이인 듯 하다.</p>
 <p>한편 내셔널리그는 투수도 타격을 하는 관계로 타석에서의 WAR도 고려해야 하는데 Fangraph에 의하면 Batting -4.1, Base running -1.2, Positional adjustment 6.2 로 공격 WAR -5.3, 수비 WAR 6.2 이고 리그보정 0.1, replacement level 1.9를 적용하여 합하면 RAR=<span class="math inline">\(2.9\)</span>, WAR=<span class="math inline">\(0.3\)</span> 이 된다. 따라서 타격성적까지 종합한 류현진 선수의 WAR=<span class="math inline">\(3.1+0.3=3.4\)</span> 가된다. 즉 류현진 선수가 투구와 타격으로 대체선수보다 <strong>팀에 3.4승 정도를 더 주었다</strong>고 해석한다 (2013년 Clayton Kershaw의 투구 WAR=6.5 이다.).</p>
 </div>
 </div>
-<div id="-" class="section level2">
+<div id="투수편-구원투수" class="section level2">
 <h2>투수편 : 구원투수</h2>
 <p>구원투수의 WAR에 대해서는 선발투수와 다른 점을 위주로 간략히 설명하겠다. 대부분의 계산은 선발투수와 동일하나, 구원투수에서는 어떤 중요한 점을 고려해야 하는데 그것이 바로 등판 상황의 경기 중요도이다. 예를 들어 9회말 1점차로 리드하고 있는 순간에서의 등판과, 패전처리에서의 등판이 승리기여정도가 다를 것임은 명확하다. 선발투수의 경우 위기순간을 만드는 것도 본인의 능력이기 때문에 이를 고려할 필요가 없지만 구원투수의 경우는 어떤 중요한 순간에 등판하는 것이냐에 따라 승리기여도가 다를 것임을 생각해야 한다.</p>
 <div id="li-leverage-index" class="section level3">
@@ -1703,10 +1799,10 @@ wSB, UBR and BsR’s of 2013 Indians
 <p>Fangraph에 의하면 Uehara의 투구이닝은 <span class="math inline">\(74\frac{1}{3}\)</span>이고 FIP는 1.61, 리그 평균 구원투수의 FIP는 3.70이고, 보스턴 레드삭스의 Park factor(위의 표 참조)인 104를 고려하면 Uehara와 리그 평균 구원투수의 9이닝당 평균 실점(RA)은 각각 1.68, 4.02가 된다. 편의상 10점=1승의 공식을 따른다고 하고, 앞서 언급한 replacement level 구원투수의 기대승률 0.47을 적용하면 replacement level의 투수는 평균적인 구원투수보다 9이닝당 <span class="math inline">\((0.5-0.47) \times 10 = 0.3\)</span>점을 더 내주게 되고 따라서 replacement level의 9이닝당 평균 실점은 <span class="math inline">\(4.02+0.3 = 4.32\)</span>가 된다. 따라서 Uehara는 replace level에 비하여 9이닝당 <span class="math inline">\(4.32 - 1.68 = 2.64\)</span> 점 덜 실점하게 되며 Uehara의 이닝을 고려하면 <span class="math inline">\(2.64 \times \frac{74.333}{9} = 21.8\)</span> 점 덜 실점하게 되고 RAR(득점기여도)는 21.8가 된다. 여기에 Fangraph가 제공하는 Uehara의 평균 gmLI 1.55를 적용하면 Effective LI<span class="math inline">\(=\frac{1+1.55}{2} = 1.275\)</span>가 되고 실질적인 득점기여도는 <span class="math inline">\(21.8 \times 1.275 = 27.8\)</span> 로 나오게 된다. 따라서 10점을 1승으로 계산한다면 2013년 Uehara의 WAR는 2.78이 되며, 류현진 선수에게 적용했던 <span class="math inline">\(9.05\text{점}=1\text{승}\)</span> 의 개념을 적용하면 3.07이 되는데, 실제 Uehara의 2013년 fWAR(fangraph WAR)는 3.3으로 이는 구원투수 중 최고 수준이며 류현진보다도 높다. 실제와의 차이는 실제 우에하라가 마무리투수로만 등장하지 않아 LI보정이 복잡하게 이루어졌기 때문일 것이라 생각된다.</p>
 </div>
 </div>
-<div id="-" class="section level2">
+<div id="마무리-요약" class="section level2">
 <h2>마무리: 요약</h2>
 <p>위에서 설명한 WAR 개념의 특성과 계산에서의 주요 특성을 요약하면 다음과 같다.</p>
-<div id="war--" class="section level3">
+<div id="war-개념의-특징" class="section level3">
 <h3>WAR 개념의 특징</h3>
 <ol style="list-style-type: decimal">
 <li><p>선수의 모든 행위를 승리(득점기여도)기여도로 판단하는 극단적인 결과지상주의를 반영한다.</p></li>
@@ -1714,7 +1810,7 @@ wSB, UBR and BsR’s of 2013 Indians
 <li><p>평균대비가 아닌 대체선수대비(메이저 최저연봉 40만달러의 몸값을 지닌 가상의 선수) 몇 승을 가져다 주느냐를 추정하여, 2와 더불어 선수의 성적을 넘어 몸값을 추정하는 근거로 이용된다.</p></li>
 </ol>
 </div>
-<div id="war--" class="section level3">
+<div id="war-계산의-특징" class="section level3">
 <h3>WAR 계산의 특징</h3>
 <ol style="list-style-type: decimal">
 <li><p>타자가 생산하는 볼넷, 안타, 2루타-홈런, 삼진, 도루, 도루실패 등등을 모두 각각이 생산되었을 때의 평균적인 기대득점을 적용하여 타자의 행위를 종합적으로 득점기여도로 판단한다.</p></li>
@@ -1727,65 +1823,65 @@ wSB, UBR and BsR’s of 2013 Indians
 <p>지금까지 최근 메이저리그에서 고과평가 및 선수평가에 적용되는 WAR의 개념과 대략적인 계산법을 알아보았다. 메이저리그에서 이런 개념이 개발되고 과감하게 적용하고 있는 것은 전적으로 방대한 데이터와 거대자본의 힘이라 할 수 있을 것이다. 한국에서도 점점 WAR를 중요한 지표로 보고 있는데 앞으로의 야구가 기대된다.</p>
 </div>
 </div>
-<div class="section level2 unnumbered">
+<div id="참고문헌" class="section level2 unnumbered">
 <h2>참고문헌</h2>
 <div id="refs" class="references">
 <div id="ref-albert1997introduction">
 <p>Albert, Jim. 1997. “An Introduction to Sabermetrics.” <em>Bowling Green State University (Http://Www-Math. Bgsu. Edu/~ Albert/Papers/Saber. Html)</em>.</p>
 </div>
 <div id="ref-UZRsaber">
-<p>BelichickEinstein. n.d. “Sabermetrics: A Science (Uzr and Uzr/150).” <a href="http://www.fannation.com/blogs/post/621965-sabermetrics-a-science-uzr-and-uzr150" class="uri">http://www.fannation.com/blogs/post/621965-sabermetrics-a-science-uzr-and-uzr150</a>.</p>
+<p>BelichickEinstein. n.d. “Sabermetrics: A Science (Uzr and Uzr/150).” <a href="http://www.fannation.com/blogs/post/621965-sabermetrics-a-science-uzr-and-uzr150">http://www.fannation.com/blogs/post/621965-sabermetrics-a-science-uzr-and-uzr150</a>.</p>
 </div>
 <div id="ref-UZRfig">
-<p>Bopp, Justin. n.d. “Introducing Uzr Targetview - Graph of the Day.” <a href="http://www.beyondtheboxscore.com/2009/10/6/1069692/introducing-uzr-targetview-graph" class="uri">http://www.beyondtheboxscore.com/2009/10/6/1069692/introducing-uzr-targetview-graph</a>.</p>
+<p>Bopp, Justin. n.d. “Introducing Uzr Targetview - Graph of the Day.” <a href="http://www.beyondtheboxscore.com/2009/10/6/1069692/introducing-uzr-targetview-graph">http://www.beyondtheboxscore.com/2009/10/6/1069692/introducing-uzr-targetview-graph</a>.</p>
 </div>
 <div id="ref-winconversion">
-<p>Cameron, Dave. n.d. “Pitcher Win Values Explained: Part Five.” <a href="http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-five/" class="uri">http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-five/</a>.</p>
+<p>Cameron, Dave. n.d. “Pitcher Win Values Explained: Part Five.” <a href="http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-five/">http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-five/</a>.</p>
 </div>
 <div id="ref-runenv_pitch">
-<p>———. n.d. “Pitcher Win Values Explained: Part Four.” <a href="http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-four/" class="uri">http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-four/</a>.</p>
+<p>———. n.d. “Pitcher Win Values Explained: Part Four.” <a href="http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-four/">http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-four/</a>.</p>
 </div>
 <div id="ref-replace_pitch">
-<p>———. n.d. “Pitcher Win Values Explained: Part Three.” <a href="http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-three/" class="uri">http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-three/</a>.</p>
+<p>———. n.d. “Pitcher Win Values Explained: Part Three.” <a href="http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-three/">http://www.fangraphs.com/blogs/pitcher-win-values-explained-part-three/</a>.</p>
 </div>
 <div id="ref-replace_dave">
-<p>———. n.d. “Unifying Replacement Level.” <a href="http://www.fangraphs.com/blogs/unifying-replacement-level/" class="uri">http://www.fangraphs.com/blogs/unifying-replacement-level/</a>.</p>
+<p>———. n.d. “Unifying Replacement Level.” <a href="http://www.fangraphs.com/blogs/unifying-replacement-level/">http://www.fangraphs.com/blogs/unifying-replacement-level/</a>.</p>
 </div>
 <div id="ref-replace_dave2">
-<p>———. n.d. “Win Values Explained: Part Four.” <a href="http://www.fangraphs.com/blogs/win-values-explained-part-four/" class="uri">http://www.fangraphs.com/blogs/win-values-explained-part-four/</a>.</p>
+<p>———. n.d. “Win Values Explained: Part Four.” <a href="http://www.fangraphs.com/blogs/win-values-explained-part-four/">http://www.fangraphs.com/blogs/win-values-explained-part-four/</a>.</p>
 </div>
 <div id="ref-position_adjust">
-<p>———. n.d. “Win Values Explained: Part Three.” <a href="http://www.fangraphs.com/blogs/explaining-win-values-part-three/" class="uri">http://www.fangraphs.com/blogs/explaining-win-values-part-three/</a>.</p>
+<p>———. n.d. “Win Values Explained: Part Three.” <a href="http://www.fangraphs.com/blogs/explaining-win-values-part-three/">http://www.fangraphs.com/blogs/explaining-win-values-part-three/</a>.</p>
 </div>
 <div id="ref-FIP">
-<p>Fangraph. n.d. “FIP.” <a href="http://www.fangraphs.com/library/pitching/fip/" class="uri">http://www.fangraphs.com/library/pitching/fip/</a>.</p>
+<p>Fangraph. n.d. “FIP.” <a href="http://www.fangraphs.com/library/pitching/fip/">http://www.fangraphs.com/library/pitching/fip/</a>.</p>
 </div>
 <div id="ref-WARRyuonline">
-<p>———. n.d. “Hyun-Jin Ryu Statistics.” <a href="http://www.fangraphs.com/statss.aspx?playerid=14444&amp;position=P" class="uri">http://www.fangraphs.com/statss.aspx?playerid=14444&amp;position=P</a>.</p>
+<p>———. n.d. “Hyun-Jin Ryu Statistics.” <a href="http://www.fangraphs.com/statss.aspx?playerid=14444&amp;position=P">http://www.fangraphs.com/statss.aspx?playerid=14444&amp;position=P</a>.</p>
 </div>
 <div id="ref-WARpitcher">
-<p>———. n.d. “WAR for Pitchers.” <a href="http://www.fangraphs.com/library/war/calculating-war-pitchers/" class="uri">http://www.fangraphs.com/library/war/calculating-war-pitchers/</a>.</p>
+<p>———. n.d. “WAR for Pitchers.” <a href="http://www.fangraphs.com/library/war/calculating-war-pitchers/">http://www.fangraphs.com/library/war/calculating-war-pitchers/</a>.</p>
 </div>
 <div id="ref-effLI">
-<p>Kalkman, Sky. n.d. “Bullpen Chaining and Reliever War.” <a href="http://www.beyondtheboxscore.com/2009/4/29/856308/bullpen-chaining-and-reliever-war" class="uri">http://www.beyondtheboxscore.com/2009/4/29/856308/bullpen-chaining-and-reliever-war</a>.</p>
+<p>Kalkman, Sky. n.d. “Bullpen Chaining and Reliever War.” <a href="http://www.beyondtheboxscore.com/2009/4/29/856308/bullpen-chaining-and-reliever-war">http://www.beyondtheboxscore.com/2009/4/29/856308/bullpen-chaining-and-reliever-war</a>.</p>
 </div>
 <div id="ref-UBRfig">
-<p>Kinsella, Steve. n.d. “Indians Look to Improve Baserunning in 2013.” <a href="http://wahoosonfirst.com/2013/03/13/indians-look-to-improve-baserunning-in-2013/" class="uri">http://wahoosonfirst.com/2013/03/13/indians-look-to-improve-baserunning-in-2013/</a>.</p>
+<p>Kinsella, Steve. n.d. “Indians Look to Improve Baserunning in 2013.” <a href="http://wahoosonfirst.com/2013/03/13/indians-look-to-improve-baserunning-in-2013/">http://wahoosonfirst.com/2013/03/13/indians-look-to-improve-baserunning-in-2013/</a>.</p>
 </div>
 <div id="ref-lichtman2003ultimate">
 <p>Lichtman, M. 2003. “Ultimate Zone Rating.” <em>The Baseball Think Factory</em>.</p>
 </div>
 <div id="ref-UBRsaber">
-<p>———. n.d. “Ultimate Base Running Primer.” <a href="http://www.fangraphs.com/blogs/ultimate-base-running-primer/" class="uri">http://www.fangraphs.com/blogs/ultimate-base-running-primer/</a>.</p>
+<p>———. n.d. “Ultimate Base Running Primer.” <a href="http://www.fangraphs.com/blogs/ultimate-base-running-primer/">http://www.fangraphs.com/blogs/ultimate-base-running-primer/</a>.</p>
 </div>
 <div id="ref-replace_graham">
-<p>MacAree, Graham. n.d. “Replacement Level.” <a href="http://www.fangraphs.com/library/misc/war/replacement-level/" class="uri">http://www.fangraphs.com/library/misc/war/replacement-level/</a>.</p>
+<p>MacAree, Graham. n.d. “Replacement Level.” <a href="http://www.fangraphs.com/library/misc/war/replacement-level/">http://www.fangraphs.com/library/misc/war/replacement-level/</a>.</p>
 </div>
 <div id="ref-piette2012estimating">
 <p>Piette, James, and Shane T Jensen. 2012. “Estimating Fielding Ability in Baseball Players over Time.” <em>Journal of Quantitative Analysis in Sports</em> 8 (3). Berkeley Electronic Press.</p>
 </div>
 <div id="ref-Li_tango">
-<p>Tango, Tom M. n.d. “Crucial Situations.” <a href="http://www.hardballtimes.com/main/article/crucial-situations/" class="uri">http://www.hardballtimes.com/main/article/crucial-situations/</a>.</p>
+<p>Tango, Tom M. n.d. “Crucial Situations.” <a href="http://www.hardballtimes.com/main/article/crucial-situations/">http://www.hardballtimes.com/main/article/crucial-situations/</a>.</p>
 </div>
 </div>
 </div>
@@ -1839,6 +1935,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

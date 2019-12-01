@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,7 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -36,6 +37,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -84,9 +87,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,13 +101,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -122,7 +128,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -142,6 +147,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -163,47 +205,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -217,6 +278,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -252,8 +319,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -268,6 +333,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -314,6 +389,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -384,6 +471,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -412,11 +508,11 @@ div.tocify {
 
 
 <p>이전에 작성했던 글을 HTML 형태로 재정리하였다.</p>
-<div class="section level2">
+<div id="서론" class="section level2">
 <h2>서론</h2>
 <p>바야흐로 논쟁의 시대이다. 인간이 탄생했을 때부터 논쟁이 없었던 기간은 없었겠지만, 전제 왕정시대부터 민주화시대로 거쳐오면서 논쟁에 참여하거나 논쟁을 바라보는 것이 매우 흔한 일이 되었으며 20세기 말부터 급속도로 발달한 방송매체, 컴퓨터 기술, 인터넷 커뮤니티 그리고 최근에는 SNS 까지<span class="math inline">\(\dots\)</span> 이제 우리는 격렬한 논쟁이 이루어지는 현장을 심심치 않게 발견할 수 있고 또한 스스로 논쟁에 참여하기도 한다. 수많은 TV토론회에서 한 주제를 두고 찬성쪽과 반대쪽 토론자들간의 치열한 공방이 일어나고, 주요 포탈사이트나 커뮤니티에선 댓글이 수백 개를 넘는 경우를 심심치 않게 볼 수 있다.</p>
-<p>논쟁의 핵심사안 또는 목적은 합리적(?)인 의사결정이라고들 하는데 해석하자면 내 뜻에 맞는, 나에게 이득이 되는 의사결정이라고 할 수 있다. 실상 많은 논쟁이 주어진 상황에서 어떻게든 나에게 유리한 결과를 얻기 위해 이루어진다. 대표적인 것이 피고인에 대한 변호인데, 피고인이 어떤 죄를 지었던 간에 변호사는 피고인에게 유리한 결과를 만들기 위해 논쟁을 하며, 철학자 쇼펜하우어는 주제를 막론하고 논쟁에서 승리하기 위한 방법을 소개한 <strong><논쟁에서 이기는 38가지 방법></strong><span class="citation">(Goffey 2005)</span> 이라는 글을 쓰기도 하였다.</p>
-<p>한편, 정보화 시대, 데이터의 시대라고도 불리는 21세기에 합리적인 의사결정과 뗄래야 뗄 수 없는 관계를 가진 학문이 통계학이다. 물리학, 생물학, 의학 등의 자연과학뿐만 아니라 경제학, 심리학 등의 사회과학에서도 통계학은 어떤 주장을 하기 위해 필수적인 도구로 이용되고 있는데 여기서 쓰이는 핵심적인 개념은 <strong>가설 검정</strong>이다. R.A Fisher<span class="citation">(S. R. A. Fisher et al. 1960)</span>에 의해 처음으로 사용된 귀무가설(null hypothesis)은 <strong>반박하고 싶은 가설</strong>을 의미하며, 이 귀무가설 하에서 일어날 확률이 매우 적은 사건 또는 현상을 제시함으로서 자신의 주장을 펼치게 된다. 이는 수학의 증명법 중 결론을 부정한 후 모순을 찾아내는 귀류법과 유사한 측면이 있다.</p>
+<p>논쟁의 핵심사안 또는 목적은 합리적(?)인 의사결정이라고들 하는데 해석하자면 내 뜻에 맞는, 나에게 이득이 되는 의사결정이라고 할 수 있다. 실상 많은 논쟁이 주어진 상황에서 어떻게든 나에게 유리한 결과를 얻기 위해 이루어진다. 대표적인 것이 피고인에 대한 변호인데, 피고인이 어떤 죄를 지었던 간에 변호사는 피고인에게 유리한 결과를 만들기 위해 논쟁을 하며, 철학자 쇼펜하우어는 주제를 막론하고 논쟁에서 승리하기 위한 방법을 소개한 <strong>&lt;논쟁에서 이기는 38가지 방법&gt;</strong><span class="citation">(Goffey 2005)</span> 이라는 글을 쓰기도 하였다.</p>
+<p>한편, 정보화 시대, 데이터의 시대라고도 불리는 21세기에 합리적인 의사결정과 뗄래야 뗄 수 없는 관계를 가진 학문이 통계학이다. 물리학, 생물학, 의학 등의 자연과학뿐만 아니라 경제학, 심리학 등의 사회과학에서도 통계학은 어떤 주장을 하기 위해 필수적인 도구로 이용되고 있는데 여기서 쓰이는 핵심적인 개념은 <strong>가설 검정</strong>이다. R.A Fisher<span class="citation">(Fisher et al. 1960)</span>에 의해 처음으로 사용된 귀무가설(null hypothesis)은 <strong>반박하고 싶은 가설</strong>을 의미하며, 이 귀무가설 하에서 일어날 확률이 매우 적은 사건 또는 현상을 제시함으로서 자신의 주장을 펼치게 된다. 이는 수학의 증명법 중 결론을 부정한 후 모순을 찾아내는 귀류법과 유사한 측면이 있다.</p>
 <p>이 통계학의 가설검정방법은 크게 두 가지 특성이 있다.</p>
 <ol style="list-style-type: decimal">
 <li>무엇인가 명확한 가설이 주어진 후에야 이를 반박함으로서 자신의 의견을 주장한다.</li>
@@ -426,26 +522,26 @@ div.tocify {
 <li>두 번째는 유의수준(significant level)이다.</li>
 </ol>
 <p>통계학에서 유의수준이란 귀무가설이 참임에도 불구하고 귀무가설을 기각할 확률로 정의하는데 풀어 쓰자면, 귀무가설을 가정했을 때 내가 발견한 어떤 사건, 현상보다 더 극한 현상이 일어날 확률을 의미하고, 통상적으로 널리 이용되는 유의수준은 0.05인데 이 0.05가 핵심적인 특징이다. 즉 꽤나 낮은 확률이 되어야 귀무가설을 기각하겠다는 의미가 내포되어 있으며 이는 바꾸어 말하면 웬만하면 귀무가설을 바꾸지 않겠다는 것이다.</p>
-<p>이 가설검정의 특징을 생각한다면 실제 우리 주위에서 일어나는 많은 논쟁이 가설검정의 원리와 비슷한 것을 느낄 수 있다. 실상 많은 논쟁에서 내 주장에 대한 근거를 제시하는 것이 아니라 상대방이 주장을 하기만을 기다렸다가 그것을 반박함으로서 마치 내 주장이 맞는다는 인상을 심어주려는 행태들이 일어나고 있으며, 자신이 한번 믿는 것은 웬만하면 바꾸지 않으려고 한다. 실제로 쇼펜하우어의 <논쟁에서 이기는 38가지 방법><span class="citation">(Goffey 2005)</span>의 3번째에는 상대방의 주장을 보편화된 주장인 것처럼, 즉 단순하고 절대적인 것처럼 여기고 이를 반박함으로서 논쟁에서 승리하라고 되어 있으며, 4번째에는 자신의 결론을 상대방이 예측하지 못하도록 하라고 되어 있다.</p>
+<p>이 가설검정의 특징을 생각한다면 실제 우리 주위에서 일어나는 많은 논쟁이 가설검정의 원리와 비슷한 것을 느낄 수 있다. 실상 많은 논쟁에서 내 주장에 대한 근거를 제시하는 것이 아니라 상대방이 주장을 하기만을 기다렸다가 그것을 반박함으로서 마치 내 주장이 맞는다는 인상을 심어주려는 행태들이 일어나고 있으며, 자신이 한번 믿는 것은 웬만하면 바꾸지 않으려고 한다. 실제로 쇼펜하우어의 &lt;논쟁에서 이기는 38가지 방법&gt;<span class="citation">(Goffey 2005)</span>의 3번째에는 상대방의 주장을 보편화된 주장인 것처럼, 즉 단순하고 절대적인 것처럼 여기고 이를 반박함으로서 논쟁에서 승리하라고 되어 있으며, 4번째에는 자신의 결론을 상대방이 예측하지 못하도록 하라고 되어 있다.</p>
 <p>한편, 역으로 적지 않은 통계학의 가설검정 방법이 그것을 만든 사람의 심리를 포함하고 있는데 그것의 간단하고 대표적인 예가 정규성 검정<span class="citation">(Stephens 1986; Shaphiro and Wilk 1965; Moore 1986)</span>과 <span class="math inline">\(t\)</span>-test의 등분산성 검정<span class="citation">(Levene 1960)</span>이 있다. 정규성 검정은 우리의 자료가 정규분포를 따른다는 귀무가설을 갖는데 이는 특별한 문제가 없는 한 정규분포라고 생각하겠다는 의도가 숨겨져 있으며, <span class="math inline">\(t\)</span>-test의 등분산성 검정은 웬만하면 두 집단의 모집단의 분산이 같다고 생각하겠다는 것이다. 실제로 등분산성 가정은 매우 위험한 가정인 것으로 알려져 있으며, 등분산성 test를 하지 않고 분산이 다르다고 가정한 test가 더 좋다는 주장이 있다<span class="citation">(Moser and Stevens 1992)</span>.</p>
 <p>이와 같이 논쟁에서 사람들을 설득하고 상대방에게 설득 당하지 않으려는 일련의 심리들이 통계학의 가설검정과 매우 비슷한 면을 갖고 있으며, 반대로 통계학의 가설검정에는 그것을 만든 사람의 심리가 숨겨져 있다고 할 수 있다. 이에 본문에서는 논쟁상황을 사람들을 설득할 때와 상대방에게 설득되지 않으려는 경우로 나누어 각 상황에서 사용되는 통계학의 가설검정의 원리를 크게 귀무가설의 설정부분과 유의수준의 결정과 연계 지어서 설명해 볼 것이며, 앞서 말한 통계학의 가설검정의 원리에 숨겨진 인간의 심리에 대해 좀 더 자세히 이야기 해 볼 것이다. 이에 대해 정확히 파악하는 것이 논쟁 시 소모적인 논쟁을 줄이는데 기여할 수 있을 것이며, 통계학을 도구로 이용하고 있는 많은 자연과학도, 사회과학도들에게 올바른 결과 해석에 도움을 줄 수 있을 것이다.</p>
 </div>
-<div id="------" class="section level2">
+<div id="사람들을-설득하려-할-때-사용되는-가설검정의-원리" class="section level2">
 <h2>사람들을 설득하려 할 때 사용되는 가설검정의 원리</h2>
-<div id="---." class="section level3">
+<div id="상대방의-주장을-명확히-한다." class="section level3">
 <h3>상대방의 주장을 명확히 한다.</h3>
 <p>논쟁을 바라보는 사람들을 설득하려 할 때 가장 중요한 것 중 하나는 논쟁 <strong>상대방의 주장을 명확히</strong> 하는 것이다. 이는 가설검정에서 <strong>귀무가설을 명확히 설정</strong>하는 것과 같은 원리이다. 앞서 예를 든 남녀간에 혈압의 차이가 있다는 것을 주장하려면 남녀간의 혈압의 차이가 0이라고 귀무가설을 설정하고 이 때 일어나기 힘든 사건을 제시해야 하는 것이다. 만약 귀무가설이 차이가 0이라는 것이 아니라 -5~5 로 한다면 이 가설은 차이가 0이라는 그것에 비해 확률분포를 떠올리기 어려워 일어나기 힘든 사건이라고 주장하는 것이 상대적으로 더 힘든데, 이는 상대방의 주장을 단순화하라는 쇼펜하우어의 의견과도 일치한다. 상대방의 주장이 꼭 혈압차이가 0이라는 것은 아닐지라도, 상대방의 주장을 차이가 0이라는 것으로 단순화하여 이것을 공격함으로서 마치 내 의견이 맞는 것 같은 인상을 심어주는 것이다.</p>
 </div>
-<div id="--." class="section level3">
+<div id="귀무가설을-잘-조정한다." class="section level3">
 <h3>귀무가설을 잘 조정한다.</h3>
 <p>그 다음으로 중요한 것은 내가 반박할 수 있도록 귀무가설을 잘 조정하는 것이다. 예를 들어 내가 관찰한 자료에서 남녀의 혈압차이가 10이라고 하자. 근데 혈압차이가 0인 귀무가설 하에서는 유의수준 0.05에서 통계적으로 유의하다고 말할 수 없다면 어떻게 해야 할까? 이 때는 혈압차이가 0이라는 상대방의 주장을 반박할 수 없음을 일단 인정해야 한다. 그 후 통계적 유의성을 만족하는 귀무가설을 역으로 찾는데, 만약 혈압차이가 -1이다 라는 귀무가설은 통계적으로 유의하다면 이 귀무가설을 기각하는 것이다. 이를 통하여 실제로는 혈압차이가 -1은 아니라는 결론을 얻을 뿐이지만, 마치 혈압차이가 0이라는 귀무가설을 기각하여 혈압차이가 있다고 여기게 하는 효과를 얻는 것이다. 이는 논쟁에서 상대방의 주장을 교묘히 비틀어 해석하여 그것을 반박함으로서 상대방의 주장이 틀린 것처럼 느끼게 하는 것과 대응된다고 할 수 있다.</p>
 </div>
-<div id="-." class="section level3">
+<div id="유의수준을-올린다." class="section level3">
 <h3>유의수준을 올린다.</h3>
 <p>마지막으로 생각해봐야 할 것은 어찌 보면 가장 중요한 이슈일 수도 있는데, 사람들이 인식하고 있는 믿음의 경계를 낮추는 것이다. 이는 가설검정에서 유의수준을 높이는 것에 해당하는데 유의수준 0.05에서 통계적으로 유의하지 않은 것이 0.1에서는 유의할 수 있기 때문이다. 유의수준을 올릴 수 있다면 위에 말한 두 가지 방법을 별로 고려하지 않아도 될 만큼 가장 중요한 사안이라고 할 수 있겠으나 사람들이 그럴만 하다고 느끼는 유의수준의 정도를 바꾸는 것은 쉽지 않다는 점을 생각해야 할 것이다. 개인의 이득, 대외적인 이미지, 상대방과의 관계 등 여러 가지 요인에 따라 유의수준이 바뀔 수 있으므로 설득을 하려는 자는 이런 부분에 신경을 써야 할 것이다. 사람은 자신에게 불리할 것으로 생각되는 일은 믿지 않으려 하고, 유리할 것으로 예상되는 일은 그보다 쉽게 믿는 경향이 있기 때문이며 무엇을 말하느냐가 중요한 게 아니라 누가 말하느냐가 중요하다는 말이 괜히 나온 말이 아니다.</p>
 </div>
 </div>
-<div id="------" class="section level2">
+<div id="설득당하지-않으려-할-때-이용되는-가설검정의-원리" class="section level2">
 <h2>설득당하지 않으려 할 때 이용되는 가설검정의 원리</h2>
 <p>설득하는 것과 설득당하지 않는 것은 단순히 반대되는 사건이라고 보기에는 본질이 전혀 다른데 그 이유들은 아래와 같다.</p>
 <ol style="list-style-type: decimal">
@@ -453,41 +549,41 @@ div.tocify {
 <li><p>설득당하지 않으려는 쪽은 웬만하면 자신의 주장을 바꾸지 않으려 하므로 설득하려는 쪽에서 강한 증거를 제시해야 한다.</p></li>
 </ol>
 <p>이제 앞의 내용을 읽어 보았다면 사람들을 설득하려 할 때 쓰이는 기법들은 대부분 설득하려 할 때 쓰이는 방법들과 반대되는 것들일 것이라고 쉽게 추측할 수 있다.</p>
-<div id="-----." class="section level3">
+<div id="나의-주장이-무엇인지-정확히-말하지-않는다." class="section level3">
 <h3>나의 주장이 무엇인지 정확히 말하지 않는다.</h3>
 <p>이는 상대방이 가설검정을 쉽게 할 수 없도록 하는 것과도 같은데 앞서 말했듯이 남녀간의 혈압차이가 없다고 주장하는 것이 아니라 혈압차이가 -5~5라고 주장하는 것이다. 이런 주장을 귀무가설로 한다면 이를 가설검정하기 위해 귀무가설 하의 혈압차이의 분포를 알기가 상대적으로 더 어려워지며 이것이 극단적으로 나간다면 혈압차이가 있다고 할 순 없다고 주장하는 것이 된다. 이것은 아예 자신의 주장을 배제하고 상대방의 주장을 예상한 후 그것을 반박하는 것이 내 주장이라는 것으로 이런 주장을 하는 사람을 설득하는 것은 매우 힘들며, 이런 일련의 내용은 자기 주장을 밝히지 말고 상대방을 혼란스럽게 하라는 쇼펜하우어의 의견과 부합한다.</p>
 </div>
-<div id="--." class="section level3">
+<div id="귀무가설을-잘-조절한다." class="section level3">
 <h3>귀무가설을 잘 조절한다.</h3>
 <p>한편, 무엇인가 주장을 해야 한다면, 즉 귀무가설을 명확히 말해야 한다면 고려해야 할 것은 반박당하지 않도록 귀무가설을 잘 조절하는 일이다. 역시 앞서 말한 설득하기 위한 방법의 반대되는 개념인데, 내 생각이 반박 당할 가능성이 높다고 판단되거나 이미 반박되었다면, 그 반박 당한 주장에서 약간 물러난 스탠스를 취하는 것이다. 다시 남녀간의 혈압차이를 예를 들면 남녀간의 혈압차이가 없다는 주장이 반박되고 남자의 혈압이 더 높다는 결론이 나올 상황이라면 내 생각을 미리 남자가 여자의 혈압보다 5정도밖에 높지 않다고 한 발 물러서는 쪽으로 바꾸는 것이다. 이 주장은 앞선 차이가 없다는 주장과 달리 가설검정에서 유의한 결과가 아닌 것으로 나올 수가 있을 것이며, 이것도 안되면 6,7<span class="math inline">\(\dots\)</span>로 조금씩 숫자를 올려서 유의한 결과가 나오지 않을 때까지 물러서는 것이다. 이 방법을 사용하면 비록 처음 생각했던 주장을 유지할 수는 없지만 설득은 당하지 않을 수 있다.</p>
 </div>
-<div id="-" class="section level3">
+<div id="유의수준을-낮춘다" class="section level3">
 <h3>유의수준을 낮춘다</h3>
 <p>마지막으로 이야기 할 것은 앞에서와 마찬가지로 유의수준의 조절에 관한 부분인데 그럴듯하게 유의수준을 낮추는 방법으로 많이 이용되는 것은 설득하려는 상대방을 믿지 못할 사람으로 만드는 것이다. 주로 쓰이는 것은 논쟁의 주제가 아닌 다른 주제에서의 상대방의 실수나 실패를 말하거나, 상대방에 대한 인신공격이다. 어떤 쪽이든 상대방을 믿지 못할 사람 혹은 손해를 끼칠 사람으로 인식하게 하여 유의수준을 낮추는 것을 합리화하는 것이 설득을 당하지 않는데 필요한 항목이다.</p>
 </div>
 </div>
-<div id="--" class="section level2">
+<div id="예시-타블로와-타진요" class="section level2">
 <h2>예시: 타블로와 타진요</h2>
 <p>2011년부터 지금까지 대한민국에서 큰 이슈가 된 연예인 타블로(영문명: Daniel Sunwoong Lee)의 스탠포드 대학교 학력검증 논란은 본문의 내용을 가장 잘 적용할 수 있는 사건 중 하나이다. 여기서는 그의 학력이 진짜인지 아닌지에 대한 이야기는 접어두고 진짜라고 생각하는 사람들과 아니라고 생각하는 사람들의 두 집단을 대상으로 해당 논쟁이 어떻게 진행되었으며 가설검정의 원리가 어떻게 쓰여졌는지만 이야기 해 보겠다.</p>
-<div id="---." class="section level3">
+<div id="타블로는-스탠포드를-나오지-않았다." class="section level3">
 <h3>타블로는 스탠포드를 나오지 않았다.</h3>
 <p>일단 2011년 인터넷 커뮤니티 “타블로에게 진실을 요구합니다”(이하 타진요) 의 회원들이 타블로의 학력에 대해 의문을 제기하기 전까지의 대부분 사람들의 귀무가설은 “타블로는 스탠포드 대학교를 나왔다.” 는 것이다. 이에 타진요 회원들은 스탠포드 대학교를 나왔다면 일어나기 힘들다고 생각되는 여러 가지 내용들을 제시하며 이 귀무가설을 반박하였으며, 타블로의 과거 사실과 다른 방송매체 발언들을 모아서 공개하고 그의 캐나다 국적을 문제로 삼아 타블로를 믿지 못할 사람, 손해를 끼치는 사람으로 몰아가기도 하였다. 이는 가설검정에서 유의수준을 올리려는 행위에 해당되는 것이며, 이런 상황이 계속되어 한때 이 귀무가설은 기각된 것으로 여겨지기도 하였는데 그렇다면 그때부터는 기존의 귀무가설은 폐기되고 새로운 귀무가설 “타블로를 스탠포드 대학교를 나오지 않았다”이 형성된 것이다.</p>
 </div>
-<div id="--." class="section level3">
+<div id="타블로는-스탠포드를-나왔다." class="section level3">
 <h3>타블로는 스탠포드를 나왔다.</h3>
 <p>허나 타블로 본인의 해명, 주변인들의 증언, 기타 증거 등 타블로가 스탠포드 대학교를 나온 것이 아니라면 일어나기 힘든 사건들이 공개되면서 다시 타블로가 스탠포드 대학을 나오지 않았다는 귀무가설이 기각 당하게 되었고 그것이 다시 뒤집히는 일은 현재까지 없었다.</p>
 <p>여기서 타진요의 주장의 변화를 살펴보면 처음에는 기존의 귀무가설을 반박하기 위한 행동들을 했는데, 귀무가설을 반박하고 나온 새로운 귀무가설이 반박 당한 후 타블로의 학력이 진실인 것으로 판명될 분위기가 되자, 타블로가 스탠포드 대학을 나오지 않았다는 것을 설득시키는 것을 포기한다. 그리고 설득당하지 않는 것으로 전략을 바꾸게 된다.</p>
 </div>
-<div id="------." class="section level3">
+<div id="타블로는-스탠포드를-나왔다고-딱-말할-수-없다." class="section level3">
 <h3>타블로는 스탠포드를 나왔다고 딱 말할 수 없다.</h3>
 <p>설득당하지 않기 위해 원래 주장에서 한 발짝 물러설 필요가 있고 그 주장은 “타블로가 스탠포드 대학을 졸업했다고 말할 수 없다” 와 같은 형식이 된다. 이 주장은 타블로의 학력이 가짜다라는 의미가 내포되어 있다고 볼 수 있긴 하지만, 명확하게 가짜라는 주장이 아니고 애매하다. 따라서 이것을 귀무가설로 놓는다면 이것을 검정하고 기각하기란 여간 어려운 것이 아니다. 주장이 명확하지 않은데다가, 주장 자체가 어떤 주장에 대한 반박에 대한 내용이기 때문에 귀무가설이 참일 때의 확률공간을 파악하고 인식하기조차 어렵고 따라서 일어나기 쉬운 일 일어나기 힘든 일을 이야기 하는 것 자체가 무리이다. 따라서 이런 주장을 하는 사람을 설득하는 것은 거의 불가능하며 타블로의 학력을 믿는 사람들은 학력이 가짜라는 첫 번째의 가설을 반박한 것을, 믿지 않는 사람들은 원래 주장은 반박당했지만 마지막까지 설득당하진 않았다라는 것을 강조하게 된다.</p>
 <p>이 예는 가설검정의 원리가 논쟁에 적용되는 한 가지 예일 뿐이고 실상 우리 주변에서 이와 비슷한 예를 수없이 많이 찾을 수 있을 것이며, 하루에도 수없이 많이 일어나는 소송 및 재판이 이를 지지한다.</p>
 </div>
 </div>
-<div id="-" class="section level2">
+<div id="가설검정의-심리학" class="section level2">
 <h2>가설검정의 심리학</h2>
 <p>이번에는 서론에서 언급한 정규성 검정과, 독립 2표본 <span class="math inline">\(t\)</span>-test에서의 등분산성 검정에 대해 좀 더 이야기 해보려 한다.</p>
-<div id="-" class="section level3">
+<div id="정규성-검정" class="section level3">
 <h3>정규성 검정</h3>
 <p>서론에서 말했듯이 정규성 검정은 자료의 분포가 정규분포인지를 검정하는 방법으로 통상적으로 유의수준 0.05에서 검정을 하게 되는데 이는 아주 큰 문제가 발견되지 않으면 그냥 정규분포로 가정하겠다는 심리가 반영된 것이다.</p>
 <p><strong>Normal Distribution 항목</strong>에서도 설명했듯이 정규분포는 세상의 대부분의 사건에 적용할 수 있는 분포라고 생각할 수 있다. 이런 사실을 토대로 정규성 검정에 숨겨진 심리를 이해할 수 있는데, 대부분의 사건들이 정규분포를 따를 것이니 왠만하면 이 생각을 바꾸지 않겠다는 것이다. 또한 연구를 진행하는 사람의 입장에서는 정규분포 가정이 깨진다면 잘 알려진 통계량들을 사용하기 어렵기 때문에 정규분포라는 생각을 가급적 바꾸지 않겠다는 마음을 가질 수도 있을 것이다. 허나 오늘날에는 poisson, gamma, beta distribution 등 정규분포를 따르지 않는 분포들이 많이 알려져 있어 무작정 정규분포 가정을 유지하는 것은 위험한 생각일 수 있을 것이다.</p>
@@ -512,7 +608,7 @@ div.tocify {
 <p>이를 토대로 등분산성 검정에 숨겨진 심리를 생각해 볼 수 있다. 등분산 가정이 깨지게 되면 <span class="math inline">\(t\)</span>-분포라 할 수 없어서 근사를 거쳐 복잡한 계산을 해야 하기 때문에 <strong>가급적이면 등분산이라는 생각을 바꾸지 않겠다</strong>는 심리가 깔려 있는 것이라 생각할 수 있다. 허나, 따로 떨어진 두 집단의 모분산이 같다는 가정은 앞의 정규분포에 대한 가정과는 달리 자연스럽게 이해되지 않는 부분이며, 실상 그렇지 않은 경우가 훨씬 많아 무작정 이를 이용하면 올바르지 못한 가설 검정을 하게 될 수 있다<span class="citation">(Moser and Stevens 1992)</span>. 또한 오늘날에는 컴퓨터를 이용하여 등분산 가정이 없을 때의 통계량을 쉽게 계산할 수 있고 또 여러 통계 프로그램에서 이를 제시해 주고 있으므로 등분산임이라고 확신할 수 있는 경우를 제외하고는 등분산 가정을 이용한 가설검정을 하는 것에 대해 신중한 판단을 해야 할 것이다.</p>
 </div>
 </div>
-<div id="-----" class="section level2">
+<div id="바람직한-논쟁과-올바른-통계적-가설검정에-대하여" class="section level2">
 <h2>바람직한 논쟁과 올바른 통계적 가설검정에 대하여</h2>
 <p>지금까지의 내용을 정리하면 다음과 같다.</p>
 <ol style="list-style-type: decimal">
@@ -522,7 +618,7 @@ div.tocify {
 </ol>
 <p>어떠한 주제의 논쟁을 하던 본문에 제시된 방법들을 효과적으로 사용하거나 상대방이 이런 방법들을 사용하는 것을 알고 대처한다면, 상대적으로 부족한 근거를 가지고도 자신의 주장을 효과적으로 펼칠 수는 있을 것이나, 소모적인 논쟁을 유발하기도 쉽다는 점을 명심해야 할 것이다. 한편, 연구를 수행하여 가설검정을 할 때 가설검정이 의도하고 있는 부분이 연구자 자신이 생각하고 있는 부분과 맞는지 고민을 할 필요성이 있으며, 이런 고민의 결과를 반영하는 것이 올바른 결과를 도출하는데 큰 도움이 될 것이다.</p>
 </div>
-<div class="section level2 unnumbered">
+<div id="참고문헌" class="section level2 unnumbered">
 <h2>참고문헌</h2>
 <div id="refs" class="references">
 <div id="ref-fisher1960design">
@@ -601,6 +697,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

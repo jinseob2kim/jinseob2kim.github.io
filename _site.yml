@@ -16,6 +16,16 @@ navbar:
       href: hypothesis.html
     - text: '건강지표: DALY, QALY'
       href: health_metrics.html
+    - text: 귀무가설의 재정의
+      href: https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/
+    - text: 새로운 유전율 지표 제안 
+      href: https://blog.zarathu.com/posts/2018-11-08-medianorratio/
+    - text: 선형모형의 다차원공간으로의 확장
+      href: https://blog.zarathu.com/posts/2018-11-08-mdlm/
+    - text: 선형모형의 허수축 확장
+      href: https://blog.zarathu.com/posts/2018-11-08-mdlm/  
+
+  
   - text: Mathematics
     menu:
     - text: 괴델의 불완전성 정리
@@ -50,6 +60,12 @@ navbar:
       href: 2018-02-09-gwas-visualization3.html
     - text: "Advanced R (1): Fast R & Table 만들기"
       href: radv1.html
+    - text: 의학 연구에서의 기술 통계 with R
+      href: https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/
+    - text: R Markdown 기초
+      href: https://blog.zarathu.com/posts/2019-01-03-rmarkdown/
+    - text: "R 데이터 매니지먼트: tidyverse"
+      href: https://blog.zarathu.com/posts/2019-01-03-rdatamanagement
       
   right:
   - icon: fa-github fa-lg

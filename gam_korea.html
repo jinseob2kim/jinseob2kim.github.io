@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,7 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -36,6 +37,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -84,9 +87,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,13 +101,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -122,7 +128,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -142,6 +147,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -163,47 +205,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -217,6 +278,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -252,8 +319,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -268,6 +333,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -314,6 +389,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -384,6 +471,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -407,12 +503,12 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Generalized Additive Model: 고려대학교 의과대학</h1>
-<h3 class="subtitle"><em>R: mgcv 패키지 실습</em></h3>
+<h3 class="subtitle">R: mgcv 패키지 실습</h3>
 
 </div>
 
 
-<div id="-" class="section level2">
+<div id="시작하기-전에" class="section level2">
 <h2>시작하기 전에</h2>
 <p>본 강의록은 <strong>GAM</strong> 이론은 생략한다. 이론은 <a href="https://www.slideshare.net/secondmath/generalized-additive-model" class="uri">https://www.slideshare.net/secondmath/generalized-additive-model</a> 을 참고하기 바란다.</p>
 </div>
@@ -626,7 +722,7 @@ plot(sl.ts[,c(&quot;nonacc&quot;,&quot;meanpm10&quot;,&quot;meanso2&quot;,&quot;
 <pre class="r"><code>pacf(sl$nonacc,main=&quot;Seoul: nonacc&quot;,lag.max=10)</code></pre>
 <p><img src="gam_korea_files/figure-html/unnamed-chunk-4-2.png" width="672" /></p>
 </div>
-<div id="--for-offset" class="section level3">
+<div id="서울시-인구수-for-offset" class="section level3">
 <h3>서울시 인구수: For offset</h3>
 <p>다음 자료를 참고하여 서울의 2000~2007년의 인구수 정보를 얻었다.</p>
 <p><a href="https://www.google.co.kr/publicdata/explore?ds=z5567oe244g0ot_&amp;ctype=c&amp;strail=false&amp;bcs=d&amp;nselm=s&amp;met_y=population&amp;scale_y=lin&amp;ind_y=false&amp;ifdim=city_proper:area:410&amp;tunit=Y&amp;pit=1188399600000&amp;hl=en&amp;dl=en&amp;ind=false&amp;icfg" class="uri">https://www.google.co.kr/publicdata/explore?ds=z5567oe244g0ot_&amp;ctype=c&amp;strail=false&amp;bcs=d&amp;nselm=s&amp;met_y=population&amp;scale_y=lin&amp;ind_y=false&amp;ifdim=city_proper:area:410&amp;tunit=Y&amp;pit=1188399600000&amp;hl=en&amp;dl=en&amp;ind=false&amp;icfg</a></p>
@@ -676,7 +772,7 @@ pop_seoul</code></pre>
 </tbody>
 </table>
 </div>
-<div id="--sin-cos" class="section level3">
+<div id="계절성-변수-sin-cos" class="section level3">
 <h3>계절성 변수: sin, cos</h3>
 <pre class="r"><code>sl$season1=sin(1:nrow(sl)/365.25*2*pi)
 sl$season2=cos(1:nrow(sl)/365.25*2*pi)
@@ -801,7 +897,7 @@ res1</code></pre>
 </tr>
 </tbody>
 </table>
-<p>No. of observations = 2921 AIC value = 22067.0825 |</p>
+<p>No. of observations = 2921 AIC value = 22067.0825 |</p>
 <div id="offset-population-number" class="section level3">
 <h3>Offset: Population number</h3>
 <pre class="r"><code>sl_pop=merge(sl,pop_seoul,by=&quot;yy&quot;) 
@@ -1117,7 +1213,7 @@ res2</code></pre>
 </tr>
 </tbody>
 </table>
-<p>No. of observations = 2921 AIC value = 22074.1939 |</p>
+<p>No. of observations = 2921 AIC value = 22074.1939 |</p>
 </div>
 <div id="quasi-poisson" class="section level3">
 <h3>Quasi-poisson</h3>
@@ -1204,9 +1300,9 @@ summary(m3)</code></pre>
 <pre class="r"><code>m4=gam(nonacc~offset(log(pop))+s(meanpm10) + s(meanso2) + s(meanno2) + s(meanco) + s(meantemp) + s(meanhumi)+ s(meanpress)+ season1+season2, family=poisson, data=sl_pop)
 
 summary(m4)$edf ## Effective Degree of Freedom</code></pre>
-<pre><code>## [1] 3.807163 4.760341 2.475957 1.000345 7.366874 1.001397 3.315617</code></pre>
+<pre><code>## [1] 3.665217 4.760229 2.469260 1.000158 7.366861 1.000997 3.319915</code></pre>
 <pre class="r"><code>AIC(m4)         ## AIC</code></pre>
-<pre><code>## [1] 22016.49</code></pre>
+<pre><code>## [1] 22016.55</code></pre>
 <pre class="r"><code>par(mfrow=c(2,4))
 plot(m4)</code></pre>
 <p><img src="gam_korea_files/figure-html/unnamed-chunk-17-1.png" width="672" /></p>
@@ -1215,7 +1311,7 @@ plot(m4)</code></pre>
 <pre class="r"><code>m5=gam(nonacc~offset(log(pop))+s(meanpm10) + s(meanso2) + s(meanno2) + s(meanco) + s(meantemp) + s(meanhumi)+ s(meanpress)+ season1+season2, family=quasipoisson, data=sl_pop)
 
 summary(m5)$edf ## Effective Degree of Freedom</code></pre>
-<pre><code>## [1] 2.558830 4.535913 2.256126 1.000157 7.157007 1.001493 2.973903</code></pre>
+<pre><code>## [1] 2.530027 4.536262 2.253240 1.000156 7.156556 1.001500 2.974393</code></pre>
 <pre class="r"><code>AIC(m5)         ## No AIC</code></pre>
 <pre><code>## [1] NA</code></pre>
 <pre class="r"><code>par(mfrow=c(2,4))
@@ -1273,6 +1369,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

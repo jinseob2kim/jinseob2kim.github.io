@@ -1,5 +1,7 @@
 ---
 title: "확률(Probability) vs 가능도(Likelihood)"
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}
@@ -16,15 +18,7 @@ knitr::opts_knit$set(height=100)
 ## 확률
 주사위를 예를 들어 보자. 주사위를 던져서 나올 수 있는 숫자는 1,2,3,4,5,6이고 각 숫자가 나올 확률은 $\frac{1}{6}$로 모두 같다. 동전 10번 던져서 앞면은 0~10번 나올 수 있으며 각각의 확률은 계산해 보면 각각 `r round(dbinom(0:10,10,0.5),3)` 이다. 두 경우 모두 일어날 수 있는 사건이 6개, 11개로 정해져 있으며 각각에 대한 확률을 구할 수 있고 확률의 합은 1이 된다. 
 
-```{r,echo=F,fig.cap="확률 예시",fig.width=10}
-library(ggplot2);library(gridExtra)
-n=0:10
-f1=data.frame(n=1:6,p=rep(1/6,6))
-f2=data.frame(n,p=dbinom(n,10,0.5))
-g1=ggplot(f1,aes(n,p))+geom_bar(stat = "identity",width=0.7)+xlab("주사위 눈")+ylab("확률")+scale_x_continuous(breaks=1:6)+ylim(0,0.25)+ggtitle("주사위 던지기")
-g2=ggplot(f2,aes(n,p))+geom_bar(stat = "identity",width=0.7)+xlab("앞면 횟수")+ylab("확률")+scale_x_continuous(breaks=0:10)+ggtitle("동전 10번 던지기")
-grid.arrange( g1, g2, ncol=2)
-```
+
 
 
 ## 연속사건의 확률

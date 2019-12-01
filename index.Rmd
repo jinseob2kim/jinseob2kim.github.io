@@ -8,8 +8,19 @@ output:
 
 ## 업데이트{.tabset}
 
+### 2019
+
+* 12월 
+    + [귀무가설 재정의](https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/)
+    + [새로운 유전율 지표 제안](https://blog.zarathu.com/posts/2018-11-08-medianorratio/)
+    + [선형모형의 다차원공간으로의 확장](https://blog.zarathu.com/posts/2018-11-08-mdlm/)
+    + [선형모형의 허수축 확장](https://blog.zarathu.com/posts/2019-08-14-mdlmwithimaginaryaxes/)
+    + [의학 연구에서의 기술 통계 with R](https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/)
+    + [R Markdown 기초](https://blog.zarathu.com/posts/2019-01-03-rmarkdown/)
+    + [R 데이터 매니지먼트: tidyverse](https://blog.zarathu.com/posts/2019-01-03-rdatamanagement/)
 
 ### 2018
+
 * 3월 14일
     + 가로 스크롤 추가
     + 하이퍼링크 추가: [Likelihood](probability_likelihood.html), [Normal distribution](Normal_distribution.html)

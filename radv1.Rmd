@@ -56,7 +56,7 @@ library(data.table)
 
 ```{r, cache=F}
 ## Load file
-setwd("/home/secondmath/Dropbox/example")
+setwd("/home/jinseob2kim/Dropbox/example")
 df = read.table("LinearTG.assoc.linear",header=T)
 dt = fread("LinearTG.assoc.linear",header=T)
 
@@ -76,7 +76,7 @@ fwrite(dt, "aa.csv")
 
 ### Benchmark
 ```{r}
-setwd("/home/secondmath/Dropbox/example")
+setwd("/home/jinseob2kim/Dropbox/example")
 
 ## Load
 kable(
@@ -205,7 +205,7 @@ kable(
 
 ### Code
 ```{r, cache=F}
-ph = fread("/home/secondmath/Dropbox/myarticle/MOR_heri/prac.phe")
+ph = fread("/home/jinseob2kim/Dropbox/myarticle/MOR_heri/prac.phe")
 kable(
   tail(ph)
   )
@@ -276,7 +276,7 @@ kable(
 setkey(res, CHR,SNP,BP)
 
 ## Other GWAS result
-res_logit = fread("/home/secondmath/Dropbox/example/LogisticTG.assoc.logistic")[TEST=="ADD"]
+res_logit = fread("/home/jinseob2kim/Dropbox/example/LogisticTG.assoc.logistic")[TEST=="ADD"]
 setkey(res_logit, CHR,SNP,BP)
 ```
 
@@ -384,7 +384,7 @@ kable(
 
 ```{r}
 ## Gene info
-glist_hg18 = fread("/home/secondmath/Dropbox/example/glist-hg18")
+glist_hg18 = fread("/home/jinseob2kim/Dropbox/example/glist-hg18")
 names(glist_hg18) = c("chr","start","end","gene")
 setkey(glist_hg18, chr, start, end)   ## Set keys
 

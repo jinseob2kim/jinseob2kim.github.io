@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,7 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -36,6 +37,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -84,9 +87,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,13 +101,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -122,7 +128,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -142,6 +147,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -163,47 +205,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -217,6 +278,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -252,8 +319,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -268,6 +333,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -314,6 +389,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -384,6 +471,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -407,16 +503,16 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">R 의학통계: 삼성서울병원(1)</h1>
-<h3 class="subtitle"><em>R 기초 문법 및 Table 1만들기</em></h3>
+<h3 class="subtitle">R 기초 문법 및 Table 1만들기</h3>
 
 </div>
 
 
-<div id="-" class="section level2">
+<div id="시작하기-전에" class="section level2">
 <h2>시작하기 전에</h2>
 <p>본 강의는 <em>R</em>과 <em>Rstudio</em> 의 설치과정은 생략한다. 혹시 설치를 하지 못하였다면 <a href="http://www.r-project.org/" class="uri">http://www.r-project.org/</a> 와 <a href="http://www.rstudio.com/" class="uri">http://www.rstudio.com/</a> 를 참조하여 설치하길 바란다. <em>R</em>에 대한 전반적인 도움말은 <strong>help.start()</strong> 명령어를 활용하면 되고 함수 별 도움말을 보려면 <strong>help(which)</strong> 와 같이 실행하면 된다.</p>
 </div>
-<div id="--" class="section level2">
+<div id="본-강의의-목표" class="section level2">
 <h2>본 강의의 목표</h2>
 <p><em>R</em>의 이용능력을 대략적으로 다음과 같이 분류할 수 있다.</p>
 <ol style="list-style-type: decimal">
@@ -428,7 +524,7 @@ div.tocify {
 </ol>
 <p>본 강의에서는 <strong>데이터 정리는 엑셀에서 한다고 가정한 후</strong> <em>R</em>에서 분석을 수행하는 것을 목표로 할 것이다. 실습데이터는 <a href="https://github.com/mathemedicine/mathemedicine.github.io/blob/master/smc_example.csv">여기</a>에서 다운받을 수 있으며 <em>R</em>코드 파일은 <a href="https://github.com/mathemedicine/mathemedicine.github.io/blob/master/r_smc_1.r">여기</a>에서 다운받을 수 있다.</p>
 </div>
-<div id="r--vector" class="section level2">
+<div id="r-기초연산-벡터vector" class="section level2">
 <h2><em>R</em> 기초연산 : 벡터(vector)</h2>
 <p><em>R</em> 의 기본 연산 단위는 벡터이며 <code>x=c(1,2,3)</code> 이라고 쓰면 1,2,3 으로 이루어진 길이 3인 벡터를 <code>x</code>에 저장하는 것이다. 기타 연산은 직접 실습으로 알아보자.</p>
 <pre class="r"><code>x=c(1,2,3,4,5,6)            ## vector of variable
@@ -465,15 +561,15 @@ x+y              </code></pre>
 <pre><code>## [1] 1 3 4 5 6</code></pre>
 <pre class="r"><code>x[c(1,2,3)]</code></pre>
 <pre><code>## [1] 1 2 3</code></pre>
-<div class="section level3">
+<div id="벡터만들기" class="section level3">
 <h3>벡터만들기</h3>
 <p>이번에는 벡터를 생성하는 다양한 방법들을 예시를 통해 배워보도록 한다.</p>
 <pre class="r"><code>## Sequence
 v1=seq(-5,5,by=.2); v1 </code></pre>
-<pre><code>##  [1] -5.0 -4.8 -4.6 -4.4 -4.2 -4.0 -3.8 -3.6 -3.4 -3.2 -3.0 -2.8 -2.6 -2.4
-## [15] -2.2 -2.0 -1.8 -1.6 -1.4 -1.2 -1.0 -0.8 -0.6 -0.4 -0.2  0.0  0.2  0.4
-## [29]  0.6  0.8  1.0  1.2  1.4  1.6  1.8  2.0  2.2  2.4  2.6  2.8  3.0  3.2
-## [43]  3.4  3.6  3.8  4.0  4.2  4.4  4.6  4.8  5.0</code></pre>
+<pre><code>##  [1] -5.0 -4.8 -4.6 -4.4 -4.2 -4.0 -3.8 -3.6 -3.4 -3.2 -3.0 -2.8 -2.6 -2.4 -2.2
+## [16] -2.0 -1.8 -1.6 -1.4 -1.2 -1.0 -0.8 -0.6 -0.4 -0.2  0.0  0.2  0.4  0.6  0.8
+## [31]  1.0  1.2  1.4  1.6  1.8  2.0  2.2  2.4  2.6  2.8  3.0  3.2  3.4  3.6  3.8
+## [46]  4.0  4.2  4.4  4.6  4.8  5.0</code></pre>
 <pre class="r"><code>## Repeat 
 v2=rep(1,3); v2</code></pre>
 <pre><code>## [1] 1 1 1</code></pre>
@@ -482,7 +578,7 @@ v2=rep(1,3); v2</code></pre>
 <pre class="r"><code>v4=rep(c(1,2,3),each = 2); v4       ## Repeat for vector : each</code></pre>
 <pre><code>## [1] 1 1 2 2 3 3</code></pre>
 </div>
-<div id="for-if-else-ifelse-" class="section level3">
+<div id="for-if-else-ifelse-문" class="section level3">
 <h3>for, if, else, ifelse 문</h3>
 <p>마찬가지로 예시를 통해 배워보자.</p>
 <pre class="r"><code>## for loop
@@ -520,7 +616,7 @@ y=ifelse(x==5,&quot;OK&quot;,&quot;Suck&quot;)       ## ifelse(조건,참일때,
 y</code></pre>
 <pre><code>## [1] &quot;OK&quot;</code></pre>
 </div>
-<div id="-" class="section level3">
+<div id="함수-만들기" class="section level3">
 <h3>함수 만들기</h3>
 <p>기초수준에서는 함수를 만들어 쓸일이 거의 없을 것이다. 그러나 평균, 분산 등을 구할 때 결측치가 있으면 <em>R</em>은 <code>NA</code>를 출력하는 문제점이 있어 이를 해결하기 위해서라도 기본적인 함수 만드는 법은 알고 있는 것이 좋다. 예제를 통해 살펴보자.</p>
 <pre class="r"><code>x=c(1:10,12,13,NA,NA,15,17)               ## 결측치가 포함되어 있다면..
@@ -542,17 +638,17 @@ twomean(4,6)</code></pre>
 <pre><code>## [1] 5</code></pre>
 </div>
 </div>
-<div id="--." class="section level2">
+<div id="데이터-불러오기-저장하기." class="section level2">
 <h2>데이터 불러오기 &amp; 저장하기.</h2>
 <p>이제부터는 실제 데이터를 읽어서 그 데이터를 매니징 하는 방법을 배워보도록 하겠다.</p>
-<div id="-" class="section level3">
+<div id="디렉토리-지정" class="section level3">
 <h3>디렉토리 지정</h3>
 <p>데이터를 불러오기 전에 미리 디렉토리를 지정하면 그 다음부터는 편하게 읽고 쓸 수 있다.</p>
 <pre class="r"><code>#getwd()                                                                  ## 현재 디렉토리 
 #setwd(&quot;/home/secondmath/Dropbox/Hompage/mathemedicine.github.io&quot;)        ## 디렉토리 설정 
 #setwd(&quot;C:/Users/sec/Desktop/Language/r/edu&quot;)        
 getwd()</code></pre>
-<pre><code>## [1] &quot;/home/secondmath/Dropbox/Hompage/jinseob2kim.github.io&quot;</code></pre>
+<pre><code>## [1] &quot;/home/jinseob2kim/Dropbox/Hompage/jinseob2kim.github.io&quot;</code></pre>
 <p>여기서 주의해야 할 점은 폴더간의 구분을 / 로 해야 한다는 점이다. <em>R</em> 은 유닉스 기반의 언어이기 때문이다. 이제 실습 데이터를 읽어보도록 하자. 가급적이면 데이터포맷은 <code>csv</code>로 통일하는 것을 추천한다. 콤마로 분리된 가장 간단 한 형태의 파일로서 용량도 작고 어떤 소프트웨어에서도 읽을 수 있다는 장점이 있다. 물론 <em>R</em>에서 SPSS, SAS, Excel파일을 읽을 수도 있지만 본 실습에서는 생략하도록 하겠다.</p>
 <pre class="r"><code>a=read.csv(&quot;smc_example.csv&quot;)                             ## 첫번째 행은 변수명으로 자동 인식
 a=read.table(&quot;smc_example.csv&quot;, sep=&quot;,&quot;, header=T)        ## 구분자와 첫번째 행 인식여부를 직접
@@ -576,7 +672,7 @@ head(a)                                             ## 처음 6행 보기</code>
 write.csv(a,&quot;smc_example1.csv&quot;,row.names=F)   ## 행번호 삭제 </code></pre>
 </div>
 </div>
-<div id="--" class="section level2">
+<div id="읽은-데이터-살펴보기" class="section level2">
 <h2>읽은 데이터 살펴보기</h2>
 <p>이제부터는 본격적으로 읽은 데이터를 살펴보도록 하겠다. 실습데이터는 심장질환 환자의 정보를 포함하고 있다.</p>
 <pre class="r"><code>head(a)               ## 처음 6행</code></pre>
@@ -611,13 +707,12 @@ write.csv(a,&quot;smc_example1.csv&quot;,row.names=F)   ## 행번호 삭제 </co
 ## 999        1695       2053      No test            1
 ## 1000         76        257      No test            1</code></pre>
 <pre class="r"><code>names(a)              ## 변수명</code></pre>
-<pre><code>##  [1] &quot;Patient_ID&quot;   &quot;Sex&quot;          &quot;Age&quot;          &quot;Height&quot;      
-##  [5] &quot;Weight&quot;       &quot;BMI&quot;          &quot;DM&quot;           &quot;HTN&quot;         
-##  [9] &quot;Smoking&quot;      &quot;MACCE&quot;        &quot;Death&quot;        &quot;MACCE_date&quot;  
-## [13] &quot;Death_date&quot;   &quot;STRESS_EXIST&quot; &quot;Number_stent&quot;</code></pre>
+<pre><code>##  [1] &quot;Patient_ID&quot;   &quot;Sex&quot;          &quot;Age&quot;          &quot;Height&quot;       &quot;Weight&quot;      
+##  [6] &quot;BMI&quot;          &quot;DM&quot;           &quot;HTN&quot;          &quot;Smoking&quot;      &quot;MACCE&quot;       
+## [11] &quot;Death&quot;        &quot;MACCE_date&quot;   &quot;Death_date&quot;   &quot;STRESS_EXIST&quot; &quot;Number_stent&quot;</code></pre>
 <pre class="r"><code>a$BMI[1:10]           ## BMI변수의 처음 10개 행만..                  </code></pre>
-<pre><code>##  [1] 24.60938 24.00549 23.71184 25.72103 23.50781 25.40282 23.30905
-##  [8] 23.72529 26.15933 23.01118</code></pre>
+<pre><code>##  [1] 24.60938 24.00549 23.71184 25.72103 23.50781 25.40282 23.30905 23.72529
+##  [9] 26.15933 23.01118</code></pre>
 <pre class="r"><code>dim(a)                ## 행갯수, 열갯수</code></pre>
 <pre><code>## [1] 1000   15</code></pre>
 <pre class="r"><code>nrow(a)               ## 행</code></pre>
@@ -644,34 +739,34 @@ write.csv(a,&quot;smc_example1.csv&quot;,row.names=F)   ## 행번호 삭제 </co
 ##  $ STRESS_EXIST: Factor w/ 2 levels &quot;No test&quot;,&quot;Test&quot;: 1 1 1 2 1 1 1 1 2 1 ...
 ##  $ Number_stent: int  3 2 2 1 2 1 3 1 1 1 ...</code></pre>
 <pre class="r"><code>summary(a)            ## 대략적인 요약.</code></pre>
-<pre><code>##    Patient_ID       Sex          Age           Height     
-##  Min.   :    7419   F:254   Min.   :21.0   Min.   : 99.0  
-##  1st Qu.: 7723744   M:746   1st Qu.:56.0   1st Qu.:158.0  
-##  Median :15435939           Median :63.0   Median :165.0  
-##  Mean   :14272770           Mean   :62.8   Mean   :163.4  
-##  3rd Qu.:20308317           3rd Qu.:70.0   3rd Qu.:170.0  
-##  Max.   :27116710           Max.   :93.0   Max.   :190.0  
-##      Weight            BMI               DM             HTN       
-##  Min.   : 36.00   Min.   : 14.33   Min.   :0.000   Min.   :0.000  
-##  1st Qu.: 60.00   1st Qu.: 23.05   1st Qu.:0.000   1st Qu.:0.000  
-##  Median : 67.00   Median : 24.55   Median :0.000   Median :1.000  
-##  Mean   : 67.13   Mean   : 38.35   Mean   :0.394   Mean   :0.626  
-##  3rd Qu.: 74.00   3rd Qu.: 26.50   3rd Qu.:1.000   3rd Qu.:1.000  
-##  Max.   :102.00   Max.   :999.00   Max.   :1.000   Max.   :1.000  
-##     Smoking          MACCE           Death         MACCE_date  
-##  Min.   :0.000   Min.   :0.000   Min.   :0.000   Min.   :   1  
-##  1st Qu.:0.000   1st Qu.:0.000   1st Qu.:0.000   1st Qu.: 636  
-##  Median :0.000   Median :0.000   Median :0.000   Median :1248  
-##  Mean   :0.265   Mean   :0.223   Mean   :0.059   Mean   :1353  
-##  3rd Qu.:1.000   3rd Qu.:0.000   3rd Qu.:0.000   3rd Qu.:2013  
-##  Max.   :1.000   Max.   :1.000   Max.   :1.000   Max.   :3502  
-##    Death_date      STRESS_EXIST  Number_stent  
-##  Min.   :   1.0   No test:603   Min.   :1.000  
-##  1st Qu.: 872.8   Test   :397   1st Qu.:1.000  
-##  Median :1518.5                 Median :1.000  
-##  Mean   :1568.2                 Mean   :1.597  
-##  3rd Qu.:2211.2                 3rd Qu.:2.000  
-##  Max.   :3502.0                 Max.   :6.000</code></pre>
+<pre><code>##    Patient_ID       Sex          Age           Height          Weight      
+##  Min.   :    7419   F:254   Min.   :21.0   Min.   : 99.0   Min.   : 36.00  
+##  1st Qu.: 7723744   M:746   1st Qu.:56.0   1st Qu.:158.0   1st Qu.: 60.00  
+##  Median :15435939           Median :63.0   Median :165.0   Median : 67.00  
+##  Mean   :14272770           Mean   :62.8   Mean   :163.4   Mean   : 67.13  
+##  3rd Qu.:20308317           3rd Qu.:70.0   3rd Qu.:170.0   3rd Qu.: 74.00  
+##  Max.   :27116710           Max.   :93.0   Max.   :190.0   Max.   :102.00  
+##       BMI               DM             HTN           Smoking     
+##  Min.   : 14.33   Min.   :0.000   Min.   :0.000   Min.   :0.000  
+##  1st Qu.: 23.05   1st Qu.:0.000   1st Qu.:0.000   1st Qu.:0.000  
+##  Median : 24.55   Median :0.000   Median :1.000   Median :0.000  
+##  Mean   : 38.35   Mean   :0.394   Mean   :0.626   Mean   :0.265  
+##  3rd Qu.: 26.50   3rd Qu.:1.000   3rd Qu.:1.000   3rd Qu.:1.000  
+##  Max.   :999.00   Max.   :1.000   Max.   :1.000   Max.   :1.000  
+##      MACCE           Death         MACCE_date     Death_date      STRESS_EXIST
+##  Min.   :0.000   Min.   :0.000   Min.   :   1   Min.   :   1.0   No test:603  
+##  1st Qu.:0.000   1st Qu.:0.000   1st Qu.: 636   1st Qu.: 872.8   Test   :397  
+##  Median :0.000   Median :0.000   Median :1248   Median :1518.5                
+##  Mean   :0.223   Mean   :0.059   Mean   :1353   Mean   :1568.2                
+##  3rd Qu.:0.000   3rd Qu.:0.000   3rd Qu.:2013   3rd Qu.:2211.2                
+##  Max.   :1.000   Max.   :1.000   Max.   :3502   Max.   :3502.0                
+##   Number_stent  
+##  Min.   :1.000  
+##  1st Qu.:1.000  
+##  Median :1.000  
+##  Mean   :1.597  
+##  3rd Qu.:2.000  
+##  Max.   :6.000</code></pre>
 <pre class="r"><code>a$BMI
 a[,&quot;BMI&quot;]
 a[,11]
@@ -735,7 +830,7 @@ tb                              ## Table </code></pre>
 ##       No test      Test
 ##   F 0.2686567 0.2317380
 ##   M 0.7313433 0.7682620</code></pre>
-<div id="---" class="section level3">
+<div id="기타-다양한-조건문-활용" class="section level3">
 <h3>기타: 다양한 조건문 활용</h3>
 <p>이번에는 연속형 변수인 <code>BMI</code>변수를 예시로 우리가 원하는 조건에 해당하는 정보를 뽑아내는 것을 연습해 보겠다.</p>
 <pre class="r"><code>mean(a$BMI)</code></pre>
@@ -771,9 +866,9 @@ table(stent123,a$Number_stent)</code></pre>
 ##    TRUE  577 286 106   0   0   0</code></pre>
 </div>
 </div>
-<div id="-" class="section level2">
+<div id="기초통계-그룹비교" class="section level2">
 <h2>기초통계 : 그룹비교</h2>
-<div id="--2-" class="section level3">
+<div id="연속변수-비교-2-그룹" class="section level3">
 <h3>연속변수 비교: 2 그룹</h3>
 <p>2그룹의 평균값을 비교하는 가장 대표적인 방법으로는 <strong>t-test</strong>가 있다.</p>
 <center>
@@ -840,21 +935,21 @@ wilcox.test(a$Age ~ a$STRESS_EXIST)</code></pre>
 ##  Wilcoxon rank sum test with continuity correction
 ## 
 ## data:  a$Age by a$STRESS_EXIST
-## W = 137420, p-value = 7.222e-05
+## W = 137424, p-value = 7.222e-05
 ## alternative hypothesis: true location shift is not equal to 0</code></pre>
 <pre class="r"><code>wilcox.test(a[,&quot;Age&quot;] ~ a[,&quot;STRESS_EXIST&quot;])</code></pre>
 <pre><code>## 
 ##  Wilcoxon rank sum test with continuity correction
 ## 
 ## data:  a[, &quot;Age&quot;] by a[, &quot;STRESS_EXIST&quot;]
-## W = 137420, p-value = 7.222e-05
+## W = 137424, p-value = 7.222e-05
 ## alternative hypothesis: true location shift is not equal to 0</code></pre>
 <pre class="r"><code>wilcox.test(a[,3]~a[,14])</code></pre>
 <pre><code>## 
 ##  Wilcoxon rank sum test with continuity correction
 ## 
 ## data:  a[, 3] by a[, 14]
-## W = 137420, p-value = 7.222e-05
+## W = 137424, p-value = 7.222e-05
 ## alternative hypothesis: true location shift is not equal to 0</code></pre>
 <pre class="r"><code>wt=wilcox.test(Age~STRESS_EXIST,data=a)
 wt$p.value</code></pre>
@@ -921,7 +1016,7 @@ t-test VS wilcoxon rank sum test
 paired t-test VS wilcoxon signed rank test
 </center>
 <hr />
-<div id="-" class="section level4">
+<div id="정규성-검정" class="section level4">
 <h4>정규성 검정</h4>
 <p>정규분포를 하는지 아닌지는 임상적으로 판단 혹은 그림을 그려서 눈으로 확인하는 것이 원칙이나, 통계분석을 꼭 원한다면 몇 가지 통계방법이 있다.</p>
 <center>
@@ -939,8 +1034,8 @@ Shapiro test of Normality
 ## data:  a$Age
 ## W = 0.99374, p-value = 0.0003338</code></pre>
 <pre class="r"><code>ks.test(a$Age,pnorm)                ## pnorm: probability of normal distribution</code></pre>
-<pre><code>## Warning in ks.test(a$Age, pnorm): ties should not be present for the
-## Kolmogorov-Smirnov test</code></pre>
+<pre><code>## Warning in ks.test(a$Age, pnorm): ties should not be present for the Kolmogorov-
+## Smirnov test</code></pre>
 <pre><code>## 
 ##  One-sample Kolmogorov-Smirnov test
 ## 
@@ -956,7 +1051,7 @@ Shapiro test of Normality
 ## data:  a$Number_stent
 ## W = 0.72138, p-value &lt; 2.2e-16</code></pre>
 </div>
-<div id="----" class="section level4">
+<div id="여러-변수-한번에-분석-하기" class="section level4">
 <h4>여러 변수 한번에 분석 하기</h4>
 <pre class="r"><code>varname=c(&quot;Age&quot;,&quot;Height&quot;,&quot;Weight&quot;,&quot;BMI&quot;,&quot;MACCE_date&quot;,&quot;Death_date&quot;)
 varname</code></pre>
@@ -1057,10 +1152,8 @@ tfunc=function(x){
 }
 
 sapply(varname,tfunc)                                                        ## vector</code></pre>
-<pre><code>##          Age       Height       Weight          BMI   MACCE_date 
-## 5.896441e-05 1.903485e-01 5.497402e-02 4.399619e-01 3.100757e-03 
-##   Death_date 
-## 8.642884e-06</code></pre>
+<pre><code>##          Age       Height       Weight          BMI   MACCE_date   Death_date 
+## 5.896441e-05 1.903485e-01 5.497402e-02 4.399619e-01 3.100757e-03 8.642884e-06</code></pre>
 <pre class="r"><code>tps_vector=sapply(varname,function(x){t.test(a[,x]~a$STRESS_EXIST)$p.value})
 tps_vector[1]</code></pre>
 <pre><code>##          Age 
@@ -1069,7 +1162,7 @@ tps_vector[1]</code></pre>
 tps_list[[1]]</code></pre>
 <pre><code>## [1] 5.896441e-05</code></pre>
 </div>
-<div id="-" class="section level4">
+<div id="분석결과-정리" class="section level4">
 <h4>분석결과 정리</h4>
 <pre class="r"><code># Mean, Sd per group
 ## Method 1: tapply
@@ -1127,52 +1220,35 @@ t(sapply(&quot;Number_stent&quot;,wcsum))</code></pre>
 ## Number_stent       1    1       1    1       2    2 0.1692172</code></pre>
 <pre class="r"><code>## New grammar: dplyr package: %&gt;%-  ctrl+ shift + M
 #install.packages(&quot;dplyr&quot;)
-library(dplyr)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:gridExtra&#39;:
-## 
-##     combine</code></pre>
-<pre><code>## The following object is masked from &#39;package:MASS&#39;:
-## 
-##     select</code></pre>
-<pre><code>## The following object is masked from &#39;package:nlme&#39;:
-## 
-##     collapse</code></pre>
-<pre><code>## The following object is masked from &#39;package:glue&#39;:
-## 
-##     collapse</code></pre>
-<pre><code>## The following objects are masked from &#39;package:data.table&#39;:
-## 
-##     between, first, last</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
-## 
-##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
-## 
-##     intersect, setdiff, setequal, union</code></pre>
-<pre class="r"><code>a %&gt;% group_by(STRESS_EXIST) %&gt;% select(varname_num) %&gt;% summarise_each(funs(mean))</code></pre>
+library(dplyr)
+a %&gt;% group_by(STRESS_EXIST) %&gt;% select(varname_num) %&gt;% summarise_each(funs(mean))</code></pre>
 <pre><code>## Adding missing grouping variables: `STRESS_EXIST`</code></pre>
-<pre><code>## `summarise_each()` is deprecated.
-## Use `summarise_all()`, `summarise_at()` or `summarise_if()` instead.
-## To map `funs` over all variables, use `summarise_all()`</code></pre>
+<pre><code>## Warning: funs() is soft deprecated as of dplyr 0.8.0
+## Please use a list of either functions or lambdas: 
+## 
+##   # Simple named list: 
+##   list(mean = mean, median = median)
+## 
+##   # Auto named with `tibble::lst()`: 
+##   tibble::lst(mean, median)
+## 
+##   # Using lambdas
+##   list(~ mean(., trim = .2), ~ median(., na.rm = TRUE))
+## This warning is displayed once per session.</code></pre>
 <pre><code>## # A tibble: 2 x 7
 ##   STRESS_EXIST   Age Height Weight   BMI MACCE_date Death_date
 ##   &lt;fct&gt;        &lt;dbl&gt;  &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt;      &lt;dbl&gt;      &lt;dbl&gt;
-## 1 No test       63.8    163   66.6  36.0       1287       1471
-## 2 Test          61.2    164   67.9  41.9       1453       1716</code></pre>
+## 1 No test       63.8   163.   66.6  36.0      1287.      1471.
+## 2 Test          61.2   164.   67.9  41.9      1453.      1716.</code></pre>
 <pre class="r"><code>dpres2 = a %&gt;% group_by(STRESS_EXIST) %&gt;% select(varname_num) %&gt;% summarise_each(funs(mean,sd))</code></pre>
-<pre><code>## Adding missing grouping variables: `STRESS_EXIST`
-## `summarise_each()` is deprecated.
-## Use `summarise_all()`, `summarise_at()` or `summarise_if()` instead.
-## To map `funs` over all variables, use `summarise_all()`</code></pre>
+<pre><code>## Adding missing grouping variables: `STRESS_EXIST`</code></pre>
 <pre class="r"><code>dpres2</code></pre>
 <pre><code>## # A tibble: 2 x 13
 ##   STRESS_EXIST Age_mean Height_mean Weight_mean BMI_mean MACCE_date_mean
 ##   &lt;fct&gt;           &lt;dbl&gt;       &lt;dbl&gt;       &lt;dbl&gt;    &lt;dbl&gt;           &lt;dbl&gt;
-## 1 No test          63.8         163        66.6     36.0            1287
-## 2 Test             61.2         164        67.9     41.9            1453
-## # ... with 7 more variables: Death_date_mean &lt;dbl&gt;, Age_sd &lt;dbl&gt;,
+## 1 No test          63.8        163.        66.6     36.0           1287.
+## 2 Test             61.2        164.        67.9     41.9           1453.
+## # … with 7 more variables: Death_date_mean &lt;dbl&gt;, Age_sd &lt;dbl&gt;,
 ## #   Height_sd &lt;dbl&gt;, Weight_sd &lt;dbl&gt;, BMI_sd &lt;dbl&gt;, MACCE_date_sd &lt;dbl&gt;,
 ## #   Death_date_sd &lt;dbl&gt;</code></pre>
 <pre class="r"><code>t(dpres2)</code></pre>
@@ -1192,7 +1268,7 @@ library(dplyr)</code></pre>
 ## Death_date_sd   &quot;820.8851&quot;  &quot;864.1935&quot;</code></pre>
 </div>
 </div>
-<div id="--3---anova" class="section level3">
+<div id="연속변수-비교-3-그룹--anova" class="section level3">
 <h3>연속변수 비교: 3 그룹- ANOVA</h3>
 <center>
 <img src="r_smc_1/anova.png">
@@ -1259,7 +1335,7 @@ a_res</code></pre>
 <pre class="r"><code>a_res$p.value                                                      ## Only p-value</code></pre>
 <pre><code>## [1] 0.9771966</code></pre>
 </div>
-<div id="--" class="section level3">
+<div id="범주형-변수-비교" class="section level3">
 <h3>범주형 변수 비교</h3>
 <center>
 <img src="r_smc_1/chisq17.gif">
@@ -1315,7 +1391,7 @@ chisq.test(tb2)</code></pre>
 ## alternative hypothesis: two.sided</code></pre>
 <pre class="r"><code>fisher.test(tb2)$p.value</code></pre>
 <pre><code>## [1] 0.3838128</code></pre>
-<div id="-----1" class="section level4">
+<div id="여러-변수-한번에-분석-하기-1" class="section level4">
 <h4>여러 변수 한번에 분석 하기</h4>
 <pre class="r"><code>varname2=c(&quot;Sex&quot;,&quot;DM&quot;,&quot;HTN&quot;,&quot;Smoking&quot;,&quot;MACCE&quot;,&quot;Death&quot;,&quot;Number_stent&quot;,&quot;BMI_group&quot;)
 
@@ -1419,8 +1495,8 @@ for (i in varname2){
 ## [1] 0.4034485
 ## [1] 0.6448044
 ## [1] 0.01438208</code></pre>
-<pre><code>## Warning in chisq.test(table(a[, i], a$STRESS_EXIST)): Chi-squared
-## approximation may be incorrect</code></pre>
+<pre><code>## Warning in chisq.test(table(a[, i], a$STRESS_EXIST)): Chi-squared approximation
+## may be incorrect</code></pre>
 <pre><code>## [1] 0.4038986
 ## [1] 0.07170208</code></pre>
 <pre class="r"><code>for (i in varname2){
@@ -1441,24 +1517,24 @@ p_chisq=function(x){
 }
 
 sapply(varname2,p_chisq)</code></pre>
-<pre><code>## Warning in chisq.test(table(a[, x], a$STRESS_EXIST)): Chi-squared
-## approximation may be incorrect</code></pre>
-<pre><code>##          Sex           DM          HTN      Smoking        MACCE 
-##   0.21571494   1.00000000   1.00000000   0.40344850   0.64480438 
-##        Death Number_stent    BMI_group 
-##   0.01438208   0.40389862   0.07170208</code></pre>
+<pre><code>## Warning in chisq.test(table(a[, x], a$STRESS_EXIST)): Chi-squared approximation
+## may be incorrect</code></pre>
+<pre><code>##          Sex           DM          HTN      Smoking        MACCE        Death 
+##   0.21571494   1.00000000   1.00000000   0.40344850   0.64480438   0.01438208 
+## Number_stent    BMI_group 
+##   0.40389862   0.07170208</code></pre>
 <pre class="r"><code>sapply(varname2,function(x){chisq.test(table(a[,x],a$STRESS_EXIST))$p.value})</code></pre>
-<pre><code>## Warning in chisq.test(table(a[, x], a$STRESS_EXIST)): Chi-squared
-## approximation may be incorrect</code></pre>
-<pre><code>##          Sex           DM          HTN      Smoking        MACCE 
-##   0.21571494   1.00000000   1.00000000   0.40344850   0.64480438 
-##        Death Number_stent    BMI_group 
-##   0.01438208   0.40389862   0.07170208</code></pre>
+<pre><code>## Warning in chisq.test(table(a[, x], a$STRESS_EXIST)): Chi-squared approximation
+## may be incorrect</code></pre>
+<pre><code>##          Sex           DM          HTN      Smoking        MACCE        Death 
+##   0.21571494   1.00000000   1.00000000   0.40344850   0.64480438   0.01438208 
+## Number_stent    BMI_group 
+##   0.40389862   0.07170208</code></pre>
 <pre class="r"><code>sapply(varname2,function(x){fisher.test(table(a[,x],a$STRESS_EXIST))$p.value})  ## Fisher</code></pre>
-<pre><code>##          Sex           DM          HTN      Smoking        MACCE 
-##  0.207036289  1.000000000  1.000000000  0.380146977  0.587916508 
-##        Death Number_stent    BMI_group 
-##  0.009171946  0.383812807  0.070067281</code></pre>
+<pre><code>##          Sex           DM          HTN      Smoking        MACCE        Death 
+##  0.207036289  1.000000000  1.000000000  0.380146977  0.587916508  0.009171946 
+## Number_stent    BMI_group 
+##  0.383812807  0.070067281</code></pre>
 <pre class="r"><code>### Table
 sapply(varname2,function(x){table(a[,x],a$STRESS_EXIST)})</code></pre>
 <pre><code>## $Sex
@@ -1569,18 +1645,13 @@ sapply(varname2,function(x){table(a[,x],a$STRESS_EXIST)})</code></pre>
 </div>
 </div>
 </div>
-<div id="table-1-" class="section level2">
+<div id="table-1-만들기" class="section level2">
 <h2>Table 1 만들기</h2>
 <p>지금까지 배운 것을 한번에 정리할 수 있는 테이블 1을 간단히 만들어 보자. <code>moonBook, ztable</code>패키지를 미리 설치하자.</p>
 <pre class="r"><code>#install.packages(c(&quot;moonbook&quot;,&quot;ztable&quot;))
-library(moonBook);library(ztable)</code></pre>
-<pre><code>## 
-## Attaching package: &#39;moonBook&#39;</code></pre>
-<pre><code>## The following object is masked from &#39;package:gplots&#39;:
-## 
-##     space</code></pre>
-<pre><code>## Welcome to package ztable ver 0.1.5</code></pre>
-<pre class="r"><code>## Make table 1: digits 반올림, max.ylev: 범주형 변수 한계, method 2: 비모수통계 for 연속변수 
+library(moonBook);library(ztable)
+
+## Make table 1: digits 반올림, max.ylev: 범주형 변수 한계, method 2: 비모수통계 for 연속변수 
 tb1=mytable(STRESS_EXIST ~Sex + Age + Height + Weight + BMI + DM + HTN + Smoking + MACCE + Death + MACCE_date + Death_date + Number_stent, data=a)  
 tb1 </code></pre>
 <pre><code>## 
@@ -1652,7 +1723,7 @@ tb1 </code></pre>
 ##    - 3          69 (11.44%)       37 (9.32%)         
 ##    - 4           19 (3.15%)       7 (1.76%)          
 ##    - 5           2 (0.33%)        2 (0.50%)          
-##    - 6           0 (0.00%)        1 (0.25%)          
+##    - 6            0 ( 0.0%)       1 (0.25%)          
 ## -----------------------------------------------------</code></pre>
 <pre class="r"><code>mytable(STRESS_EXIST ~Sex + Age + Height + Weight + BMI + DM + HTN + Smoking + MACCE + Death + MACCE_date + Death_date + Number_stent, data=a, digits=2, max.ylev=6,method=2 ) ## Non-parametric: Median, 25%;75% </code></pre>
 <pre><code>## 
@@ -1665,7 +1736,7 @@ tb1 </code></pre>
 ##    - F              162 (26.87%)              92 (23.17%)             
 ##    - M              441 (73.13%)             305 (76.83%)             
 ##  Age            65.00 [57.00;72.00]       62.00 [55.00;68.00]    0.000
-##  Height        165.00 [158.00;170.00]   165.00 [160.00;170.00]   0.155
+##  Height        165.00 [158.00;170.00]   165.00 [160.00;170.00]   0.156
 ##  Weight         67.00 [59.00;73.00]       68.00 [60.50;74.00]    0.057
 ##  BMI            24.39 [23.05;26.40]       24.74 [23.11;26.57]    0.275
 ##  DM                                                              1.000
@@ -1691,15 +1762,16 @@ tb1 </code></pre>
 ##    - 3              69 (11.44%)               37 (9.32%)              
 ##    - 4               19 (3.15%)                7 (1.76%)              
 ##    - 5               2 (0.33%)                 2 (0.50%)              
-##    - 6               0 (0.00%)                 1 (0.25%)              
+##    - 6                0 ( 0.0%)                1 (0.25%)              
 ## ----------------------------------------------------------------------</code></pre>
 <pre class="r"><code>options(ztable.type=&quot;html&quot;)
 ztable(tb1)</code></pre>
 <head>
 <style>
         table {
-              font-family: serif;
-              text-align: right;}
+              font-family: times ;
+color:  black ;
+text-align: right;}
         th {
               padding: 1px 1px 5px 5px;
             }
@@ -1711,17 +1783,10 @@ ztable(tb1)</code></pre>
 <caption style="text-align:center;">
 </caption>
 <tr>
-<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">
-</th>
-<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">
-No test
-</th>
-<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">
-Test
-</th>
-<th <th rowspan="2" align="center" style="font-weight: normal;border-left: 0px solid black;border-right:0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">
-p
-</th>
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;"></th>
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">No test</th>
+<th <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: hidden;border-top: 2px solid gray;">Test</th>
+<th <th rowspan="2" align="center" style="font-weight: normal;border-left: 0px solid black;border-right:0px solid black;border-bottom: 1px solid gray;border-top: 2px solid gray;">p</th>
 </tr>
 <tr>
 <th align="center" style="font-weight: normal;border-left: 0px solid black;border-bottom: 1px solid gray;">
@@ -1737,11 +1802,11 @@ p
 <td align="left" style="border-left: 0px solid black;">
 Sex
 </td>
-<td align="center" style="border-left: 0px solid black;">
+<td align="left" style="border-left: 0px solid black;">
 </td>
 <td align="center" style="border-left: 0px solid black;">
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;">
 0.216
 </td>
 </tr>
@@ -1749,53 +1814,53 @@ Sex
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     F
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 162 (26.9%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 92 (23.2%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     M
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 441 (73.1%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 305 (76.8%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 Age
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 63.8 ± 10.7
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 61.2 ± 9.4
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
-0.000
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+&lt; 0.001
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 Height
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 163.1 ± 10.8
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 164.0 ± 10.6
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 0.192
 </td>
 </tr>
@@ -1803,13 +1868,13 @@ Height
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 Weight
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 66.6 ± 11.0
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 67.9 ± 10.8
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 0.055
 </td>
 </tr>
@@ -1817,13 +1882,13 @@ Weight
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 BMI
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 36.0 ± 104.5
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 41.9 ± 128.4
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 0.440
 </td>
 </tr>
@@ -1831,11 +1896,11 @@ BMI
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 DM
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 1.000
 </td>
 </tr>
@@ -1843,37 +1908,37 @@ DM
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     0
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 365 (60.5%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 241 (60.7%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     1
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 238 (39.5%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 156 (39.3%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 HTN
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 1.000
 </td>
 </tr>
@@ -1881,37 +1946,37 @@ HTN
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     0
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 226 (37.5%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 148 (37.3%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     1
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 377 (62.5%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 249 (62.7%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 Smoking
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 0.403
 </td>
 </tr>
@@ -1919,37 +1984,37 @@ Smoking
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     0
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 437 (72.5%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 298 (75.1%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     1
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 166 (27.5%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 99 (24.9%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 MACCE
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 0.645
 </td>
 </tr>
@@ -1957,37 +2022,37 @@ MACCE
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     0
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 472 (78.3%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 305 (76.8%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     1
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 131 (21.7%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 92 (23.2%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 Death
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 0.014
 </td>
 </tr>
@@ -1995,39 +2060,39 @@ Death
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     0
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 558 (92.5%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 383 (96.5%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
     1
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 45 ( 7.5%)
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 14 ( 3.5%)
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 MACCE_date
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 1286.7 ± 814.6
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 1453.0 ± 900.7
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 0.003
 </td>
 </tr>
@@ -2035,27 +2100,27 @@ MACCE_date
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 Death_date
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 1470.8 ± 820.9
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 1716.0 ± 864.2
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
-0.000
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+&lt; 0.001
 </td>
 </tr>
 <tr>
 <td align="left" style="border-left: 0px solid black;border-top: hidden;">
 Number_stent
 </td>
-<td align="center" style="border-left: 0px solid black;border-top: hidden;">
+<td align="left" style="border-left: 0px solid black;border-top: hidden;">
 1.6 ± 0.8
 </td>
 <td align="center" style="border-left: 0px solid black;border-top: hidden;">
 1.6 ± 0.8
 </td>
-<td align="center" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
+<td align="right" style="border-left: 0px solid black;border-right:0px solid black;border-top: hidden;">
 0.182
 </td>
 </tr>
@@ -2065,18 +2130,17 @@ Number_stent
 </tr>
 </table>
 </div>
-<div class="section level2">
+<div id="기타" class="section level2">
 <h2>기타</h2>
-<div id="--" class="section level3">
+<div id="연속변수-범주형변수-지정" class="section level3">
 <h3>연속변수, 범주형변수 지정</h3>
 <p>사실 가장 앞에 나와야 할 내용인데 <code>class</code>의 개념이 나와야 해서 이제야 언급하게 되었다. 데이터를 받으면 가장 먼저 해야할 것은 연속형, 범주형 변수를 설정해 주는 것이다. <strong>Feamle</strong>, <strong>Male</strong> 등 이미 변수가 범주로 되어 있다면 상관이 없겠지만, 그렇지 않고 0,1로 되어있을 때는 숫자형으로 되어있는게 default이기 때문이다.</p>
 <pre class="r"><code>conti_var=c(3:6,12,13,15)                                       ## Age, Height, Weight, BMI, date, number_stent
 cat_var= names(a)[-conti_var]                                   ## Not conti_var
 
 cat_var</code></pre>
-<pre><code>##  [1] &quot;Patient_ID&quot;   &quot;Sex&quot;          &quot;DM&quot;           &quot;HTN&quot;         
-##  [5] &quot;Smoking&quot;      &quot;MACCE&quot;        &quot;Death&quot;        &quot;STRESS_EXIST&quot;
-##  [9] &quot;BMI_group&quot;    &quot;BMI_group2&quot;</code></pre>
+<pre><code>##  [1] &quot;Patient_ID&quot;   &quot;Sex&quot;          &quot;DM&quot;           &quot;HTN&quot;          &quot;Smoking&quot;     
+##  [6] &quot;MACCE&quot;        &quot;Death&quot;        &quot;STRESS_EXIST&quot; &quot;BMI_group&quot;    &quot;BMI_group2&quot;</code></pre>
 <pre class="r"><code>for (vn in conti_var){
   a[,vn]=as.numeric(a[,vn])
 }
@@ -2225,6 +2289,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

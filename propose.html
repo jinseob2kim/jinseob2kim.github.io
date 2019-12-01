@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,7 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -36,6 +37,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -84,9 +87,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,13 +101,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -122,7 +128,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -142,6 +147,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -163,47 +205,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -217,6 +278,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -252,8 +319,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -268,6 +333,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -314,6 +389,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -384,6 +471,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -412,13 +508,13 @@ div.tocify {
 
 
 <p>원래 인터넷에 있는 내용인데 설명을 추가한 버전이다.</p>
-<div class="section level2">
+<div id="문제" class="section level2">
 <h2>문제</h2>
 <blockquote>
 <p>여자는 남자 100명이 순차적으로 프로포즈할 때 몇 번째까지 튕겨야 하는가?</p>
 </blockquote>
 </div>
-<div class="section level2">
+<div id="가정" class="section level2">
 <h2>가정</h2>
 <p>위 문제를 수학적으로 살펴보기 위해 몇 가지 가정을 하자.</p>
 <ol style="list-style-type: decimal">
@@ -429,10 +525,10 @@ div.tocify {
 <li><p>여자는 <strong><span class="math inline">\(r\)</span>번째까지는 무조건 튕기고 그 다음부터 나오는 남자부터는 지금까지 본 남자 중에 가장 괜찮다면 결혼한다.</strong> 10번까지 튕기기로 했다면 11번째 남자가 기존 10명보다만 괜찮다면 프로포즈에 OK한다.</p></li>
 </ol>
 </div>
-<div class="section level2">
+<div id="풀이" class="section level2">
 <h2>풀이</h2>
 <p>회귀분석에서 회귀계수의 최대가능도추정량(MLE)를 구하는 방법과 상당히 유사하다.</p>
-<div id="-" class="section level3">
+<div id="사건-정의" class="section level3">
 <h3>사건 정의</h3>
 <ul>
 <li><p><span class="math inline">\(B\)</span>: 여자가 백마탄 왕자를 정확히 선택한다.</p></li>
@@ -444,14 +540,14 @@ div.tocify {
 <li><span class="math inline">\(A_{100}\)</span>: 백마탄 왕자가 100번째로 프로포즈한다.</li>
 </ul>
 </div>
-<div id="-" class="section level3">
+<div id="구하려는-값" class="section level3">
 <h3>구하려는 값</h3>
 <ol style="list-style-type: decimal">
 <li><p><strong><span class="math inline">\(P(B)\)</span> 즉, 여자가 백마탄 왕자를 정확히 선택할 확률</strong></p></li>
 <li><p><strong>이 확률을 최대로 하는 <span class="math inline">\(r\)</span>의 값</strong>: 몇 번째까지 튕겨야 백마탄 왕자를 만날 확률이 높을까?</p></li>
 </ol>
 </div>
-<div id="pb-" class="section level3">
+<div id="pb-구하기" class="section level3">
 <h3><span class="math inline">\(P(B)\)</span> 구하기</h3>
 <p><span class="math inline">\(P(B)\)</span>를 조건부 확률로 표현하면</p>
 <p><span class="math display">\[P(B)=P(A_1) \times P(B|A_1) + P(A_2) \times P(B|A_2) + ... + P(A_{100}) \times P(B|A_{100}) = \sum_{k=1}^{100} P(A_k) \times P(B|A_k)\]</span> 인데, <span class="math inline">\(r\)</span>번째까지는 튕기기로 했으므로 <span class="math display">\[P(B|A_1)=P(B|A_2)=...=P(B|A_r)=0\]</span> 임은 자명하다. 또한 남자의 분포는 랜덤이므로 <span class="math display">\[P(A_1)=P(A_2)=...=P(A_{100})=\frac{1}{100}\]</span> 로 모두 같다. 이제 나머지 값들을 살펴보면 우선</p>
@@ -469,7 +565,7 @@ div.tocify {
 <p>나머지도 마찬가지로 계산하면 <span class="math inline">\(P(B|A_{r+4})\)</span>부터 순서대로 <span class="math inline">\(\frac{r}{r+1} \cdots \frac{r}{99}, \frac{r}{100}\)</span>이 되며 지금까지의 결과를 종합하면 <span class="math inline">\(P(B)\)</span>는 다음과 같다.</p>
 <p><span class="math display">\[P(B)= \frac{1}{100} \times (1 + \frac{r}{r+1} + \frac{r}{r+2} + \cdots + \frac{r}{99} + \frac{r}{100} = \frac{1}{100} \sum_{x=r}^{100}\frac{r}{x}\]</span></p>
 </div>
-<div id="pb---r-" class="section level3">
+<div id="pb를-최대로-하는-r의-값" class="section level3">
 <h3><span class="math inline">\(P(B)\)</span>를 최대로 하는 <span class="math inline">\(r\)</span>의 값</h3>
 <p>시그마로 계산하면 복잡하므로 적분을 활용하여 근사값을 구하자.</p>
 <p><span class="math display">\[P(B) = \frac{1}{100} \sum_{x=r}^{100}\frac{r}{x} \simeq \frac{r}{100} \int_{r}^{100} \frac{1}{x} dx = \frac{r}{100} \times (\text{ln}100 - \text{ln}r )\]</span></p>
@@ -478,7 +574,7 @@ div.tocify {
 <p>이고 이를 <span class="math inline">\(0\)</span>으로 만드는 <span class="math inline">\(\text{ln}r\)</span>은 대략 <span class="math inline">\(3.605\)</span> 이다. 즉,</p>
 <p><span class="math display">\[r=36.787\cdots\]</span> 이다.</p>
 </div>
-<div class="section level3">
+<div id="결론" class="section level3">
 <h3>결론</h3>
 <ol style="list-style-type: decimal">
 <li><p>남자가 <strong>100번 대시한다면 36번</strong> 정도 튕기는 것이 백마탄 왕자를 만나는데 유리하다.</p></li>
@@ -536,6 +632,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

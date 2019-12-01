@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -27,7 +27,8 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -38,6 +39,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -86,9 +89,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -102,13 +103,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -124,7 +130,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -144,6 +149,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -165,55 +207,69 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -227,6 +283,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -262,8 +324,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -278,6 +338,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -324,6 +394,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -394,6 +476,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -425,7 +516,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">Advanced R (1): Fast R &amp; Table 만들기</h1>
-<h4 class="date"><em>2018-03-13</em></h4>
+<h4 class="date">2018-03-13</h4>
 
 </div>
 
@@ -459,7 +550,7 @@ div.tocify {
 #install.packages(&quot;data.table&quot;)
 library(data.table)</code></pre>
 <pre class="r"><code>## Load file
-setwd(&quot;/home/secondmath/Dropbox/example&quot;)
+setwd(&quot;/home/jinseob2kim/Dropbox/example&quot;)
 df = read.table(&quot;LinearTG.assoc.linear&quot;,header=T)
 dt = fread(&quot;LinearTG.assoc.linear&quot;,header=T)
 
@@ -491,7 +582,7 @@ fwrite(dt, &quot;aa.csv&quot;)</code></pre>
 </div>
 <div id="benchmark" class="section level3">
 <h3>Benchmark</h3>
-<pre class="r"><code>setwd(&quot;/home/secondmath/Dropbox/example&quot;)
+<pre class="r"><code>setwd(&quot;/home/jinseob2kim/Dropbox/example&quot;)
 
 ## Load
 kable(
@@ -517,19 +608,19 @@ kable(
 <tr class="odd">
 <td align="left">df</td>
 <td align="right">1</td>
-<td align="right">3.668</td>
-<td align="right">11.115</td>
-<td align="right">3.664</td>
-<td align="right">0.004</td>
+<td align="right">3.287</td>
+<td align="right">37.782</td>
+<td align="right">3.252</td>
+<td align="right">0.036</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">dt</td>
 <td align="right">1</td>
-<td align="right">0.330</td>
+<td align="right">0.087</td>
 <td align="right">1.000</td>
-<td align="right">0.331</td>
+<td align="right">0.315</td>
 <td align="right">0.000</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -562,10 +653,10 @@ kable(
 <td>2</td>
 <td align="left">fwrite</td>
 <td align="right">1</td>
-<td align="right">0.078</td>
+<td align="right">0.122</td>
 <td align="right">1.000</td>
-<td align="right">0.412</td>
-<td align="right">0.023</td>
+<td align="right">0.369</td>
+<td align="right">0.04</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -573,10 +664,10 @@ kable(
 <td>1</td>
 <td align="left">writecsv</td>
 <td align="right">1</td>
-<td align="right">2.831</td>
-<td align="right">36.295</td>
-<td align="right">2.788</td>
-<td align="right">0.044</td>
+<td align="right">4.450</td>
+<td align="right">36.475</td>
+<td align="right">4.309</td>
+<td align="right">0.14</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1163,10 +1254,10 @@ dt[ .(&quot;ADD&quot;, 11)]        </code></pre>
 <td>2</td>
 <td align="left">res</td>
 <td align="right">10</td>
-<td align="right">0.109</td>
-<td align="right">1.198</td>
-<td align="right">0.104</td>
-<td align="right">0.004</td>
+<td align="right">0.076</td>
+<td align="right">1.000</td>
+<td align="right">0.299</td>
+<td align="right">0.000</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1174,10 +1265,10 @@ dt[ .(&quot;ADD&quot;, 11)]        </code></pre>
 <td>1</td>
 <td align="left">res.df</td>
 <td align="right">10</td>
-<td align="right">0.270</td>
-<td align="right">2.967</td>
-<td align="right">0.270</td>
-<td align="right">0.000</td>
+<td align="right">0.182</td>
+<td align="right">2.395</td>
+<td align="right">0.170</td>
+<td align="right">0.012</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -1185,9 +1276,9 @@ dt[ .(&quot;ADD&quot;, 11)]        </code></pre>
 <td>3</td>
 <td align="left">res.key</td>
 <td align="right">10</td>
-<td align="right">0.091</td>
-<td align="right">1.000</td>
-<td align="right">0.091</td>
+<td align="right">0.170</td>
+<td align="right">2.237</td>
+<td align="right">0.670</td>
 <td align="right">0.000</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1271,7 +1362,7 @@ dt[ .(&quot;ADD&quot;, 11)]        </code></pre>
 <pre class="r"><code>vars= c(&quot;SNP&quot;,&quot;P&quot;)
 vars = c(3,9)</code></pre>
 <pre class="r"><code>res[, vars] # error</code></pre>
-<pre><code>## Error in `[.data.table`(res, , vars): j (the 2nd argument inside [...]) is a single symbol but column name &#39;vars&#39; is not found. Perhaps you intended DT[,..vars] or DT[,vars,with=FALSE]. This difference to data.frame is deliberate and explained in FAQ 1.1.</code></pre>
+<pre><code>## Error in `[.data.table`(res, , vars): j (the 2nd argument inside [...]) is a single symbol but column name &#39;vars&#39; is not found. Perhaps you intended DT[, ..vars]. This difference to data.frame is deliberate and explained in FAQ 1.1.</code></pre>
 <p><code>with = F</code> 를 뒤에 붙이거나 <code>.SD</code>, <code>.SDcols</code> 옵션을 사용하자.</p>
 <pre class="r"><code>res[, vars, with=F]</code></pre>
 <pre><code>##               BP      P
@@ -1357,7 +1448,7 @@ res[, &quot;:=&quot; (sigP1= as.numeric(P &lt;=5e-8), sigP2= ifelse(P &lt;=5e-5,
 <p>이번에는 phenotype data를 예로 들겠다.</p>
 <div id="code-3" class="section level3">
 <h3>Code</h3>
-<pre class="r"><code>ph = fread(&quot;/home/secondmath/Dropbox/myarticle/MOR_heri/prac.phe&quot;)
+<pre class="r"><code>ph = fread(&quot;/home/jinseob2kim/Dropbox/myarticle/MOR_heri/prac.phe&quot;)
 kable(
   tail(ph)
   )</code></pre>
@@ -1690,9 +1781,9 @@ kable(
 <td>3</td>
 <td align="left">colmean.df</td>
 <td align="right">10</td>
-<td align="right">0.006</td>
-<td align="right">1.000</td>
-<td align="right">0.006</td>
+<td align="right">0.017</td>
+<td align="right">1.417</td>
+<td align="right">0.017</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1701,9 +1792,9 @@ kable(
 <td>4</td>
 <td align="left">colmean.dt</td>
 <td align="right">10</td>
-<td align="right">0.018</td>
-<td align="right">3.000</td>
-<td align="right">0.018</td>
+<td align="right">0.012</td>
+<td align="right">1.000</td>
+<td align="right">0.013</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1712,9 +1803,9 @@ kable(
 <td>1</td>
 <td align="left">mean.df</td>
 <td align="right">10</td>
-<td align="right">0.013</td>
-<td align="right">2.167</td>
 <td align="right">0.014</td>
+<td align="right">1.167</td>
+<td align="right">0.013</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -1723,9 +1814,9 @@ kable(
 <td>2</td>
 <td align="left">mean.dt</td>
 <td align="right">10</td>
-<td align="right">0.029</td>
-<td align="right">4.833</td>
-<td align="right">0.029</td>
+<td align="right">0.026</td>
+<td align="right">2.167</td>
+<td align="right">0.026</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2136,9 +2227,9 @@ kable(
 <tr class="odd">
 <td align="left">aggregate.df</td>
 <td align="right">10</td>
-<td align="right">0.092</td>
-<td align="right">1.000</td>
-<td align="right">0.093</td>
+<td align="right">0.113</td>
+<td align="right">2.756</td>
+<td align="right">0.113</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2146,9 +2237,9 @@ kable(
 <tr class="even">
 <td align="left">by.dt</td>
 <td align="right">10</td>
-<td align="right">0.434</td>
-<td align="right">4.717</td>
-<td align="right">2.681</td>
+<td align="right">0.041</td>
+<td align="right">1.000</td>
+<td align="right">0.148</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2171,12 +2262,9 @@ kable(
 setkey(res, CHR,SNP,BP)
 
 ## Other GWAS result
-res_logit = fread(&quot;/home/secondmath/Dropbox/example/LogisticTG.assoc.logistic&quot;)[TEST==&quot;ADD&quot;]
+res_logit = fread(&quot;/home/jinseob2kim/Dropbox/example/LogisticTG.assoc.logistic&quot;)[TEST==&quot;ADD&quot;]
 setkey(res_logit, CHR,SNP,BP)</code></pre>
-<div class="figure">
-<img src="radv1_fig/inner_join.jpg" />
-
-</div>
+<p><img src="radv1_fig/inner_join.jpg" /></p>
 <pre class="r"><code>kable(
   head(
     res[res_logit, nomatch=0]
@@ -2328,10 +2416,7 @@ setkey(res_logit, CHR,SNP,BP)</code></pre>
 </tr>
 </tbody>
 </table>
-<div class="figure">
-<img src="radv1_fig/left_join.jpg" />
-
-</div>
+<p><img src="radv1_fig/left_join.jpg" /></p>
 <pre class="r"><code>## Left: res, Right: res_logit
 kable(
   head(
@@ -2484,10 +2569,7 @@ kable(
 </tr>
 </tbody>
 </table>
-<div class="figure">
-<img src="radv1_fig/right_join.jpg" />
-
-</div>
+<p><img src="radv1_fig/right_join.jpg" /></p>
 <pre class="r"><code>kable(
   head(
     res[res_logit]
@@ -2639,10 +2721,7 @@ kable(
 </tr>
 </tbody>
 </table>
-<div class="figure">
-<img src="radv1_fig/outer_join.jpg" />
-
-</div>
+<p><img src="radv1_fig/outer_join.jpg" /></p>
 <pre class="r"><code>kable(
   head(
    merge(res, res_logit, all=T)
@@ -2794,10 +2873,7 @@ kable(
 </tr>
 </tbody>
 </table>
-<div class="figure">
-<img src="radv1_fig/cross_join.jpg" />
-
-</div>
+<p><img src="radv1_fig/cross_join.jpg" /></p>
 <pre class="r"><code>x = 1:100         ## 1~100
 y = LETTERS       ## A~Z
 z = letters       ## a~z
@@ -2820,30 +2896,30 @@ CJ(num= x, L= y, l= z)</code></pre>
 <h3>rbindlist</h3>
 <p><code>rbindlist</code>함수를 사용하면 여러 개의 data를 빠르게 위아래로 합치면서 겹치지 않는 변수는 따로 분류할 수 있다.</p>
 <pre class="r"><code>rbindlist(list(res,res_logit), fill=T)</code></pre>
-<pre><code>##         CHR       SNP        BP A1 TEST NMISS   BETA    STAT      P sigP
-##      1:   1 rs1000085  66857915  C  ADD  1787  3.220  0.3273 0.7434    0
-##      2:   1 rs1000283 209894661  A  ADD  1787  3.870  0.5782 0.5632    0
-##      3:   1 rs1000382 175866321  G  ADD  1787  5.734  1.2270 0.2202    0
-##      4:   1 rs1000528 114471189  C  ADD  1787 -5.873 -0.9411 0.3468    0
-##      5:   1 rs1000997  16125961  G  ADD  1787 -4.249 -0.9021 0.3671    0
-##     ---                                                                 
-## 278046:  22  rs986646  22398220  C  ADD  1787     NA -1.1270 0.2599   NA
-## 278047:  22 rs9917559  37977305  A  ADD  1787     NA -1.0390 0.2988   NA
-## 278048:  22 rs9941927  40209175  G  ADD  1787     NA -1.0640 0.2875   NA
-## 278049:  22 rs9941935  22015144  G  ADD  1787     NA -0.7683 0.4423   NA
-## 278050:  22  rs999224  27834500  G  ADD  1787     NA  0.6709 0.5023   NA
-##         sigP1 sigP2     OR
-##      1:     0     0     NA
-##      2:     0     0     NA
-##      3:     0     0     NA
-##      4:     0     0     NA
-##      5:     0     0     NA
-##     ---                   
-## 278046:    NA    NA 0.8858
-## 278047:    NA    NA 0.8992
-## 278048:    NA    NA 0.8237
-## 278049:    NA    NA 0.8293
-## 278050:    NA    NA 1.0540</code></pre>
+<pre><code>##         CHR       SNP        BP A1 TEST NMISS   BETA    STAT      P sigP sigP1
+##      1:   1 rs1000085  66857915  C  ADD  1787  3.220  0.3273 0.7434    0     0
+##      2:   1 rs1000283 209894661  A  ADD  1787  3.870  0.5782 0.5632    0     0
+##      3:   1 rs1000382 175866321  G  ADD  1787  5.734  1.2270 0.2202    0     0
+##      4:   1 rs1000528 114471189  C  ADD  1787 -5.873 -0.9411 0.3468    0     0
+##      5:   1 rs1000997  16125961  G  ADD  1787 -4.249 -0.9021 0.3671    0     0
+##     ---                                                                       
+## 278046:  22  rs986646  22398220  C  ADD  1787     NA -1.1270 0.2599   NA    NA
+## 278047:  22 rs9917559  37977305  A  ADD  1787     NA -1.0390 0.2988   NA    NA
+## 278048:  22 rs9941927  40209175  G  ADD  1787     NA -1.0640 0.2875   NA    NA
+## 278049:  22 rs9941935  22015144  G  ADD  1787     NA -0.7683 0.4423   NA    NA
+## 278050:  22  rs999224  27834500  G  ADD  1787     NA  0.6709 0.5023   NA    NA
+##         sigP2     OR
+##      1:     0     NA
+##      2:     0     NA
+##      3:     0     NA
+##      4:     0     NA
+##      5:     0     NA
+##     ---             
+## 278046:    NA 0.8858
+## 278047:    NA 0.8992
+## 278048:    NA 0.8237
+## 278049:    NA 0.8293
+## 278050:    NA 1.0540</code></pre>
 <pre class="r"><code>#rbind(res,res_logit, fill=T)</code></pre>
 </div>
 <div id="benchmark-5" class="section level3">
@@ -2873,20 +2949,20 @@ kable(
 <tr class="odd">
 <td align="left">inner.df</td>
 <td align="right">1</td>
-<td align="right">1.929</td>
-<td align="right">83.87</td>
-<td align="right">1.917</td>
-<td align="right">0.012</td>
+<td align="right">2.423</td>
+<td align="right">49.449</td>
+<td align="right">2.423</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">inner.dt</td>
 <td align="right">1</td>
-<td align="right">0.023</td>
-<td align="right">1.00</td>
-<td align="right">0.023</td>
-<td align="right">0.000</td>
+<td align="right">0.049</td>
+<td align="right">1.000</td>
+<td align="right">0.107</td>
+<td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -2918,9 +2994,9 @@ kable(
 <td>2</td>
 <td align="left">cj.dt</td>
 <td align="right">10</td>
-<td align="right">0.009</td>
-<td align="right">1.000</td>
-<td align="right">0.009</td>
+<td align="right">0.020</td>
+<td align="right">1.00</td>
+<td align="right">0.068</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2929,9 +3005,9 @@ kable(
 <td>1</td>
 <td align="left">expand.grid.df</td>
 <td align="right">10</td>
-<td align="right">0.071</td>
-<td align="right">7.889</td>
-<td align="right">0.072</td>
+<td align="right">0.105</td>
+<td align="right">5.25</td>
+<td align="right">0.105</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -2949,7 +3025,7 @@ kable(
 </ol>
 <p>를 합칠 수 있다. 일반적인 정보는 <a href="https://rdrr.io/cran/data.table/man/foverlaps.html" class="uri">https://rdrr.io/cran/data.table/man/foverlaps.html</a> 를 참고하기 바란다.</p>
 <pre class="r"><code>## Gene info
-glist_hg18 = fread(&quot;/home/secondmath/Dropbox/example/glist-hg18&quot;)
+glist_hg18 = fread(&quot;/home/jinseob2kim/Dropbox/example/glist-hg18&quot;)
 names(glist_hg18) = c(&quot;chr&quot;,&quot;start&quot;,&quot;end&quot;,&quot;gene&quot;)
 setkey(glist_hg18, chr, start, end)   ## Set keys
 
@@ -3240,9 +3316,9 @@ ph.wide</code></pre>
 <tr class="odd">
 <td align="left">melt.df</td>
 <td align="right">10</td>
-<td align="right">0.044</td>
-<td align="right">22</td>
-<td align="right">0.043</td>
+<td align="right">0.012</td>
+<td align="right">2</td>
+<td align="right">0.012</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -3250,9 +3326,9 @@ ph.wide</code></pre>
 <tr class="even">
 <td align="left">melt.dt</td>
 <td align="right">10</td>
-<td align="right">0.002</td>
+<td align="right">0.006</td>
 <td align="right">1</td>
-<td align="right">0.003</td>
+<td align="right">0.006</td>
 <td align="right">0</td>
 <td align="right">0</td>
 <td align="right">0</td>
@@ -3285,20 +3361,20 @@ kable(
 <tr class="odd">
 <td align="left">dcast.df</td>
 <td align="right">10</td>
-<td align="right">0.209</td>
-<td align="right">3.029</td>
-<td align="right">0.463</td>
-<td align="right">0.692</td>
+<td align="right">0.284</td>
+<td align="right">2.254</td>
+<td align="right">1.135</td>
+<td align="right">0.8</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
 <tr class="even">
 <td align="left">dcast.dt</td>
 <td align="right">10</td>
-<td align="right">0.069</td>
+<td align="right">0.126</td>
 <td align="right">1.000</td>
-<td align="right">0.259</td>
-<td align="right">0.000</td>
+<td align="right">0.498</td>
+<td align="right">0.0</td>
 <td align="right">0</td>
 <td align="right">0</td>
 </tr>
@@ -3560,19 +3636,19 @@ options(&quot;mc.cores&quot;)</code></pre>
 <tr class="odd">
 <td align="left">CoefExtract.for</td>
 <td align="right">10</td>
+<td align="right">0.265</td>
+<td align="right">1.480</td>
 <td align="right">0.261</td>
-<td align="right">1.111</td>
-<td align="right">0.261</td>
-<td align="right">0.000</td>
+<td align="right">0.004</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">CoefExtract.lapply</td>
 <td align="right">10</td>
-<td align="right">0.235</td>
+<td align="right">0.179</td>
 <td align="right">1.000</td>
-<td align="right">0.234</td>
+<td align="right">0.178</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -3580,12 +3656,12 @@ options(&quot;mc.cores&quot;)</code></pre>
 <tr class="odd">
 <td align="left">CoefExtract.mclapply</td>
 <td align="right">10</td>
-<td align="right">0.629</td>
-<td align="right">2.677</td>
-<td align="right">0.033</td>
-<td align="right">0.492</td>
-<td align="right">0.574</td>
-<td align="right">0.787</td>
+<td align="right">0.911</td>
+<td align="right">5.089</td>
+<td align="right">0.052</td>
+<td align="right">0.799</td>
+<td align="right">0.583</td>
+<td align="right">1.399</td>
 </tr>
 </tbody>
 </table>
@@ -4387,19 +4463,19 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 <tr class="odd">
 <td align="left">CoefExtract.for2</td>
 <td align="right">10</td>
-<td align="right">1.241</td>
-<td align="right">1.224</td>
-<td align="right">1.229</td>
-<td align="right">0.012</td>
+<td align="right">1.259</td>
+<td align="right">1.247</td>
+<td align="right">1.235</td>
+<td align="right">0.024</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">CoefExtract.mapply</td>
 <td align="right">10</td>
-<td align="right">1.110</td>
-<td align="right">1.095</td>
-<td align="right">1.110</td>
+<td align="right">1.010</td>
+<td align="right">1.000</td>
+<td align="right">1.010</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -4407,12 +4483,12 @@ mapply(CoefExtract, yx.list[, y], yx.list[, xs], MoreArgs = list(data =ph), USE.
 <tr class="odd">
 <td align="left">CoefExtract.mcmapply</td>
 <td align="right">10</td>
-<td align="right">1.014</td>
-<td align="right">1.000</td>
-<td align="right">0.040</td>
-<td align="right">0.611</td>
-<td align="right">2.406</td>
-<td align="right">1.348</td>
+<td align="right">1.018</td>
+<td align="right">1.008</td>
+<td align="right">0.044</td>
+<td align="right">0.708</td>
+<td align="right">1.687</td>
+<td align="right">1.718</td>
 </tr>
 </tbody>
 </table>
@@ -4457,9 +4533,9 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">10</td>
-<td align="right">0.033</td>
-<td align="right">2.75</td>
-<td align="right">0.020</td>
+<td align="right">0.039</td>
+<td align="right">3.000</td>
+<td align="right">0.027</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
@@ -4467,22 +4543,22 @@ kable(
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">10</td>
-<td align="right">0.012</td>
-<td align="right">1.00</td>
+<td align="right">0.013</td>
+<td align="right">1.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0.001</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">10</td>
-<td align="right">0.660</td>
-<td align="right">55.00</td>
-<td align="right">0.024</td>
-<td align="right">0.563</td>
-<td align="right">0.078</td>
-<td align="right">0.722</td>
+<td align="right">0.591</td>
+<td align="right">45.462</td>
+<td align="right">0.011</td>
+<td align="right">0.608</td>
+<td align="right">0.086</td>
+<td align="right">1.007</td>
 </tr>
 </tbody>
 </table>
@@ -4515,32 +4591,32 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">10</td>
-<td align="right">0.111</td>
-<td align="right">1.133</td>
-<td align="right">0.025</td>
-<td align="right">0.000</td>
+<td align="right">0.118</td>
+<td align="right">1.283</td>
+<td align="right">0.028</td>
+<td align="right">0.005</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">10</td>
-<td align="right">0.098</td>
+<td align="right">0.092</td>
 <td align="right">1.000</td>
-<td align="right">0.001</td>
-<td align="right">0.003</td>
+<td align="right">0.004</td>
+<td align="right">0.000</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">10</td>
-<td align="right">0.576</td>
-<td align="right">5.878</td>
-<td align="right">0.037</td>
-<td align="right">0.492</td>
-<td align="right">0.069</td>
-<td align="right">0.721</td>
+<td align="right">0.752</td>
+<td align="right">8.174</td>
+<td align="right">0.028</td>
+<td align="right">0.680</td>
+<td align="right">0.078</td>
+<td align="right">1.288</td>
 </tr>
 </tbody>
 </table>
@@ -4573,32 +4649,32 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">10</td>
-<td align="right">0.867</td>
-<td align="right">1.419</td>
-<td align="right">0.054</td>
-<td align="right">0.001</td>
+<td align="right">0.876</td>
+<td align="right">1.356</td>
+<td align="right">0.068</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">10</td>
-<td align="right">0.815</td>
-<td align="right">1.334</td>
-<td align="right">0.006</td>
+<td align="right">0.814</td>
+<td align="right">1.260</td>
+<td align="right">0.007</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
-<td align="right">0.000</td>
+<td align="right">0.00</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">10</td>
-<td align="right">0.611</td>
+<td align="right">0.646</td>
 <td align="right">1.000</td>
-<td align="right">0.016</td>
-<td align="right">0.486</td>
-<td align="right">0.077</td>
-<td align="right">0.637</td>
+<td align="right">0.021</td>
+<td align="right">0.569</td>
+<td align="right">0.057</td>
+<td align="right">1.08</td>
 </tr>
 </tbody>
 </table>
@@ -4631,32 +4707,32 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">10</td>
-<td align="right">8.086</td>
-<td align="right">5.187</td>
-<td align="right">0.069</td>
-<td align="right">0.00</td>
+<td align="right">8.080</td>
+<td align="right">5.050</td>
+<td align="right">0.066</td>
+<td align="right">0.004</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">10</td>
-<td align="right">8.026</td>
-<td align="right">5.148</td>
-<td align="right">0.007</td>
-<td align="right">0.00</td>
+<td align="right">8.019</td>
+<td align="right">5.012</td>
+<td align="right">0.008</td>
+<td align="right">0.001</td>
 <td align="right">0.000</td>
 <td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">10</td>
-<td align="right">1.559</td>
+<td align="right">1.600</td>
 <td align="right">1.000</td>
-<td align="right">0.053</td>
-<td align="right">0.52</td>
-<td align="right">0.089</td>
-<td align="right">1.271</td>
+<td align="right">0.050</td>
+<td align="right">0.624</td>
+<td align="right">0.107</td>
+<td align="right">1.145</td>
 </tr>
 </tbody>
 </table>
@@ -4689,32 +4765,32 @@ kable(
 <tr class="odd">
 <td align="left">forloop</td>
 <td align="right">1</td>
-<td align="right">8.012</td>
-<td align="right">7.638</td>
-<td align="right">0.003</td>
-<td align="right">0.001</td>
-<td align="right">0.00</td>
-<td align="right">0.00</td>
+<td align="right">8.011</td>
+<td align="right">7.586</td>
+<td align="right">0.004</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
 </tr>
 <tr class="even">
 <td align="left">lapply</td>
 <td align="right">1</td>
-<td align="right">8.009</td>
-<td align="right">7.635</td>
+<td align="right">8.008</td>
+<td align="right">7.583</td>
 <td align="right">0.001</td>
 <td align="right">0.000</td>
-<td align="right">0.00</td>
-<td align="right">0.00</td>
+<td align="right">0.000</td>
+<td align="right">0.000</td>
 </tr>
 <tr class="odd">
 <td align="left">mclapply</td>
 <td align="right">1</td>
-<td align="right">1.049</td>
+<td align="right">1.056</td>
 <td align="right">1.000</td>
-<td align="right">0.000</td>
-<td align="right">0.048</td>
-<td align="right">0.01</td>
-<td align="right">0.07</td>
+<td align="right">0.007</td>
+<td align="right">0.052</td>
+<td align="right">0.012</td>
+<td align="right">0.118</td>
 </tr>
 </tbody>
 </table>
@@ -4740,13 +4816,11 @@ setnames(ph, c(&quot;sex&quot;, &quot;age&quot;), c(&quot;Sex&quot;, &quot;Age&q
 ## select var
 vars.tb1 = names(ph)[c(3:20,27,28)]
 vars.tb1</code></pre>
-<pre><code>##  [1] &quot;Sex&quot;              &quot;Age&quot;              &quot;DXA_total_tscore&quot;
-##  [4] &quot;FBS&quot;              &quot;tCholesterol&quot;     &quot;HDL&quot;             
-##  [7] &quot;LDL&quot;              &quot;TG&quot;               &quot;Height&quot;          
-## [10] &quot;Weight&quot;           &quot;SittingHt&quot;        &quot;Waist&quot;           
-## [13] &quot;Hip&quot;              &quot;headcircum&quot;       &quot;armspan&quot;         
-## [16] &quot;BMI&quot;              &quot;SBP&quot;              &quot;DBP&quot;             
-## [19] &quot;smoke&quot;            &quot;alcohol&quot;</code></pre>
+<pre><code>##  [1] &quot;Sex&quot;              &quot;Age&quot;              &quot;DXA_total_tscore&quot; &quot;FBS&quot;             
+##  [5] &quot;tCholesterol&quot;     &quot;HDL&quot;              &quot;LDL&quot;              &quot;TG&quot;              
+##  [9] &quot;Height&quot;           &quot;Weight&quot;           &quot;SittingHt&quot;        &quot;Waist&quot;           
+## [13] &quot;Hip&quot;              &quot;headcircum&quot;       &quot;armspan&quot;          &quot;BMI&quot;             
+## [17] &quot;SBP&quot;              &quot;DBP&quot;              &quot;smoke&quot;            &quot;alcohol&quot;</code></pre>
 <pre class="r"><code>## Na omit
 ph.omit = na.omit(ph, vars.tb1)</code></pre>
 <div id="ctrl-c-ctrl-v" class="section level2">
@@ -4774,23 +4848,23 @@ tb1</code></pre>
 ##                                0              1              p      test
 ##   n                              2365            321                    
 ##   Sex = Male (%)                  839 (35.5)     200 (62.3)  &lt;0.001     
-##   Age (mean (sd))               43.74 (13.00)  47.43 (13.23) &lt;0.001     
-##   DXA_total_tscore (mean (sd))  -0.32 (1.31)   -0.55 (1.27)   0.003     
-##   FBS (mean (sd))               92.40 (15.93) 102.53 (28.28) &lt;0.001     
-##   tCholesterol (mean (sd))     187.46 (34.64) 203.58 (37.36) &lt;0.001     
-##   HDL (mean (sd))               51.22 (12.46)  41.56 (9.26)  &lt;0.001     
-##   LDL (mean (sd))              110.18 (30.16) 110.90 (32.91)  0.692     
-##   TG (mean (sd))                92.45 (40.55) 280.95 (91.61) &lt;0.001     
-##   Height (mean (sd))           161.25 (8.44)  164.32 (8.34)  &lt;0.001     
-##   Weight (mean (sd))            60.91 (10.68)  70.05 (11.96) &lt;0.001     
-##   SittingHt (mean (sd))         88.00 (4.67)   89.87 (4.50)  &lt;0.001     
-##   Waist (mean (sd))             79.50 (8.88)   87.35 (8.06)  &lt;0.001     
-##   Hip (mean (sd))               94.12 (5.67)   97.21 (5.91)  &lt;0.001     
-##   headcircum (mean (sd))        55.29 (3.52)   55.85 (1.85)   0.005     
-##   armspan (mean (sd))          160.50 (9.36)  163.20 (9.40)  &lt;0.001     
-##   BMI (mean (sd))               23.34 (3.15)   25.81 (3.21)  &lt;0.001     
-##   SBP (mean (sd))              116.27 (16.47) 126.57 (17.26) &lt;0.001     
-##   DBP (mean (sd))               73.52 (10.50)  79.27 (11.64) &lt;0.001     
+##   Age (mean (SD))               43.74 (13.00)  47.43 (13.23) &lt;0.001     
+##   DXA_total_tscore (mean (SD))  -0.32 (1.31)   -0.55 (1.27)   0.003     
+##   FBS (mean (SD))               92.40 (15.93) 102.53 (28.28) &lt;0.001     
+##   tCholesterol (mean (SD))     187.46 (34.64) 203.58 (37.36) &lt;0.001     
+##   HDL (mean (SD))               51.22 (12.46)  41.56 (9.26)  &lt;0.001     
+##   LDL (mean (SD))              110.18 (30.16) 110.90 (32.91)  0.692     
+##   TG (mean (SD))                92.45 (40.55) 280.95 (91.61) &lt;0.001     
+##   Height (mean (SD))           161.25 (8.44)  164.32 (8.34)  &lt;0.001     
+##   Weight (mean (SD))            60.91 (10.68)  70.05 (11.96) &lt;0.001     
+##   SittingHt (mean (SD))         88.00 (4.67)   89.87 (4.50)  &lt;0.001     
+##   Waist (mean (SD))             79.50 (8.88)   87.35 (8.06)  &lt;0.001     
+##   Hip (mean (SD))               94.12 (5.67)   97.21 (5.91)  &lt;0.001     
+##   headcircum (mean (SD))        55.29 (3.52)   55.85 (1.85)   0.005     
+##   armspan (mean (SD))          160.50 (9.36)  163.20 (9.40)  &lt;0.001     
+##   BMI (mean (SD))               23.34 (3.15)   25.81 (3.21)  &lt;0.001     
+##   SBP (mean (SD))              116.27 (16.47) 126.57 (17.26) &lt;0.001     
+##   DBP (mean (SD))               73.52 (10.50)  79.27 (11.64) &lt;0.001     
 ##   smoke (%)                                                  &lt;0.001     
 ##      1                           1621 (68.5)     135 (42.1)             
 ##      2                            282 (11.9)      54 (16.8)             
@@ -4818,23 +4892,23 @@ tb1</code></pre>
 ##  &quot;&quot;                              &quot;0&quot;                       
 ##   &quot;n&quot;                            &quot;    2365&quot;                
 ##   &quot;Sex = Female/Male (%)&quot;        &quot;1526/839 (64.5/35.5) &quot;   
-##   &quot;Age (mean (sd))&quot;              &quot;   43.74 (13.00)&quot;        
-##   &quot;DXA_total_tscore (mean (sd))&quot; &quot;   -0.32 (1.31)&quot;         
+##   &quot;Age (mean (SD))&quot;              &quot;   43.74 (13.00)&quot;        
+##   &quot;DXA_total_tscore (mean (SD))&quot; &quot;   -0.32 (1.31)&quot;         
 ##   &quot;FBS (median [IQR])&quot;           &quot;   90.00 [85.00, 96.00]&quot; 
-##   &quot;tCholesterol (mean (sd))&quot;     &quot;  187.46 (34.64)&quot;        
-##   &quot;HDL (mean (sd))&quot;              &quot;   51.22 (12.46)&quot;        
-##   &quot;LDL (mean (sd))&quot;              &quot;  110.18 (30.16)&quot;        
+##   &quot;tCholesterol (mean (SD))&quot;     &quot;  187.46 (34.64)&quot;        
+##   &quot;HDL (mean (SD))&quot;              &quot;   51.22 (12.46)&quot;        
+##   &quot;LDL (mean (SD))&quot;              &quot;  110.18 (30.16)&quot;        
 ##   &quot;TG (median [IQR])&quot;            &quot;   85.00 [60.00, 120.00]&quot;
-##   &quot;Height (mean (sd))&quot;           &quot;  161.25 (8.44)&quot;         
-##   &quot;Weight (mean (sd))&quot;           &quot;   60.91 (10.68)&quot;        
-##   &quot;SittingHt (mean (sd))&quot;        &quot;   88.00 (4.67)&quot;         
-##   &quot;Waist (mean (sd))&quot;            &quot;   79.50 (8.88)&quot;         
-##   &quot;Hip (mean (sd))&quot;              &quot;   94.12 (5.67)&quot;         
-##   &quot;headcircum (mean (sd))&quot;       &quot;   55.29 (3.52)&quot;         
-##   &quot;armspan (mean (sd))&quot;          &quot;  160.50 (9.36)&quot;         
-##   &quot;BMI (mean (sd))&quot;              &quot;   23.34 (3.15)&quot;         
-##   &quot;SBP (mean (sd))&quot;              &quot;  116.27 (16.47)&quot;        
-##   &quot;DBP (mean (sd))&quot;              &quot;   73.52 (10.50)&quot;        
+##   &quot;Height (mean (SD))&quot;           &quot;  161.25 (8.44)&quot;         
+##   &quot;Weight (mean (SD))&quot;           &quot;   60.91 (10.68)&quot;        
+##   &quot;SittingHt (mean (SD))&quot;        &quot;   88.00 (4.67)&quot;         
+##   &quot;Waist (mean (SD))&quot;            &quot;   79.50 (8.88)&quot;         
+##   &quot;Hip (mean (SD))&quot;              &quot;   94.12 (5.67)&quot;         
+##   &quot;headcircum (mean (SD))&quot;       &quot;   55.29 (3.52)&quot;         
+##   &quot;armspan (mean (SD))&quot;          &quot;  160.50 (9.36)&quot;         
+##   &quot;BMI (mean (SD))&quot;              &quot;   23.34 (3.15)&quot;         
+##   &quot;SBP (mean (SD))&quot;              &quot;  116.27 (16.47)&quot;        
+##   &quot;DBP (mean (SD))&quot;              &quot;   73.52 (10.50)&quot;        
 ##   &quot;smoke (%)&quot;                    &quot;&quot;                        
 ##   &quot;   1&quot;                         &quot;    1621 (68.5) &quot;        
 ##   &quot;   2&quot;                         &quot;     282 (11.9) &quot;        
@@ -4844,63 +4918,63 @@ tb1</code></pre>
 ##   &quot;   2&quot;                         &quot;     238 (10.1) &quot;        
 ##   &quot;   3&quot;                         &quot;    1432 (60.5) &quot;        
 ##                                 &quot;Stratified by hyperTG&quot;
-##  &quot;&quot;                              &quot;1&quot;                        &quot;p&quot;     
-##   &quot;n&quot;                            &quot;    321&quot;                  &quot;&quot;      
-##   &quot;Sex = Female/Male (%)&quot;        &quot;121/200 (37.7/62.3) &quot;     &quot;&lt;0.001&quot;
-##   &quot;Age (mean (sd))&quot;              &quot;  47.43 (13.23)&quot;          &quot;&lt;0.001&quot;
-##   &quot;DXA_total_tscore (mean (sd))&quot; &quot;  -0.55 (1.27)&quot;           &quot; 0.003&quot;
-##   &quot;FBS (median [IQR])&quot;           &quot;  95.00 [89.00, 106.00]&quot;  &quot;&lt;0.001&quot;
-##   &quot;tCholesterol (mean (sd))&quot;     &quot; 203.58 (37.36)&quot;          &quot;&lt;0.001&quot;
-##   &quot;HDL (mean (sd))&quot;              &quot;  41.56 (9.26)&quot;           &quot;&lt;0.001&quot;
-##   &quot;LDL (mean (sd))&quot;              &quot; 110.90 (32.91)&quot;          &quot; 0.692&quot;
-##   &quot;TG (median [IQR])&quot;            &quot; 251.00 [219.00, 311.00]&quot; &quot;&lt;0.001&quot;
-##   &quot;Height (mean (sd))&quot;           &quot; 164.32 (8.34)&quot;           &quot;&lt;0.001&quot;
-##   &quot;Weight (mean (sd))&quot;           &quot;  70.05 (11.96)&quot;          &quot;&lt;0.001&quot;
-##   &quot;SittingHt (mean (sd))&quot;        &quot;  89.87 (4.50)&quot;           &quot;&lt;0.001&quot;
-##   &quot;Waist (mean (sd))&quot;            &quot;  87.35 (8.06)&quot;           &quot;&lt;0.001&quot;
-##   &quot;Hip (mean (sd))&quot;              &quot;  97.21 (5.91)&quot;           &quot;&lt;0.001&quot;
-##   &quot;headcircum (mean (sd))&quot;       &quot;  55.85 (1.85)&quot;           &quot; 0.005&quot;
-##   &quot;armspan (mean (sd))&quot;          &quot; 163.20 (9.40)&quot;           &quot;&lt;0.001&quot;
-##   &quot;BMI (mean (sd))&quot;              &quot;  25.81 (3.21)&quot;           &quot;&lt;0.001&quot;
-##   &quot;SBP (mean (sd))&quot;              &quot; 126.57 (17.26)&quot;          &quot;&lt;0.001&quot;
-##   &quot;DBP (mean (sd))&quot;              &quot;  79.27 (11.64)&quot;          &quot;&lt;0.001&quot;
-##   &quot;smoke (%)&quot;                    &quot;&quot;                         &quot;&lt;0.001&quot;
-##   &quot;   1&quot;                         &quot;    135 (42.1) &quot;          &quot;&quot;      
-##   &quot;   2&quot;                         &quot;     54 (16.8) &quot;          &quot;&quot;      
-##   &quot;   3&quot;                         &quot;    132 (41.1) &quot;          &quot;&quot;      
-##   &quot;alcohol (%)&quot;                  &quot;&quot;                         &quot; 0.002&quot;
-##   &quot;   1&quot;                         &quot;     79 (24.6) &quot;          &quot;&quot;      
-##   &quot;   2&quot;                         &quot;     18 ( 5.6) &quot;          &quot;&quot;      
-##   &quot;   3&quot;                         &quot;    224 (69.8) &quot;          &quot;&quot;      
+##  &quot;&quot;                              &quot;1&quot;                        &quot;p&quot;      &quot;test&quot;   
+##   &quot;n&quot;                            &quot;    321&quot;                  &quot;&quot;       &quot;&quot;       
+##   &quot;Sex = Female/Male (%)&quot;        &quot;121/200 (37.7/62.3) &quot;     &quot;&lt;0.001&quot; &quot;exact&quot;  
+##   &quot;Age (mean (SD))&quot;              &quot;  47.43 (13.23)&quot;          &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;DXA_total_tscore (mean (SD))&quot; &quot;  -0.55 (1.27)&quot;           &quot; 0.003&quot; &quot;&quot;       
+##   &quot;FBS (median [IQR])&quot;           &quot;  95.00 [89.00, 106.00]&quot;  &quot;&lt;0.001&quot; &quot;nonnorm&quot;
+##   &quot;tCholesterol (mean (SD))&quot;     &quot; 203.58 (37.36)&quot;          &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;HDL (mean (SD))&quot;              &quot;  41.56 (9.26)&quot;           &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;LDL (mean (SD))&quot;              &quot; 110.90 (32.91)&quot;          &quot; 0.692&quot; &quot;&quot;       
+##   &quot;TG (median [IQR])&quot;            &quot; 251.00 [219.00, 311.00]&quot; &quot;&lt;0.001&quot; &quot;nonnorm&quot;
+##   &quot;Height (mean (SD))&quot;           &quot; 164.32 (8.34)&quot;           &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;Weight (mean (SD))&quot;           &quot;  70.05 (11.96)&quot;          &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;SittingHt (mean (SD))&quot;        &quot;  89.87 (4.50)&quot;           &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;Waist (mean (SD))&quot;            &quot;  87.35 (8.06)&quot;           &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;Hip (mean (SD))&quot;              &quot;  97.21 (5.91)&quot;           &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;headcircum (mean (SD))&quot;       &quot;  55.85 (1.85)&quot;           &quot; 0.005&quot; &quot;&quot;       
+##   &quot;armspan (mean (SD))&quot;          &quot; 163.20 (9.40)&quot;           &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;BMI (mean (SD))&quot;              &quot;  25.81 (3.21)&quot;           &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;SBP (mean (SD))&quot;              &quot; 126.57 (17.26)&quot;          &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;DBP (mean (SD))&quot;              &quot;  79.27 (11.64)&quot;          &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;smoke (%)&quot;                    &quot;&quot;                         &quot;&lt;0.001&quot; &quot;&quot;       
+##   &quot;   1&quot;                         &quot;    135 (42.1) &quot;          &quot;&quot;       &quot;&quot;       
+##   &quot;   2&quot;                         &quot;     54 (16.8) &quot;          &quot;&quot;       &quot;&quot;       
+##   &quot;   3&quot;                         &quot;    132 (41.1) &quot;          &quot;&quot;       &quot;&quot;       
+##   &quot;alcohol (%)&quot;                  &quot;&quot;                         &quot; 0.002&quot; &quot;exact&quot;  
+##   &quot;   1&quot;                         &quot;     79 (24.6) &quot;          &quot;&quot;       &quot;&quot;       
+##   &quot;   2&quot;                         &quot;     18 ( 5.6) &quot;          &quot;&quot;       &quot;&quot;       
+##   &quot;   3&quot;                         &quot;    224 (69.8) &quot;          &quot;&quot;       &quot;&quot;       
 ##                                 &quot;Stratified by hyperTG&quot;
-##  &quot;&quot;                              &quot;test&quot;    &quot;SMD&quot;   
-##   &quot;n&quot;                            &quot;&quot;        &quot;&quot;      
-##   &quot;Sex = Female/Male (%)&quot;        &quot;exact&quot;   &quot; 0.557&quot;
-##   &quot;Age (mean (sd))&quot;              &quot;&quot;        &quot; 0.281&quot;
-##   &quot;DXA_total_tscore (mean (sd))&quot; &quot;&quot;        &quot; 0.178&quot;
-##   &quot;FBS (median [IQR])&quot;           &quot;nonnorm&quot; &quot; 0.441&quot;
-##   &quot;tCholesterol (mean (sd))&quot;     &quot;&quot;        &quot; 0.447&quot;
-##   &quot;HDL (mean (sd))&quot;              &quot;&quot;        &quot; 0.879&quot;
-##   &quot;LDL (mean (sd))&quot;              &quot;&quot;        &quot; 0.023&quot;
-##   &quot;TG (median [IQR])&quot;            &quot;nonnorm&quot; &quot; 2.661&quot;
-##   &quot;Height (mean (sd))&quot;           &quot;&quot;        &quot; 0.366&quot;
-##   &quot;Weight (mean (sd))&quot;           &quot;&quot;        &quot; 0.806&quot;
-##   &quot;SittingHt (mean (sd))&quot;        &quot;&quot;        &quot; 0.408&quot;
-##   &quot;Waist (mean (sd))&quot;            &quot;&quot;        &quot; 0.926&quot;
-##   &quot;Hip (mean (sd))&quot;              &quot;&quot;        &quot; 0.534&quot;
-##   &quot;headcircum (mean (sd))&quot;       &quot;&quot;        &quot; 0.199&quot;
-##   &quot;armspan (mean (sd))&quot;          &quot;&quot;        &quot; 0.288&quot;
-##   &quot;BMI (mean (sd))&quot;              &quot;&quot;        &quot; 0.777&quot;
-##   &quot;SBP (mean (sd))&quot;              &quot;&quot;        &quot; 0.610&quot;
-##   &quot;DBP (mean (sd))&quot;              &quot;&quot;        &quot; 0.518&quot;
-##   &quot;smoke (%)&quot;                    &quot;&quot;        &quot; 0.567&quot;
-##   &quot;   1&quot;                         &quot;&quot;        &quot;&quot;      
-##   &quot;   2&quot;                         &quot;&quot;        &quot;&quot;      
-##   &quot;   3&quot;                         &quot;&quot;        &quot;&quot;      
-##   &quot;alcohol (%)&quot;                  &quot;exact&quot;   &quot; 0.218&quot;
-##   &quot;   1&quot;                         &quot;&quot;        &quot;&quot;      
-##   &quot;   2&quot;                         &quot;&quot;        &quot;&quot;      
-##   &quot;   3&quot;                         &quot;&quot;        &quot;&quot;</code></pre>
+##  &quot;&quot;                              &quot;SMD&quot;   
+##   &quot;n&quot;                            &quot;&quot;      
+##   &quot;Sex = Female/Male (%)&quot;        &quot; 0.557&quot;
+##   &quot;Age (mean (SD))&quot;              &quot; 0.281&quot;
+##   &quot;DXA_total_tscore (mean (SD))&quot; &quot; 0.178&quot;
+##   &quot;FBS (median [IQR])&quot;           &quot; 0.441&quot;
+##   &quot;tCholesterol (mean (SD))&quot;     &quot; 0.447&quot;
+##   &quot;HDL (mean (SD))&quot;              &quot; 0.879&quot;
+##   &quot;LDL (mean (SD))&quot;              &quot; 0.023&quot;
+##   &quot;TG (median [IQR])&quot;            &quot; 2.661&quot;
+##   &quot;Height (mean (SD))&quot;           &quot; 0.366&quot;
+##   &quot;Weight (mean (SD))&quot;           &quot; 0.806&quot;
+##   &quot;SittingHt (mean (SD))&quot;        &quot; 0.408&quot;
+##   &quot;Waist (mean (SD))&quot;            &quot; 0.926&quot;
+##   &quot;Hip (mean (SD))&quot;              &quot; 0.534&quot;
+##   &quot;headcircum (mean (SD))&quot;       &quot; 0.199&quot;
+##   &quot;armspan (mean (SD))&quot;          &quot; 0.288&quot;
+##   &quot;BMI (mean (SD))&quot;              &quot; 0.777&quot;
+##   &quot;SBP (mean (SD))&quot;              &quot; 0.610&quot;
+##   &quot;DBP (mean (SD))&quot;              &quot; 0.518&quot;
+##   &quot;smoke (%)&quot;                    &quot; 0.567&quot;
+##   &quot;   1&quot;                         &quot;&quot;      
+##   &quot;   2&quot;                         &quot;&quot;      
+##   &quot;   3&quot;                         &quot;&quot;      
+##   &quot;alcohol (%)&quot;                  &quot; 0.218&quot;
+##   &quot;   1&quot;                         &quot;&quot;      
+##   &quot;   2&quot;                         &quot;&quot;      
+##   &quot;   3&quot;                         &quot;&quot;</code></pre>
 </div>
 <div id="export-table" class="section level2">
 <h2>Export table</h2>
@@ -4940,7 +5014,7 @@ tb1</code></pre>
 <td align="center">0.557</td>
 </tr>
 <tr class="odd">
-<td>“Age (mean (sd))”</td>
+<td>“Age (mean (SD))”</td>
 <td align="center">43.74 (13.00)</td>
 <td align="center">47.43 (13.23)</td>
 <td align="center">&lt;0.001</td>
@@ -4948,7 +5022,7 @@ tb1</code></pre>
 <td align="center">0.281</td>
 </tr>
 <tr class="even">
-<td>“DXA_total_tscore (mean (sd))”</td>
+<td>“DXA_total_tscore (mean (SD))”</td>
 <td align="center">-0.32 (1.31)</td>
 <td align="center">-0.55 (1.27)</td>
 <td align="center">0.003</td>
@@ -4964,7 +5038,7 @@ tb1</code></pre>
 <td align="center">0.441</td>
 </tr>
 <tr class="even">
-<td>“tCholesterol (mean (sd))”</td>
+<td>“tCholesterol (mean (SD))”</td>
 <td align="center">187.46 (34.64)</td>
 <td align="center">203.58 (37.36)</td>
 <td align="center">&lt;0.001</td>
@@ -4972,7 +5046,7 @@ tb1</code></pre>
 <td align="center">0.447</td>
 </tr>
 <tr class="odd">
-<td>“HDL (mean (sd))”</td>
+<td>“HDL (mean (SD))”</td>
 <td align="center">51.22 (12.46)</td>
 <td align="center">41.56 (9.26)</td>
 <td align="center">&lt;0.001</td>
@@ -4980,7 +5054,7 @@ tb1</code></pre>
 <td align="center">0.879</td>
 </tr>
 <tr class="even">
-<td>“LDL (mean (sd))”</td>
+<td>“LDL (mean (SD))”</td>
 <td align="center">110.18 (30.16)</td>
 <td align="center">110.90 (32.91)</td>
 <td align="center">0.692</td>
@@ -4996,7 +5070,7 @@ tb1</code></pre>
 <td align="center">2.661</td>
 </tr>
 <tr class="even">
-<td>“Height (mean (sd))”</td>
+<td>“Height (mean (SD))”</td>
 <td align="center">161.25 (8.44)</td>
 <td align="center">164.32 (8.34)</td>
 <td align="center">&lt;0.001</td>
@@ -5004,7 +5078,7 @@ tb1</code></pre>
 <td align="center">0.366</td>
 </tr>
 <tr class="odd">
-<td>“Weight (mean (sd))”</td>
+<td>“Weight (mean (SD))”</td>
 <td align="center">60.91 (10.68)</td>
 <td align="center">70.05 (11.96)</td>
 <td align="center">&lt;0.001</td>
@@ -5012,7 +5086,7 @@ tb1</code></pre>
 <td align="center">0.806</td>
 </tr>
 <tr class="even">
-<td>“SittingHt (mean (sd))”</td>
+<td>“SittingHt (mean (SD))”</td>
 <td align="center">88.00 (4.67)</td>
 <td align="center">89.87 (4.50)</td>
 <td align="center">&lt;0.001</td>
@@ -5020,7 +5094,7 @@ tb1</code></pre>
 <td align="center">0.408</td>
 </tr>
 <tr class="odd">
-<td>“Waist (mean (sd))”</td>
+<td>“Waist (mean (SD))”</td>
 <td align="center">79.50 (8.88)</td>
 <td align="center">87.35 (8.06)</td>
 <td align="center">&lt;0.001</td>
@@ -5028,7 +5102,7 @@ tb1</code></pre>
 <td align="center">0.926</td>
 </tr>
 <tr class="even">
-<td>“Hip (mean (sd))”</td>
+<td>“Hip (mean (SD))”</td>
 <td align="center">94.12 (5.67)</td>
 <td align="center">97.21 (5.91)</td>
 <td align="center">&lt;0.001</td>
@@ -5036,7 +5110,7 @@ tb1</code></pre>
 <td align="center">0.534</td>
 </tr>
 <tr class="odd">
-<td>“headcircum (mean (sd))”</td>
+<td>“headcircum (mean (SD))”</td>
 <td align="center">55.29 (3.52)</td>
 <td align="center">55.85 (1.85)</td>
 <td align="center">0.005</td>
@@ -5044,7 +5118,7 @@ tb1</code></pre>
 <td align="center">0.199</td>
 </tr>
 <tr class="even">
-<td>“armspan (mean (sd))”</td>
+<td>“armspan (mean (SD))”</td>
 <td align="center">160.50 (9.36)</td>
 <td align="center">163.20 (9.40)</td>
 <td align="center">&lt;0.001</td>
@@ -5052,7 +5126,7 @@ tb1</code></pre>
 <td align="center">0.288</td>
 </tr>
 <tr class="odd">
-<td>“BMI (mean (sd))”</td>
+<td>“BMI (mean (SD))”</td>
 <td align="center">23.34 (3.15)</td>
 <td align="center">25.81 (3.21)</td>
 <td align="center">&lt;0.001</td>
@@ -5060,7 +5134,7 @@ tb1</code></pre>
 <td align="center">0.777</td>
 </tr>
 <tr class="even">
-<td>“SBP (mean (sd))”</td>
+<td>“SBP (mean (SD))”</td>
 <td align="center">116.27 (16.47)</td>
 <td align="center">126.57 (17.26)</td>
 <td align="center">&lt;0.001</td>
@@ -5068,7 +5142,7 @@ tb1</code></pre>
 <td align="center">0.610</td>
 </tr>
 <tr class="odd">
-<td>“DBP (mean (sd))”</td>
+<td>“DBP (mean (SD))”</td>
 <td align="center">73.52 (10.50)</td>
 <td align="center">79.27 (11.64)</td>
 <td align="center">&lt;0.001</td>
@@ -5084,7 +5158,7 @@ tb1</code></pre>
 <td align="center">0.567</td>
 </tr>
 <tr class="odd">
-<td>&quot; 1“</td>
+<td>&quot; 1&quot;</td>
 <td align="center">1621 (68.5)</td>
 <td align="center">135 (42.1)</td>
 <td align="center"></td>
@@ -5092,7 +5166,7 @@ tb1</code></pre>
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td>&quot; 2“</td>
+<td>&quot; 2&quot;</td>
 <td align="center">282 (11.9)</td>
 <td align="center">54 (16.8)</td>
 <td align="center"></td>
@@ -5100,7 +5174,7 @@ tb1</code></pre>
 <td align="center"></td>
 </tr>
 <tr class="odd">
-<td>&quot; 3“</td>
+<td>&quot; 3&quot;</td>
 <td align="center">462 (19.5)</td>
 <td align="center">132 (41.1)</td>
 <td align="center"></td>
@@ -5116,7 +5190,7 @@ tb1</code></pre>
 <td align="center">0.218</td>
 </tr>
 <tr class="odd">
-<td>&quot; 1“</td>
+<td>&quot; 1&quot;</td>
 <td align="center">695 (29.4)</td>
 <td align="center">79 (24.6)</td>
 <td align="center"></td>
@@ -5124,7 +5198,7 @@ tb1</code></pre>
 <td align="center"></td>
 </tr>
 <tr class="even">
-<td>&quot; 2“</td>
+<td>&quot; 2&quot;</td>
 <td align="center">238 (10.1)</td>
 <td align="center">18 ( 5.6)</td>
 <td align="center"></td>
@@ -5132,7 +5206,7 @@ tb1</code></pre>
 <td align="center"></td>
 </tr>
 <tr class="odd">
-<td>&quot; 3“</td>
+<td>&quot; 3&quot;</td>
 <td align="center">1432 (60.5)</td>
 <td align="center">224 (69.8)</td>
 <td align="center"></td>
@@ -5169,41 +5243,41 @@ tb.m1 = regress.display(m1, crude=T, crude.p.value = T)
 tb.m1</code></pre>
 <pre><code>## Linear regression predicting LDL
 ##  
-##                     crude coeff.(95%CI)  crude P value
-## Age (cont. var.)    0.55 (0.47,0.64)     &lt; 0.001      
-##                                                       
-## Sex: Male vs Female 4.06 (1.72,6.4)      &lt; 0.001      
-##                                                       
-## BMI (cont. var.)    2.29 (1.95,2.64)     &lt; 0.001      
-##                                                       
-## smoke: ref.=1                                         
-##    2                2.18 (-1.34,5.71)    0.225        
-##    3                1.81 (-1,4.63)       0.207        
-##                                                       
-## alcohol: ref.=1                                       
-##    2                -5.22 (-9.48,-0.95)  0.017        
-##    3                -6.47 (-9.05,-3.89)  &lt; 0.001      
-##                                                       
-##                     adj. coeff.(95%CI)   P(t-test) P(F-test)
-## Age (cont. var.)    0.43 (0.34,0.52)     &lt; 0.001   &lt; 0.001  
-##                                                             
-## Sex: Male vs Female 2.11 (-0.92,5.14)    0.173     0.001    
-##                                                             
-## BMI (cont. var.)    1.86 (1.51,2.21)     &lt; 0.001   &lt; 0.001  
-##                                                             
-## smoke: ref.=1                                      0.355    
-##    2                -1.49 (-5.45,2.48)   0.462              
-##    3                1.45 (-1.92,4.83)    0.398              
-##                                                             
-## alcohol: ref.=1                                    0.054    
-##    2                -2.1 (-6.25,2.04)    0.32               
-##    3                -3.35 (-6.08,-0.63)  0.016              
-##                                                             
+##                     crude coeff.(95%CI)  crude P value adj. coeff.(95%CI)  
+## Age (cont. var.)    0.55 (0.47,0.64)     &lt; 0.001       0.43 (0.34,0.52)    
+##                                                                            
+## Sex: Male vs Female 4.06 (1.72,6.4)      &lt; 0.001       2.11 (-0.92,5.14)   
+##                                                                            
+## BMI (cont. var.)    2.29 (1.95,2.64)     &lt; 0.001       1.86 (1.51,2.21)    
+##                                                                            
+## smoke: ref.=1                                                              
+##    2                2.18 (-1.34,5.71)    0.225         -1.49 (-5.45,2.48)  
+##    3                1.81 (-1,4.63)       0.207         1.45 (-1.92,4.83)   
+##                                                                            
+## alcohol: ref.=1                                                            
+##    2                -5.22 (-9.48,-0.95)  0.017         -2.1 (-6.25,2.04)   
+##    3                -6.47 (-9.05,-3.89)  &lt; 0.001       -3.35 (-6.08,-0.63) 
+##                                                                            
+##                     P(t-test) P(F-test)
+## Age (cont. var.)    &lt; 0.001   &lt; 0.001  
+##                                        
+## Sex: Male vs Female 0.173     0.001    
+##                                        
+## BMI (cont. var.)    &lt; 0.001   &lt; 0.001  
+##                                        
+## smoke: ref.=1                 0.355    
+##    2                0.462              
+##    3                0.398              
+##                                        
+## alcohol: ref.=1               0.054    
+##    2                0.32               
+##    3                0.016              
+##                                        
 ## No. of observations = 2728</code></pre>
 <pre class="r"><code>## Export table
 kable(tb.m1$table[rownames(tb.m1$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m1$last.lines)</code></pre>
 <table>
-<caption>No. of observations = 2728</caption>
+<caption>No. of observations = 2728</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -5337,7 +5411,7 @@ tb.m2</code></pre>
 <pre class="r"><code>## Export table
 kable(tb.m2$table[rownames(tb.m2$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m2$last.lines)</code></pre>
 <table>
-<caption>Log-likelihood = -872.071 No. of observations = 2727 AIC value = 1760.1421</caption>
+<caption>Log-likelihood = -872.071 No. of observations = 2727 AIC value = 1760.1421</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -5424,7 +5498,7 @@ kable(tb.m2$table[rownames(tb.m2$table) != &quot;&quot;,], align=&quot;c&quot;, 
 </tbody>
 </table>
 </div>
-<div id="poisson-regression--" class="section level2">
+<div id="poisson-regression-사망-데이터" class="section level2">
 <h2>Poisson regression: 사망 데이터</h2>
 <pre class="r"><code>## Load example data
 library(HEAT);data(mort)
@@ -5458,7 +5532,7 @@ tb.m3 = idr.display(m3, crude=T, crude.p.value = T )</code></pre>
 <pre class="r"><code>## Export table
 kable(tb.m3$table[rownames(tb.m3$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m3$last.lines)</code></pre>
 <table>
-<caption>Log-likelihood = -206421.7862 No. of observations = 17361 AIC value = 412851.5724</caption>
+<caption>Log-likelihood = -206421.7862 No. of observations = 17361 AIC value = 412851.5724</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -5497,7 +5571,7 @@ kable(tb.m3$table[rownames(tb.m3$table) != &quot;&quot;,], align=&quot;c&quot;, 
 </tbody>
 </table>
 </div>
-<div id="cox-" class="section level2">
+<div id="cox-생존분석" class="section level2">
 <h2>Cox: 생존분석</h2>
 <pre class="r"><code>## Load package &amp; example data
 library(survival)
@@ -5529,7 +5603,7 @@ tb.m4 = cox.display(m4, crude=T, crude.p.value = T )</code></pre>
 <pre class="r"><code>## Export table
 kable(tb.m4$table[rownames(tb.m4$table) != &quot;&quot;,], align=&quot;c&quot;, caption = tb.m4$last.lines)</code></pre>
 <table>
-<caption>No. of observations = 340</caption>
+<caption>No. of observations = 340</caption>
 <thead>
 <tr class="header">
 <th></th>
@@ -5619,6 +5693,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

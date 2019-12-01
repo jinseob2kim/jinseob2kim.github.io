@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -26,7 +26,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -37,6 +38,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -85,9 +88,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -101,13 +102,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -123,7 +129,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -143,6 +148,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -164,47 +206,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -218,6 +279,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -253,8 +320,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -269,6 +334,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -315,6 +390,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -385,6 +472,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -408,13 +504,13 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">리눅스 서버와 깃허브(github) 쉽게 사용하기</h1>
-<h4 class="date"><em>2018-02-09</em></h4>
+<h4 class="date">2018-02-09</h4>
 
 </div>
 
 
 <p>데스크탑 리눅스는 GUI환경에서 쉽게 사용할 수 있으나 서버는 그렇지 못하다. 이에 본 강의에서는 <strong>Rstudio</strong>를 활용하여 GUI환경에서 리눅스 서버를 사용하는 법을 알아보겠다.</p>
-<div id="-" class="section level2">
+<div id="학습-목표" class="section level2">
 <h2>학습 목표</h2>
 <ol style="list-style-type: decimal">
 <li><p><strong>Rstudio server</strong>를 이용하여 GUI환경에서 리눅스서버를 활용할 수 있다.</p></li>
@@ -422,13 +518,13 @@ div.tocify {
 <li><p><strong>Github</strong>에서 개인 홈페이지를 만들 수 있다(option).</p></li>
 </ol>
 </div>
-<div id="---google-cloud" class="section level2">
+<div id="실습용-무료-서버-만들기google-cloud" class="section level2">
 <h2>실습용 무료 서버 만들기(Google Cloud)</h2>
 <p>구글 클라우드(<a href="https://cloud.google.com/" class="uri">https://cloud.google.com/</a>) 를 이용해서 실습용 무료 서버를 만들 수 있다. <a href="https://brunch.co.kr/@topasvga/168" class="uri">https://brunch.co.kr/@topasvga/168</a> 를 참고하여 서버를 만들고 이미 사용하는 서버가 있다면 이 내용은 skip하자. 본 실습에서는 구글 클라우드에 <strong>rstuido-server</strong>라는 이름의 VM-인스턴스를 생성한 것으로 가정하겠다.</p>
 </div>
-<div id="rstudio-server-" class="section level2">
+<div id="rstudio-server-설치하기" class="section level2">
 <h2>Rstudio server 설치하기</h2>
-<div id="-" class="section level3">
+<div id="개인-서버" class="section level3">
 <h3>개인 서버</h3>
 <p>Ubuntu 기준으로 아래의 코드를 통해 <strong>R</strong>과 <strong>Rstudio</strong>를 설치할 수 있으며 다른 리눅스 버전은 <a href="https://www.rstudio.com/products/rstudio/download-server/" class="uri">https://www.rstudio.com/products/rstudio/download-server/</a> 를 참고하자.</p>
 <pre class="bash"><code>sudo apt-get install r-base
@@ -437,7 +533,7 @@ sudo wget https://download2.rstudio.org/rstudio-server-1.1.419-amd64.deb
 sudo gdebi rstudio-server-1.1.419-amd64.deb</code></pre>
 <p>그후 <a href="http://서버ip:8787" class="uri">http://서버ip:8787</a> 을 입력하고 계정 ID와 비번을 입력하면 된다. 계정 ID가 없을 경우 터미널에서 <strong>adduser</strong> 명령어를 사용하여 ID와 비번을 만들자.</p>
 </div>
-<div id="google-cloud-" class="section level3">
+<div id="google-cloud-서버" class="section level3">
 <h3>Google Cloud 서버</h3>
 <p>구글 클라우드에서 rstudio를 설치하려면 terminal에서 아래의 명령어를 추가로 입력해야 한다.</p>
 <pre class="bash"><code>gcloud beta compute firewall-rules create allow-rstudio-server \
@@ -454,7 +550,7 @@ gcloud compute instances add-tags rstudio-server --tags rstudio-server</code></p
 </div>
 </div>
 </div>
-<div id="rstudio--" class="section level2">
+<div id="rstudio에서-리눅스서버-다루기" class="section level2">
 <h2>Rstudio에서 리눅스서버 다루기</h2>
 <p>Rstudio 서버에 접속하면 아래와 같이 데스크탑용 <strong>Rstudio</strong>와 같은 화면이 웹에 보일 것이다. 왼쪽 아래를 보면 Console탭 옆에 Terminal이란 탭이 있고 이것을 클릭하면 Terminal이 나와 리눅스 서버를 사용할 수 있다.</p>
 <div class="figure">
@@ -463,7 +559,7 @@ gcloud compute instances add-tags rstudio-server --tags rstudio-server</code></p
 Rstudio서버 메인화면: Terminal탭
 </p>
 </div>
-<div id="rstudio-gui--." class="section level3">
+<div id="rstudio-gui-환경-이용." class="section level3">
 <h3>Rstudio GUI 환경 이용.</h3>
 <p>Rstuidio 환경을 이용해서 다음과 같은 작업을 쉽게 할 수 있다.</p>
 <ol style="list-style-type: decimal">
@@ -484,12 +580,12 @@ sh 실행: Run 혹은 Run script 클릭
 </div>
 </div>
 </div>
-<div id="github" class="section level2">
+<div id="깃허브github란" class="section level2">
 <h2>깃허브(Github)란?</h2>
 </div>
-<div id="--" class="section level2">
+<div id="깃허브-이용-준비" class="section level2">
 <h2>깃허브 이용 준비</h2>
-<div id="--" class="section level3">
+<div id="깃허브-계정-생성" class="section level3">
 <h3>깃허브 계정 생성</h3>
 <ol style="list-style-type: decimal">
 <li><a href="https://github.com/" class="uri">https://github.com/</a> 에 들어가서 사용자 이름과 이메일, 그리고 비밀번호를 입력하면 계정을 생성할 수 있다.</li>
@@ -513,13 +609,13 @@ sh 실행: Run 혹은 Run script 클릭
 <li>가입할 때 적은 이메일로 확인 메일이 가고 메일에서 승인을 눌러주면 가입완료.</li>
 </ol>
 </div>
-<div id="-repository-" class="section level3">
+<div id="깃허브-repository-생성" class="section level3">
 <h3>깃허브 repository 생성</h3>
 </div>
 </div>
-<div id="rstudio--" class="section level2">
+<div id="rstudio에서-깃허브-이용하기" class="section level2">
 <h2>Rstudio에서 깃허브 이용하기</h2>
-<div id="rstudio-" class="section level3">
+<div id="rstudio에서-불러오기" class="section level3">
 <h3>Rstudio에서 불러오기</h3>
 <div id="commit" class="section level4">
 <h4>Commit</h4>
@@ -529,7 +625,7 @@ sh 실행: Run 혹은 Run script 클릭
 </div>
 </div>
 </div>
-<div id="-" class="section level2">
+<div id="웹페이지-만들기" class="section level2">
 <h2>웹페이지 만들기</h2>
 </div>
 
@@ -582,6 +678,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

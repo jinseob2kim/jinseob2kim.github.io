@@ -1,5 +1,7 @@
 ---
 title: 'Population Genetics Index: 유전체역학 2017'
+editor_options: 
+  chunk_output_type: console
 ---
 
 ```{r setup, include=FALSE}

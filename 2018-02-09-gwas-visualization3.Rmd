@@ -20,7 +20,7 @@ knitr::opts_chunk$set(echo = TRUE,cache=F)
 ### Packages & directory
 ```{r}
 library(knitr);library(data.table);library(glue);library(DT);library(ggplot2);library(manhattanly)
-dir.name="/home/secondmath/Dropbox/example"
+dir.name="/home/jinseob2kim/Dropbox/example"
 
 ```
 

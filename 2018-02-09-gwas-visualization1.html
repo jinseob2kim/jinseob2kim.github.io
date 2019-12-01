@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -27,15 +27,16 @@
 <script src="site_libs/navigation-1.1/codefolding.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<script src="site_libs/htmlwidgets-1.0/htmlwidgets.js"></script>
+<script src="site_libs/htmlwidgets-1.5.1/htmlwidgets.js"></script>
 <link href="site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet" />
-<script src="site_libs/datatables-binding-0.4/datatables.js"></script>
-<link href="site_libs/dt-core-1.10.16/css/jquery.dataTables.min.css" rel="stylesheet" />
-<link href="site_libs/dt-core-1.10.16/css/jquery.dataTables.extra.css" rel="stylesheet" />
-<script src="site_libs/dt-core-1.10.16/js/jquery.dataTables.min.js"></script>
+<script src="site_libs/datatables-binding-0.10/datatables.js"></script>
+<link href="site_libs/dt-core-1.10.19/css/jquery.dataTables.min.css" rel="stylesheet" />
+<link href="site_libs/dt-core-1.10.19/css/jquery.dataTables.extra.css" rel="stylesheet" />
+<script src="site_libs/dt-core-1.10.19/js/jquery.dataTables.min.js"></script>
 <link href="site_libs/crosstalk-1.0.0/css/crosstalk.css" rel="stylesheet" />
 <script src="site_libs/crosstalk-1.0.0/js/crosstalk.min.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -46,6 +47,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -94,9 +97,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -110,13 +111,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -132,7 +138,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -152,6 +157,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -173,55 +215,69 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 <style type="text/css">
 .code-folding-btn { margin-bottom: 4px; }
 </style>
-<script>
-$(document).ready(function () {
-  window.initializeCodeFolding("show" === "show");
-});
-</script>
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -235,6 +291,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -270,8 +332,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -286,6 +346,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -332,6 +402,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -402,6 +484,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -433,7 +524,7 @@ div.tocify {
 
 
 <h1 class="title toc-ignore">GWAS visualization (1): Summary table</h1>
-<h4 class="date"><em>2018-02-09</em></h4>
+<h4 class="date">2018-02-09</h4>
 
 </div>
 
@@ -459,21 +550,21 @@ div.tocify {
 </ul></li>
 </ol>
 <pre class="r"><code>library(knitr);library(data.table);library(glue);library(DT)
-dir=&quot;/home/secondmath/Dropbox/example&quot;
+dir=&quot;/home/jinseob2kim/Dropbox/example&quot;
 setwd(dir)
 getwd()</code></pre>
-<pre><code>## [1] &quot;/home/secondmath/Dropbox/example&quot;</code></pre>
+<pre><code>## [1] &quot;/home/jinseob2kim/Dropbox/example&quot;</code></pre>
 <p>실습 데이터는 bed 포맷으로 되어있으며 phenotype은 중성지방(TG)과 그것을 이분형 변수로 만든 high_tg을 사용한다. <strong>glue</strong>를 사용해서 parameter와 문자를 자연스럽게 붙여 표현할 수 있다.</p>
 <pre class="r"><code>bfile=glue(&quot;{dir}/Nong_1787&quot;)
 bfile</code></pre>
-<pre><code>## /home/secondmath/Dropbox/example/Nong_1787</code></pre>
+<pre><code>## /home/jinseob2kim/Dropbox/example/Nong_1787</code></pre>
 <pre class="r"><code>phfile=glue(&quot;{dir}/Nong_1787_tgnew.pheno&quot;)
 phfile</code></pre>
-<pre><code>## /home/secondmath/Dropbox/example/Nong_1787_tgnew.pheno</code></pre>
+<pre><code>## /home/jinseob2kim/Dropbox/example/Nong_1787_tgnew.pheno</code></pre>
 </div>
 <div id="gwas-using-plink" class="section level2">
 <h2>GWAS using PLINK</h2>
-<div id="-tg" class="section level3">
+<div id="연속변수-tg" class="section level3">
 <h3>연속변수: TG</h3>
 <p>PLINK의 –linear 옵션을 사용하며, <strong>glue</strong>를 활용해 실행문을 만들고 <strong>system</strong>함수로 리눅스 커맨드를 R에서 실행할 수 있다.</p>
 <pre class="r"><code>phname=&quot;tg&quot;
@@ -488,7 +579,7 @@ datatable(out.linear[TEST==&quot;ADD&quot;][order(P)][1:100],caption=&quot;assoc
 <div id="htmlwidget-77c574076276ac1a7e1f" style="width:100%;height:auto;" class="datatables html-widget"></div>
 <script type="application/json" data-for="htmlwidget-77c574076276ac1a7e1f">{"x":{"filter":"none","caption":"<caption>assoc.linear 파일<\/caption>","data":[[11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,10,11,11,11,11,11,3,11,11,1,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,11,12,11,11,11,11,11,11,11,1,11,11,10,17,11,11,11,11,11,11,4,11,11,8,12,11,11,11,16,11,7,1,16,11,11,11,11,14,11,6,2,11,1,11,7,18],["rs10750096","rs10790162","rs6589565","rs6589566","rs7483863","rs2160669","rs964184","rs2266788","rs3825041","rs2072560","rs2075290","rs7930786","rs180326","rs9326246","rs180349","rs7123666","rs1558861","rs1974718","rs1558860","rs6589564","rs4417316","rs1942478","rs1268353","rs622604","rs610675","rs623908","rs12355451","rs11216135","rs11602073","rs11216136","rs75198898","rs113932726","rs11919329","rs3741297","rs2041967","rs10913956","rs2075291","rs918144","rs4938305","rs2075295","rs11216125","rs180339","rs1263149","rs180378","rs11216129","rs12421652","rs4938309","rs11604424","rs11602240","rs180322","rs11216186","rs180377","rs11216126","rs2008915","rs10892023","rs7962171","rs1939595","rs3212282","rs10892020","rs4938307","rs34637368","rs12419159","rs17120157","rs3845398","rs17119975","rs6589570","rs829107","rs159315","rs2269399","rs10892068","rs17120293","rs61905084","rs3741298","rs17120344","rs7695576","rs1377497","rs1893460","rs10105330","rs1087736","rs9804646","rs11216315","rs2186844","rs3815784","rs11216140","rs10230671","rs2764675","rs17143017","rs9667814","rs9666150","rs180327","rs1940625","rs17445609","rs605843","rs9494736","rs13394891","rs7103154","rs1565434","rs74368849","rs221146","rs8082984"],[116656788,116639104,116640237,116652423,116652491,116647607,116648917,116660686,116631707,116661826,116653296,116624727,116624703,116611733,116611827,116667083,116607437,116606766,116607368,116624153,116652301,116651463,116639692,116640062,116640094,116640368,29692974,116646062,116646858,116647120,116649806,116650638,138998584,116657667,116645149,180232080,116661392,116633825,116588629,116628401,116612274,116617782,116639941,116588909,116620256,116625875,116627055,116651115,116632798,116626735,116784692,116589127,116617240,116603134,116598248,41685836,82294070,116601945,116589652,116604514,116619605,82294925,116812628,180530439,116634557,116675294,95418102,32686167,117066353,116928546,116944846,116610294,116657561,116996345,24436960,34609820,116603677,58136501,61512622,116665079,117080640,116896913,52117653,116672013,77671557,58522420,7299754,116671823,116671824,116623659,116876442,28108316,113125234,137673055,140003570,115199779,218249400,116622299,28990851,10571904],["C","A","A","G","A","C","G","G","T","T","C","C","G","C","A","A","C","G","A","C","T","G","T","C","A","G","T","G","T","G","A","T","G","T","G","G","A","T","T","C","A","T","G","A","A","T","T","C","C","C","C","T","C","C","T","G","A","A","G","A","A","A","C","T","C","A","T","C","C","T","C","C","T","A","A","T","A","T","G","T","G","T","A","T","C","T","G","C","T","C","G","A","C","A","T","T","A","A","A","A"],["ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD","ADD"],[1777,1773,1773,1787,1782,1779,1779,1777,1753,1735,1710,1758,1758,1774,1774,1753,1758,1743,1743,1736,1787,1785,1774,1774,1774,1774,1787,1776,1776,1776,1782,1782,1787,1783,1766,1787,1779,1740,1767,1750,1778,1763,1761,1777,1787,1773,1773,1784,1769,1756,1787,1783,1787,1787,1781,1787,1787,1780,1787,1753,1756,1787,1787,1787,1787,1700,1787,1787,1787,1787,1787,1765,1787,1787,1787,1787,1756,1787,1787,1735,1787,1787,1787,1701,1787,1787,1787,1707,1707,1763,1787,1787,1787,1787,1787,1787,1783,1720,1787,1787],[31.3,31.38,31.38,30.92,30.97,30.79,30.79,30.72,30.66,30.67,30.64,30.42,30.13,29.58,29.3,35.18,29.3,29.44,29.44,29.56,-26.99,-27.01,-27.09,-27.09,-27.09,-27.09,66.65,-26.72,-26.72,-26.72,41.4,41.4,32.01,41.14,-22.1,46.03,40.45,-21.79,22.38,-21.64,-26.4,-21.44,-21.24,21.86,-25.97,-26.14,-26.09,20.64,-25.84,-21.36,-30.65,21.46,-25.6,21.26,21.3,45.09,55.54,21.09,21.06,-26.22,-25.99,54.62,-29.13,38.82,-24.19,24.16,34.23,30.83,-28.42,-28.53,-28.53,-21.85,-19.11,-28.74,-24.83,58.38,-21.76,49.89,-18.74,-25.83,-27.77,-27.69,67.21,20.47,83.97,27.34,42.34,20.27,20.27,18.4,-23.99,32.57,19.1,60.66,28.33,52.93,60.56,36.44,71.37,20.65],[6.074,6.054,6.054,6.023,6.022,5.981,5.981,5.972,5.868,5.842,5.833,5.832,5.784,5.742,5.694,5.688,5.665,5.659,5.659,5.657,-5.064,-5.053,-5.029,-5.029,-5.029,-5.029,4.983,-4.964,-4.964,-4.964,4.906,4.906,4.893,4.883,-4.865,4.789,4.784,-4.784,4.77,-4.757,-4.745,-4.743,-4.704,4.688,-4.678,-4.674,-4.673,4.659,-4.645,-4.644,-4.637,4.626,-4.609,4.593,4.59,4.586,4.584,4.541,4.539,-4.534,-4.527,4.525,-4.424,4.411,-4.383,4.35,4.348,4.347,-4.339,-4.319,-4.319,-4.317,-4.313,-4.299,-4.298,4.282,-4.236,4.2,-4.194,-4.186,-4.185,-4.184,4.179,4.174,4.171,4.166,4.156,4.147,4.147,4.133,-4.129,4.124,4.107,4.095,4.076,4.073,4.037,4.035,4.022,4.005],[1.524e-09,1.725e-09,1.725e-09,2.077e-09,2.094e-09,2.677e-09,2.677e-09,2.83e-09,5.265e-09,6.147e-09,6.496e-09,6.523e-09,8.64e-09,1.1e-08,1.446e-08,1.504e-08,1.717e-08,1.78e-08,1.78e-08,1.796e-08,4.531e-07,4.787e-07,5.436e-07,5.436e-07,5.436e-07,5.436e-07,6.854e-07,7.582e-07,7.582e-07,7.582e-07,1.016e-06,1.016e-06,1.084e-06,1.139e-06,1.249e-06,1.812e-06,1.858e-06,1.859e-06,1.998e-06,2.126e-06,2.249e-06,2.274e-06,2.755e-06,2.975e-06,3.12e-06,3.184e-06,3.188e-06,3.411e-06,3.657e-06,3.679e-06,3.789e-06,3.996e-06,4.333e-06,4.664e-06,4.737e-06,4.825e-06,4.869e-06,5.988e-06,6.016e-06,6.169e-06,6.388e-06,6.45e-06,1.027e-05,1.09e-05,1.239e-05,1.445e-05,1.448e-05,1.455e-05,1.515e-05,1.657e-05,1.657e-05,1.67e-05,1.701e-05,1.807e-05,1.814e-05,1.951e-05,2.391e-05,2.799e-05,2.869e-05,2.981e-05,2.993e-05,3.008e-05,3.07e-05,3.139e-05,3.179e-05,3.248e-05,3.392e-05,3.54e-05,3.54e-05,3.741e-05,3.812e-05,3.903e-05,4.198e-05,4.412e-05,4.791e-05,4.843e-05,5.638e-05,5.689e-05,6.018e-05,6.464e-05]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th>CHR<\/th>\n      <th>SNP<\/th>\n      <th>BP<\/th>\n      <th>A1<\/th>\n      <th>TEST<\/th>\n      <th>NMISS<\/th>\n      <th>BETA<\/th>\n      <th>STAT<\/th>\n      <th>P<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"className":"dt-right","targets":[0,2,5,6,7,8]}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
 </div>
-<div id="--high_tg" class="section level3">
+<div id="이분형-변수-high_tg" class="section level3">
 <h3>이분형 변수: high_tg</h3>
 <p>–logistic 옵션을 사용하고 –pheno-name에 affected status(1)를 추가로 지정한다. 마찬가지로 SNP의 효과는 TEST 열이 ADD인 항목들이다.</p>
 <pre class="r"><code>phname2=&quot;high_tg&quot;
@@ -506,7 +597,7 @@ datatable(out.logistic[TEST==&quot;ADD&quot;][order(P)][1:100],caption=&quot;ass
 <div id="ld-pruning" class="section level2">
 <h2>LD Pruning</h2>
 <p>LD Equilibrium인 SNP들을 얻고 싶을 때 수행하며 VIF(Variance Inflation Factor) 또는 pairwise genotype correlation(<span class="math inline">\(r^2\)</span>)을 이용한다.</p>
-<div id="vif-" class="section level3">
+<div id="vif-이용" class="section level3">
 <h3>VIF 이용</h3>
 <ol style="list-style-type: decimal">
 <li>테스트할 SNP을 <strong>50개 SNP</strong>으로 회귀분석한 후 <span class="math inline">\(R^2\)</span>값을 이용해 VIF를 계산한다. 그 다음 테스트는 지금 SNP으로부터 <strong>5번째 뒤에 있는 SNP</strong>이다</li>
@@ -520,7 +611,7 @@ datatable(out.logistic[TEST==&quot;ADD&quot;][order(P)][1:100],caption=&quot;ass
 </ul></li>
 </ol>
 </div>
-<div id="pairwise-correlation-" class="section level3">
+<div id="pairwise-correlation-이용" class="section level3">
 <h3>Pairwise correlation 이용</h3>
 <ol style="list-style-type: decimal">
 <li><p>인접한 <strong>50개 SNP</strong>들끼리의 상관계수의 제곱(<span class="math inline">\(r^2\)</span>)를 모두 구한다(<span class="math inline">\(\binom{50}{2}\)</span>개).</p></li>
@@ -642,7 +733,7 @@ datatable(res.gwas.addgene[,c(5:13,4)][order(P)][1:100],rownames=F,caption = &qu
 fwrite(res.gwas.addgene[,c(5:13,4)],&quot;ResGWASAddgene.csv&quot;)</code></pre>
 </div>
 </div>
-<div id="---" class="section level2">
+<div id="리눅스-자체-명령어-이용" class="section level2">
 <h2>리눅스 자체 명령어 이용</h2>
 <p>마지막으로 리눅스 배치 파일을 이용한 실행과 비교해보겠다. 결과를 p값에 대해 sorting해서 저장하는 것을 awk 명령어로 수행하겠다. awk는 패턴검색 및 처리 언어로 아래의 3가지 문법이 있다.</p>
 <ul>
@@ -663,12 +754,8 @@ fwrite(res.gwas.addgene[,c(5:13,4)],&quot;ResGWASAddgene.csv&quot;)</code></pre>
 awk &#39;NR==1||$5=&quot;ADD&quot; {print $0|&quot;sort --g --key=9&quot;}&#39; LinearTG.assoc.linear &gt; sort.txt
 
 cat sort.txt | head -6</code></pre>
-<pre><code>##  CHR          SNP         BP   A1       TEST    NMISS       BETA         STAT            P 
-## 11 rs3017338 116569345 A ADD 1716 -3.351 -6.97 4.495e-12
-## 11 rs7114756 95711032 G ADD 1742 -3.244 -6.869 8.993e-12
-## 6 rs1639417 94876830 G ADD 1699 -3.321 -6.848 1.046e-11
-## 17 rs8070618 33702072 G ADD 1709 -3.287 -6.834 1.149e-11
-## 7 rs1541357 21816411 T ADD 1702 -3.228 -6.827 1.203e-11</code></pre>
+<pre><code>## bash: line 0: cd: /home/secondmath/Dropbox/example: No such file or directory
+## awk: cannot open LinearTG.assoc.linear (No such file or directory)</code></pre>
 </div>
 
 <p>Copyright &copy;2016 <a href="mailto:jinseob2kim@gmail.com">Jinseob Kim</a>&nbsp;&nbsp;
@@ -720,6 +807,54 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeCodeFolding("show" === "show");
+});
+</script>
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

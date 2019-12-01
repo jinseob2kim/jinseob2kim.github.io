@@ -42,7 +42,7 @@ knitr::opts_chunk$set(echo = TRUE,cache=F)
 
 ```{r}
 library(knitr);library(data.table);library(glue);library(DT)
-dir="/home/secondmath/Dropbox/example"
+dir="/home/jinseob2kim/Dropbox/example"
 setwd(dir)
 getwd()
 ```

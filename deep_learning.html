@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
 
 <head>
 
 <meta charset="utf-8" />
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
 
@@ -25,7 +25,8 @@
 <script src="site_libs/navigation-1.1/tabsets.js"></script>
 <link href="site_libs/highlightjs-9.12.0/textmate.css" rel="stylesheet" />
 <script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
-<link href="site_libs/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/all.css" rel="stylesheet" />
+<link href="site_libs/font-awesome-5.1.0/css/v4-shims.css" rel="stylesheet" />
 
 <script>
   (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
@@ -36,6 +37,8 @@
   ga('require', 'linkid');
   ga('send', 'pageview');
 </script>
+
+<script data-ad-client="ca-pub-6709542803997512" async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
 
 <style type="text/css">code{white-space: pre;}</style>
 <style type="text/css">
@@ -84,9 +87,7 @@ h6 {
 
 <link rel="stylesheet" href="styles.css" type="text/css" />
 
-</head>
 
-<body>
 
 <style type = "text/css">
 .main-container {
@@ -100,13 +101,18 @@ code {
 }
 img {
   max-width:100%;
-  height: auto;
 }
 .tabbed-pane {
   padding-top: 12px;
 }
+.html-widget {
+  margin-bottom: 20px;
+}
 button.code-folding-btn:focus {
   outline: none;
+}
+summary {
+  display: list-item;
 }
 </style>
 
@@ -122,7 +128,6 @@ body {
   padding-top: 56px;
   margin-top: -56px;
 }
-
 .section h2 {
   padding-top: 56px;
   margin-top: -56px;
@@ -142,6 +147,43 @@ body {
 .section h6 {
   padding-top: 56px;
   margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
 }
 </style>
 
@@ -163,47 +205,66 @@ $(document).ready(function () {
 });
 </script>
 
-
-<div class="container-fluid main-container">
-
 <!-- tabsets -->
-<script>
-$(document).ready(function () {
-  window.buildTabsets("TOC");
-});
-</script>
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
 
 <!-- code folding -->
 
 
-
-
-<script>
-$(document).ready(function ()  {
-
-    // move toc-ignore selectors from section div to header
-    $('div.section.toc-ignore')
-        .removeClass('toc-ignore')
-        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
-
-    // establish options
-    var options = {
-      selectors: "h1,h2,h3",
-      theme: "bootstrap3",
-      context: '.toc-content',
-      hashGenerator: function (text) {
-        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
-      },
-      ignoreSelector: ".toc-ignore",
-      scrollTo: 0
-    };
-    options.showAndHide = false;
-    options.smoothScroll = true;
-
-    // tocify
-    var toc = $("#TOC").tocify(options).data("toc-tocify");
-});
-</script>
 
 <style type="text/css">
 
@@ -217,6 +278,12 @@ $(document).ready(function ()  {
 }
 }
 
+@media print {
+.toc-content {
+  /* see https://github.com/w3c/csswg-drafts/issues/4434 */
+  float: right;
+}
+}
 
 .toc-content {
   padding-left: 30px;
@@ -252,8 +319,6 @@ div.tocify {
 
 .tocify-subheader .tocify-item {
   font-size: 0.90em;
-  padding-left: 25px;
-  text-indent: 0;
 }
 
 .tocify .list-group-item {
@@ -268,6 +333,16 @@ div.tocify {
 }
 
 </style>
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
 
 <!-- setup 3col/9col grid for toc_float and main content  -->
 <div class="row-fluid">
@@ -314,6 +389,18 @@ div.tocify {
     </li>
     <li>
       <a href="health_metrics.html">건강지표: DALY, QALY</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-redefinenullhypothesis/">귀무가설의 재정의</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-medianorratio/">새로운 유전율 지표 제안</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 다차원공간으로의 확장</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-08-mdlm/">선형모형의 허수축 확장</a>
     </li>
   </ul>
 </li>
@@ -384,6 +471,15 @@ div.tocify {
     <li>
       <a href="radv1.html">Advanced R (1): Fast R &amp; Table 만들기</a>
     </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2018-11-24-basic-biostatistics/">의학 연구에서의 기술 통계 with R</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rmarkdown/">R Markdown 기초</a>
+    </li>
+    <li>
+      <a href="https://blog.zarathu.com/posts/2019-01-03-rdatamanagement">R 데이터 매니지먼트: tidyverse</a>
+    </li>
   </ul>
 </li>
       </ul>
@@ -412,12 +508,12 @@ div.tocify {
 
 
 <p>이 글은 2014년 9월에 썼던 것을 HTML형식으로 재정리한 내용으로 최신지견이 아님을 감안하길 바란다. 슬라이드 버전은 <a href="http://www.slideshare.net/secondmath/deep-learning-by-jskim">여기</a>에서 볼 수 있다.</p>
-<div class="section level2">
+<div id="서론" class="section level2">
 <h2>서론</h2>
 <p>기계학습(Machine Learning)은 컴퓨터가 스스로 학습하여 예측모형을 개발하는 인공지능의 한 분야이며, 딥러닝(Deep Learning)은 인간의 신경망의 원리를 이용한 심층신경망(Deep Neural Network)이론을 이용한 기계학습방법이다. 딥러닝 기술은 이미 구글, 페이스북, 아마존 등 글로벌 IT기업들에서 광범위하게 이용되고 있는 기술이며 특히, 패턴인식이나 사진, 음성 등의 인식, 기계번역 등의 자연언어처리(Natural Language Processing)에 좋은 성능을 발휘하는 것으로 알려져 있는데, MIT가 2013년을 빛낼 10대 혁신기술 중 하나로 선정하고 가트너(Gartner, Inc.)가 2014 세계 IT 시장 10대 주요 예측기술로 언급하는 등 최근 가장 뜨거운 이슈가 되고 있다<span class="citation">(동아일보, n.d.; Gartner, n.d.)</span>. 딥러닝이 기존의 통계학이나 다른 기계학습 방법과 다른 큰 차이점은 인간의 뇌를 기초로하여 설계되었다는 점이다. 인간은 컴퓨터가 아주 짧은 시간에 할 수 있는 계산도 쉽게 해낼 수 없는 반면, 컴퓨터는 인간이 쉽게 인지하는 사진이나 음성을 해석하지 못하는데 이는 인간의 뇌가 엄청난 수의 뉴런과 시냅스의 로 이루어져 있기 때문이다. 각각의 뉴런은 기능이 보잘것 없지만 수많은 뉴런들이 복잡하게 연결되어 병렬연산을 수행함으로서 컴퓨터가 하지 못하는 음성, 영상인식을 수월하게 할 수 있는 것이며 딥러닝은 이 수많은 뉴런과 시냅스의 병렬연산을 컴퓨터로 재현하는 방법인 것이다. 이것이 글로벌 IT기업들이 딥러닝을 주목하는 이유일 것이다. 이에 본 글에서는 인공신경망 이론의 역사부터 2014년 현재 상황까지를 간략히 리뷰해 보겠다.</p>
 <p>딥러닝의 역사는 크게 3시기로 나뉘어지는데 1세대는 최초의 인경신공망인 <strong>퍼셉트론(Perceptron)</strong>, 2세대는 <strong>다층(Multilayer) 퍼셉트론</strong>, 그리고 <strong>현재의 딥러닝</strong>을 3세대라고 할 수 있을 것이다.</p>
 </div>
-<div id="-perceptron" class="section level2">
+<div id="세대-perceptron" class="section level2">
 <h2>1세대: Perceptron</h2>
 <p>인공신경망(Neural Network)의 기원은 1958년에 Rosenblatt가 제안한 퍼셉트론이 시작이라 할 수 있다[<span class="citation">Rosenblatt (1958)</span>}. <span class="math inline">\(n\)</span>개의 input과 1개의 output에 대하여 각각의 input의 weight를 <span class="math inline">\(w_i\)</span>라 한 후 퍼셉트론을 수식으로 나타내면 다음과 같다<span class="citation">(Honkela, n.d.)</span>.</p>
 <p><span class="math display">\[y=\varphi(\sum_{i=1}^n w_ix_i+b)\]</span> (<span class="math inline">\(b\)</span>: bias, <span class="math inline">\(\varphi\)</span>: activation function(e.g: logistic or <span class="math inline">\(tanh\)</span>)</p>
@@ -426,13 +522,13 @@ div.tocify {
 <p class="caption">Concept of Perceptron</p>
 </div>
 <p>즉, <span class="math inline">\(n\)</span>개의 input의 선형결합(Linear Combination)에 Activation 함수를 적용하여 0$$1 사이의 확률값으로 <span class="math inline">\(y\)</span>값을 제공하는 것이며, 확률값으로 받은 후에는 편의에 따라 0를 기준으로 event냐 아니냐(1 VS -1)를 판단한다.</p>
-<p>이것이 인공신경망 모형의 시작이다. 허나 이 모형은 아주 간단한 XOR problem마저 학습하지 못하는 등, 심각한 문제가 있는데(아래 그림) 이 때문에 한동안 발전없이 포류되게 된다<span class="citation">(G. Hinton, n.d.)</span>.</p>
+<p>이것이 인공신경망 모형의 시작이다. 허나 이 모형은 아주 간단한 XOR problem마저 학습하지 못하는 등, 심각한 문제가 있는데(아래 그림) 이 때문에 한동안 발전없이 포류되게 된다<span class="citation">(Hinton, n.d.)</span>.</p>
 <div class="figure">
 <img src="dl_img/notperceptron.png" alt="XOR problem in Perceptron" />
 <p class="caption">XOR problem in Perceptron</p>
 </div>
 </div>
-<div id="-multilayer-perceptron" class="section level2">
+<div id="세대-multilayer-perceptron" class="section level2">
 <h2>2세대: Multilayer Perceptron</h2>
 <p>XOR 같은 간단한 것도 학습하지 못하는 퍼셉트론의 단점을 해결하기 위한 방법은 의외로 단순하였는데 Input layer와 output layer사이에 하나 이상의 hidden layer를 추가하여 학습하는 것이 그것이며 이를 다층 퍼셉트론(Multilayer perceptron)이라 한다. 아래 그림을 보면 hidden layer가 증가할수록 분류력이 좋아지는 것을 확인할 수 있다.<br />
 허나 이 방법은 hidden layer의 갯수가 증가할수록 weight의 갯수도 계속 증가하게 되어 학습(Traning)이 어렵다는 단점이 있는데 Rumelhart등은 에러역전파알고리즘(Error Backpropagation Algorithm)을 개발하여 다층 퍼셉트론의 학습을 가능하게 하였다<span class="citation">(Rumelhart, Hinton, and Williams 1985)</span>. 에러역전파알고리즘의 자세한 증명은 참고문헌이나 인터넷을 찾아보기 바라며 여기서는 기장 기초적인 예제인 <strong>음식 가격 맞추기</strong>로 설명해 보겠다.</p>
@@ -440,8 +536,8 @@ div.tocify {
 <img src="dl_img/neural3.jpg" alt="Multilayer Perceptron" />
 <p class="caption">Multilayer Perceptron</p>
 </div>
-<div id="---perceptroncant" class="section level3">
-<h3>예제: 음식의 가격 맞추기<span class="citation">(G. Hinton, n.d.)</span></h3>
+<div id="예제-음식의-가격-맞추기perceptroncant" class="section level3">
+<h3>예제: 음식의 가격 맞추기<span class="citation">(Hinton, n.d.)</span></h3>
 <p>물고기(fish) 2개 과자(chip) 5개, 케첩(ketchup) 3개를 구입해서 가격(price)가 850원인 상황을 수식과 그림으로 나타내면 아래와 같다.</p>
 <p><span class="math display">\[price = x_{fish}w_{fish} + x_{chips}w_{chips} + x_{ketchup}w_{ketchup}\]</span></p>
 <div class="figure">
@@ -486,7 +582,7 @@ div.tocify {
 <p>이런 문제점들 때문에 실제로 Neural Network은 지지벡터머신(Support Vector Machine)등에 밀려 2000년 초까지 제대로 활용되지 못하였다.</p>
 </div>
 </div>
-<div id="-unsupervised-learning---boltzmann-machine" class="section level2">
+<div id="세대-unsupervised-learning---boltzmann-machine" class="section level2">
 <h2>3세대: Unsupervised Learning - Boltzmann Machine</h2>
 <p>앞서 언급한 단점들 때문에 인공신경망 이론이 잘 이용되지 못하다가, 2006년 볼츠만 머신을 이용한 학습방법이 재조명되면서 인공신경망 이론이 다시 학계의 주목을 받게 되었는데 이 볼츠만 머신의 핵심 아이디어는 바로 Unsupervised Learning, 즉 label이 없는 데이터로 미리 충분한 학습을 한다는 것이며 그 후에 앞에 나온 역전파알고리즘 등을 통해 기존의 supervised learning을 수행한다[<span class="citation">Smolensky (1986)</span>;<span class="citation">Hinton and Salakhutdinov (2006)</span>}. 아래 그림에 대략적인 묘사가 표현되어 있는데 아기들은 단어나 음, 문장의 뜻을 전혀 모르는 상태로 학습을 시작하게 되고 음소(phoneme), 단어(word), 문장(sentence)순으로 Unsupervised learning을 수행하게 되며 그 후에 정답을 가지고 supervised learning을 수행하게 된다<span class="citation">(Kim, n.d.)</span>.</p>
 <div class="figure">
@@ -505,10 +601,7 @@ div.tocify {
 <p>볼츠만 머신의 그림을 보면 <span class="math inline">\(v\)</span>끼리는 선이 연결되어 있지 않고 <span class="math inline">\(h\)</span>끼리도 마찬가지인데 이것이 Restricted의 의미이며 이 조건이 없으면 그냥 Boltmann Machine이며 RBM형태의 그래프를 이분그래프(bipartite graph)라 한다. 그냥 Boltzmann Machine은 너무 복잡해서 학습이 어려워 그 대안으로 나온 것이 RBM인 것이다. 한편 수식을 보면 그래프의 에너지 상태가 낮을수록 확률이 작아지는 것을 알 수 있는데 이 가정은 물리학의 열역학 2법칙을 연상시킨다. 이제 RBM의 Energy function을 살펴보면</p>
 <p><span class="math display">\[E(v,h)= -\sum_i a_i v_i - \sum_j b_j h_j -\sum_i \sum_j h_j w_{i,j} v_i=-a^{\mathrm{T}} v - b^{\mathrm{T}} h -h^{\mathrm{T}} W v\]</span> (<span class="math inline">\(a_i\)</span>: offset of visible variable, <span class="math inline">\(b_j\)</span>: offset of hidden variable, <span class="math inline">\(w_{i,j}\)</span>: weight between <span class="math inline">\(v_i\)</span> and <span class="math inline">\(h_j\)</span>)</p>
 <p>에너지에 대한 수식에서 눈여겨 보아야 할 부분이 <span class="math inline">\(\sum_j h_j w_{i,j} v_i\)</span>인데, <span class="math inline">\(v_i\)</span>, <span class="math inline">\(h_j\)</span>가 1인 곳에 weight가 클수록 에너지함수 값이 작아지고 결과적으로 확률밀도함수의 값이 높아진다. 이는 인간의 시냅스에서 일어나는 일과 비슷한데, 같이 켜지는 곳이 시냅스로 연결될 가능성이 높기 때문이다(아래 그림).</p>
-<div class="figure">
-<img src="dl_img/dog.png" />
-
-</div>
+<p><img src="dl_img/dog.png" /></p>
 <div class="figure">
 <img src="dl_img/dog2.png" alt="Hebb’s Law,kimjunmoppt(Muehlhauser, n.d.,kimjunmoppt)" />
 <p class="caption">Hebb’s Law<span class="citation">(Muehlhauser, n.d.,kimjunmoppt)</span></p>
@@ -542,12 +635,12 @@ div.tocify {
 <p>즉 RBM을 여러 층을 두어 학습하고 마지막으로 기존의 오류역전파알고리즘을 이용하여 튜닝(Fine tuning)하는 것이다<span class="citation">(G. Hinton, Osindero, and Teh 2006; Hinton 2009; Bengio 2009)</span>. 이는 위에 예시로 든 아기가 언어를 학습하는 방식인 음소(phoneme), 단어(word), 문장(sentence)순의 Unsupervised training과 그 후의 supervised learning을 반영하는 모형이라 할 수 있다.</p>
 <p>DBN은 각각의 과정에서 확률적으로 hidden layer들의 값을 생성하게 되는데 이를 역으로 진행하면 정답을 토대로 input을 생성할 수도 있다. 이를 generative model이라 하는데 <a href="http://www.cs.toronto.edu/~hinton/adi/index.htm">Hinton교수의 홈페이지</a>에 손으로 쓴 숫자인식에 대한 예제가 나와 있으니 참고하기 바란다.</p>
 </div>
-<div class="section level3">
+<div id="기타" class="section level3">
 <h3>기타</h3>
-<p>이외에도 locally connected convolution layer를 이용한 Convolutional RBM, 텍스트와 이미지를 동시에 학습할 수 있는 Multimodal Learning에 유용한 Deep Boltzmann Machine(DBM) 등이 있는데 이것들은 참고문헌을 참고하길 바란다<span class="citation">(Lee et al. 2009; R. Salakhutdinov and Hinton 2009)</span>.</p>
+<p>이외에도 locally connected convolution layer를 이용한 Convolutional RBM, 텍스트와 이미지를 동시에 학습할 수 있는 Multimodal Learning에 유용한 Deep Boltzmann Machine(DBM) 등이 있는데 이것들은 참고문헌을 참고하길 바란다<span class="citation">(Lee et al. 2009; Salakhutdinov and Hinton 2009)</span>.</p>
 </div>
 </div>
-<div id="-supervised-learning---rectified-linear-unit-relu-dropout" class="section level2">
+<div id="세대-supervised-learning---rectified-linear-unit-relu-dropout" class="section level2">
 <h2>3세대: Supervised Learning - Rectified linear unit (ReLU), Dropout</h2>
 <p>RBM을 이용한 Unsupervised learning을 이용하게 되면서 다층퍼셉트론의 약점이 많은 부분 극복되었다. Unlabeled data를 사용할 수 있게 되었고 이를 충분히 활용하여 overfitting issue, vanishing gradient문제가 해결되었고 pre-training이 좋은 시작점을 제공하여 local minima 문제도 해결되는 것처럼 보였다. 한편, 언급된 다층퍼셉트론의 약점을 그냥 Supervised Learning에서 해법을 찾으려는 최근의 노력들이 있었고 그 결과로 지금까지 나온 대표적인 아이디어가 Rectified linear unit(ReLU), Dropout이다. 본 섹션에서는 이 두 방법에 대해 간단히 소개하도록 하겠다.</p>
 <div id="rectified-linear-unit-relu" class="section level3">
@@ -559,8 +652,8 @@ div.tocify {
 </div>
 <p>다시 살펴보면 logistic function이든 <span class="math inline">\(tanh\)</span>함수이든 가운데 부분만 기울기가 가파르고 양끝으로 갈수록 기울기가 급속도로 0에 가까워지는 것을 볼 수 있고 이것이 vanishing gradient의 실제이다. 2010년과 2011년에 걸쳐 이를 극복하기 위한 아이디어가 제시되었는데 그것이 바로 Rectified linear unit(ReLU)이다. 이름에서 직관적으로 느낄 수 있듯이 이는 <span class="math inline">\(x\)</span>가 0이상일 때는 선형증가하는 함수이며 0미만일 때는 모두 0인 함수인데, 아래 그림에서 볼 수 있듯이 0보다만 크면 항상 기울기가 1로 일정해 기울기가 감소하는 경우가 없어 학습이 용이하며 실제로 이것이 기존의 방법보다 학습성능이 좋고 pre-training의 필요성을 없애준다고 알려져 있다<span class="citation">(Nair and Hinton 2010; Glorot, Bordes, and Bengio 2011)</span>.</p>
 <div class="figure">
-<img src="dl_img/relu.png" alt="The proposed non-linearity, ReLU, and the standard neural network non-linearity, logistic(M. D. Zeiler et al. 2013)" />
-<p class="caption">The proposed non-linearity, ReLU, and the standard neural network non-linearity, logistic<span class="citation">(M. D. Zeiler et al. 2013)</span></p>
+<img src="dl_img/relu.png" alt="The proposed non-linearity, ReLU, and the standard neural network non-linearity, logistic(Zeiler et al. 2013)" />
+<p class="caption">The proposed non-linearity, ReLU, and the standard neural network non-linearity, logistic<span class="citation">(Zeiler et al. 2013)</span></p>
 </div>
 </div>
 <div id="dropout" class="section level3">
@@ -578,19 +671,19 @@ div.tocify {
 </div>
 <div id="local-minima-issue" class="section level3">
 <h3>Local minima issue</h3>
-<p>우리가 구한 에러의 최소값이 실제 Global minima인가.. local minima에 빠지는 것은 아닌가.. 라는 문제도 오랫동안 다층퍼셉트론에서의 이슈였는데 현재의 공감대는 High dimension and non-convex optimization에서는 대부분의 local minima들의 값이 비슷비슷할 것이며 따라서 local minima나 global minima나 크게 차이가 없을 것이고 너무 이 문제에 신경쓸 필요가 없다는 점이다(아래 그림)<span class="citation">(M. Ranzato, n.d.)</span>.</p>
+<p>우리가 구한 에러의 최소값이 실제 Global minima인가.. local minima에 빠지는 것은 아닌가.. 라는 문제도 오랫동안 다층퍼셉트론에서의 이슈였는데 현재의 공감대는 High dimension and non-convex optimization에서는 대부분의 local minima들의 값이 비슷비슷할 것이며 따라서 local minima나 global minima나 크게 차이가 없을 것이고 너무 이 문제에 신경쓸 필요가 없다는 점이다(아래 그림)<span class="citation">(Ranzato, n.d.)</span>.</p>
 <div class="figure">
-<img src="dl_img/dropout.png" alt="Local minima when high dimension and non-convex optimization(M. Ranzato, n.d.)" />
-<p class="caption">Local minima when high dimension and non-convex optimization<span class="citation">(M. Ranzato, n.d.)</span></p>
+<img src="dl_img/dropout.png" alt="Local minima when high dimension and non-convex optimization(Ranzato, n.d.)" />
+<p class="caption">Local minima when high dimension and non-convex optimization<span class="citation">(Ranzato, n.d.)</span></p>
 </div>
 <p>수많은 차원에서 차원마다 local minima이기는 쉽지 않다고 직관적으로 이해할 수 있다.</p>
 </div>
 </div>
-<div id="--" class="section level2">
+<div id="마지막-딥러닝-요약" class="section level2">
 <h2>마지막: 딥러닝 요약</h2>
 <p>1950년대 퍼셉트론(perceptron)에서 시작된 인공신경망 연구는 1980년대 오류역전파알고리즘(Error Backpropagation Algorithm)으로 다층퍼셉트론(Multilayer perceptron)을 학습할 수 있게 되면서 발전을 이루었다. 허나 Gradient vanishing, labeled data의 부족, overfitting, local minima issue 등이 잘 해결되지 못해 2000년대 초까지 인공신경망 연구는 답보를 이루고 있는데, 2006년부터 볼츠만머신을 이용한 Unsupervised Learning인 Restricted Boltzmann Machine(RBM), Deep Belief Network(DBN), Deep Boltzmann Machine(DBM), Convolutional Deep Belief Network 등이 개발되면서 unlabeled data를 이용하여 pre-training을 수행할 수 있게 되어 위에 언급된 다층퍼셉트론의 한계점이 극복되었다. 2010년부터는 빅데이터를 적극적으로 이용함으로서 수많은 labeled data를 사용할 수 있게 되었고, Rectified linear unit (ReLU), DropOut, DropConnect 등의 발견으로 vanishing gradient문제와 overfitting issue를 해결하여 아예 Supervised learning이 가능하게 되었으며, local minima issue도 High dimension non-convex optimization에서는 별로 중요한 부분이 아니라는 공감대가 확장되고 있다.</p>
 </div>
-<div class="section level2 unnumbered">
+<div id="참고문헌" class="section level2 unnumbered">
 <h2>참고문헌</h2>
 <div id="refs" class="references">
 <div id="ref-bengio2009learning">
@@ -603,16 +696,16 @@ div.tocify {
 <p>Fischer, Asja, and Christian Igel. 2012. “An Introduction to Restricted Boltzmann Machines.” In <em>Progress in Pattern Recognition, Image Analysis, Computer Vision, and Applications</em>, 14–36. Springer.</p>
 </div>
 <div id="ref-gartnernews">
-<p>Gartner, Inc. n.d. “가트너, 2014 세계 It 시장 10대 주요 예측 발표.” <a href="http://www.acrofan.com/ko-kr/commerce/news/20131013/00000015" class="uri">http://www.acrofan.com/ko-kr/commerce/news/20131013/00000015</a>.</p>
+<p>Gartner, Inc. n.d. “가트너, 2014 세계 It 시장 10대 주요 예측 발표.” <a href="http://www.acrofan.com/ko-kr/commerce/news/20131013/00000015">http://www.acrofan.com/ko-kr/commerce/news/20131013/00000015</a>.</p>
 </div>
 <div id="ref-glorot2011deep">
-<p>Glorot, Xavier, Antoine Bordes, and Yoshua Bengio. 2011. “Deep Sparse Rectifier Networks.” In <em>Proceedings of the 14th International Conference on Artificial Intelligence and Statistics. Jmlr W&amp;CP Volume</em>, 15:315–23.</p>
+<p>Glorot, Xavier, Antoine Bordes, and Yoshua Bengio. 2011. “Deep Sparse Rectifier Networks.” In <em>Proceedings of the 14th International Conference on Artificial Intelligence and Statistics. JMLR W&amp;CP Volume</em>, 15:315–23.</p>
 </div>
 <div id="ref-gradient">
-<p>Han-Hsing, Tu. n.d. “[ML, Python] Gradient Descent Algorithm (Revision 2).” <a href="http://hhtucode.blogspot.kr/2013/04/ml-gradient-descent-algorithm.html" class="uri">http://hhtucode.blogspot.kr/2013/04/ml-gradient-descent-algorithm.html</a>.</p>
+<p>Han-Hsing, Tu. n.d. “[ML, Python] Gradient Descent Algorithm (Revision 2).” <a href="http://hhtucode.blogspot.kr/2013/04/ml-gradient-descent-algorithm.html">http://hhtucode.blogspot.kr/2013/04/ml-gradient-descent-algorithm.html</a>.</p>
 </div>
 <div id="ref-perceptroncant">
-<p>Hinton, Geoffrey. n.d. “Coursera: Neural Networks for Machine Learning.” <a href="https://class.coursera.org/neuralnets-2012-001" class="uri">https://class.coursera.org/neuralnets-2012-001</a>.</p>
+<p>Hinton, Geoffrey. n.d. “Coursera: Neural Networks for Machine Learning.” <a href="https://class.coursera.org/neuralnets-2012-001">https://class.coursera.org/neuralnets-2012-001</a>.</p>
 </div>
 <div id="ref-hinton2009deep">
 <p>Hinton, Geoffrey E. 2009. “Deep Belief Networks.” <em>Scholarpedia</em> 4 (5): 5947.</p>
@@ -627,31 +720,31 @@ div.tocify {
 <p>Hinton, Geoffrey, Simon Osindero, and Yee-Whye Teh. 2006. “A Fast Learning Algorithm for Deep Belief Nets.” <em>Neural Computation</em> 18 (7). MIT Press: 1527–54.</p>
 </div>
 <div id="ref-perceptronfig">
-<p>Honkela, Antti. n.d. “Multilayer Perceptrons.” <a href="https://www.hiit.fi/u/ahonkela/dippa/node41.html" class="uri">https://www.hiit.fi/u/ahonkela/dippa/node41.html</a>.</p>
+<p>Honkela, Antti. n.d. “Multilayer Perceptrons.” <a href="https://www.hiit.fi/u/ahonkela/dippa/node41.html">https://www.hiit.fi/u/ahonkela/dippa/node41.html</a>.</p>
 </div>
 <div id="ref-kimjunmoppt">
-<p>Kim, Junmo. n.d. “2014 패턴인식 및 기계학습 여름학교.” <a href="http://prml.yonsei.ac.kr/" class="uri">http://prml.yonsei.ac.kr/</a>.</p>
+<p>Kim, Junmo. n.d. “2014 패턴인식 및 기계학습 여름학교.” <a href="http://prml.yonsei.ac.kr/">http://prml.yonsei.ac.kr/</a>.</p>
 </div>
 <div id="ref-dbnfig">
-<p>Larochelle, Hugo. n.d. “Deep Learning.” <a href="http://www.dmi.usherb.ca/~larocheh/projects_deep_learning.html" class="uri">http://www.dmi.usherb.ca/~larocheh/projects_deep_learning.html</a>.</p>
-</div>
-<div id="ref-lecun2005loss">
-<p>LeCun, Yann, and F Huang. 2005. “Loss Functions for Discriminative Training of Energybased Models.” In. AIStats.</p>
+<p>Larochelle, Hugo. n.d. “Deep Learning.” <a href="http://www.dmi.usherb.ca/~larocheh/projects_deep_learning.html">http://www.dmi.usherb.ca/~larocheh/projects_deep_learning.html</a>.</p>
 </div>
 <div id="ref-lecun2006tutorial">
 <p>LeCun, Yann, Sumit Chopra, Raia Hadsell, M Ranzato, and F Huang. 2006. “A Tutorial on Energy-Based Learning.” <em>Predicting Structured Data</em>.</p>
+</div>
+<div id="ref-lecun2005loss">
+<p>LeCun, Yann, and F Huang. 2005. “Loss Functions for Discriminative Training of Energybased Models.” In. AIStats.</p>
 </div>
 <div id="ref-lee2009convolutional">
 <p>Lee, Honglak, Roger Grosse, Rajesh Ranganath, and Andrew Y Ng. 2009. “Convolutional Deep Belief Networks for Scalable Unsupervised Learning of Hierarchical Representations.” In <em>Proceedings of the 26th Annual International Conference on Machine Learning</em>, 609–16. ACM.</p>
 </div>
 <div id="ref-hebb2">
-<p>Muehlhauser, Luke. n.d. “A Crash Course in the Neuroscience of Human Motivation.” <a href="http://lesswrong.com/lw/71x/a_crash_course_in_the_neuroscience_of_human/" class="uri">http://lesswrong.com/lw/71x/a_crash_course_in_the_neuroscience_of_human/</a>.</p>
+<p>Muehlhauser, Luke. n.d. “A Crash Course in the Neuroscience of Human Motivation.” <a href="http://lesswrong.com/lw/71x/a_crash_course_in_the_neuroscience_of_human/">http://lesswrong.com/lw/71x/a_crash_course_in_the_neuroscience_of_human/</a>.</p>
 </div>
 <div id="ref-nair2010rectified">
 <p>Nair, Vinod, and Geoffrey E Hinton. 2010. “Rectified Linear Units Improve Restricted Boltzmann Machines.” In <em>Proceedings of the 27th International Conference on Machine Learning (Icml-10)</em>, 807–14.</p>
 </div>
 <div id="ref-minima">
-<p>Ranzato, Marc’Aurelio. n.d. “Deep Learning for Vision: Tricks of the Trade.” <a href="www.cs.toronto.edu/~ranzato" class="uri">www.cs.toronto.edu/~ranzato</a>.</p>
+<p>Ranzato, Marc’Aurelio. n.d. “Deep Learning for Vision: Tricks of the Trade.” <a href="www.cs.toronto.edu/~ranzato">www.cs.toronto.edu/~ranzato</a>.</p>
 </div>
 <div id="ref-rosenblatt1958perceptron">
 <p>Rosenblatt, Frank. 1958. “The Perceptron: A Probabilistic Model for Information Storage and Organization in the Brain.” <em>Psychological Review</em> 65 (6). American Psychological Association: 386.</p>
@@ -666,19 +759,19 @@ div.tocify {
 <p>Smolensky, Paul. 1986. “Information Processing in Dynamical Systems: Foundations of Harmony Theory.” Department of Computer Science, University of Colorado, Boulder.</p>
 </div>
 <div id="ref-dropfig">
-<p>Wan, Li. n.d. “Regularization of Neural Networks Using Dropconnect.” <a href="http://cs.nyu.edu/~wanli/dropc/" class="uri">http://cs.nyu.edu/~wanli/dropc/</a>.</p>
+<p>Wan, Li. n.d. “Regularization of Neural Networks Using Dropconnect.” <a href="http://cs.nyu.edu/~wanli/dropc/">http://cs.nyu.edu/~wanli/dropc/</a>.</p>
 </div>
 <div id="ref-wan2013regularization">
 <p>Wan, Li, Matthew Zeiler, Sixin Zhang, Yann L Cun, and Rob Fergus. 2013. “Regularization of Neural Networks Using Dropconnect.” In <em>Proceedings of the 30th International Conference on Machine Learning (Icml-13)</em>, 1058–66.</p>
 </div>
 <div id="ref-RBMfigure">
-<p>Wikipedia. n.d. “Wikepedia.” <a href="http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine" class="uri">http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine</a>.</p>
+<p>Wikipedia. n.d. “Wikepedia.” <a href="http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine">http://en.wikipedia.org/wiki/Restricted_Boltzmann_machine</a>.</p>
 </div>
 <div id="ref-zeiler2013rectified">
 <p>Zeiler, Matthew D, M Ranzato, Rajat Monga, M Mao, K Yang, Quoc Viet Le, Patrick Nguyen, et al. 2013. “On Rectified Linear Units for Speech Processing.” In <em>Acoustics, Speech and Signal Processing (Icassp), 2013 Ieee International Conference on</em>, 3517–21. IEEE.</p>
 </div>
 <div id="ref-mitnews">
-<p>동아일보. n.d. “MIT,올해의 10대 혁신기술 선정.” <a href="http://news.donga.com/3/all/20130426/54713529/1" class="uri">http://news.donga.com/3/all/20130426/54713529/1</a>.</p>
+<p>동아일보. n.d. “MIT,올해의 10대 혁신기술 선정.” <a href="http://news.donga.com/3/all/20130426/54713529/1">http://news.donga.com/3/all/20130426/54713529/1</a>.</p>
 </div>
 </div>
 </div>
@@ -732,6 +825,49 @@ $(document).ready(function () {
 });
 
 
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+<script>
+$(document).ready(function ()  {
+
+    // move toc-ignore selectors from section div to header
+    $('div.section.toc-ignore')
+        .removeClass('toc-ignore')
+        .children('h1,h2,h3,h4,h5').addClass('toc-ignore');
+
+    // establish options
+    var options = {
+      selectors: "h1,h2,h3",
+      theme: "bootstrap3",
+      context: '.toc-content',
+      hashGenerator: function (text) {
+        return text.replace(/[.\\/?&!#<>]/g, '').replace(/\s/g, '_').toLowerCase();
+      },
+      ignoreSelector: ".toc-ignore",
+      scrollTo: 0
+    };
+    options.showAndHide = false;
+    options.smoothScroll = true;
+
+    // tocify
+    var toc = $("#TOC").tocify(options).data("toc-tocify");
+});
 </script>
 
 <!-- dynamically load mathjax for compatibility with self-contained -->

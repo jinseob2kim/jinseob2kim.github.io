@@ -179,13 +179,13 @@ stopCluster(cl)                                       ## 종료
 데이터를 불러오기 전에 미리 디렉토리를 지정하면 그 다음부터는 편하게 읽고 쓸 수 있다.
 ```{r}
 getwd()                                                   ## 현재 디렉토리 
-setwd("/home/secondmath/Dropbox/consult/practice")        ## 디렉토리 설정 
+setwd("/home/jinseob2kim/Dropbox/consult/practice")        ## 디렉토리 설정 
 getwd()
 ```
 여기서 주의해야 할 점은 폴더간의 구분을  / 로 해야 한다는 점이다. *R* 은 유닉스 기반의 언어이기 때문이다. 이제 실습 데이터를 읽어보도록 하자. 가급적이면 데이터포맷은 `csv`로 통일하는 것을 추천한다. 콤마로 분리된 가장 간단 한 형태의 파일로서 용량도 작고 어떤 소프트웨어에서도 읽을 수 있다는 장점이 있다. 물론 *R*에서 SPSS, SAS, Excel파일을 읽을 수도 있지만 본 실습에서는 생략하도록 하겠다.
 
 ```{r}
-setwd("/home/secondmath/Dropbox/consult/practice") 
+setwd("/home/jinseob2kim/Dropbox/consult/practice") 
 a=read.csv("i_all.csv")                             ## 첫번째 행은 변수명으로 자동 인식
 a=read.table("i_all.csv", sep=",", header=T)        ## 구분자와 첫번째 행 인식여부를 직접
 head(a)                                             ## 처음 6행 보기
